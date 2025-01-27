@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('strategies', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('pilar_name');
+            $table->string('name');   
+            $table->string('description');   
+            $table->timestamps(0);
         });
     }
 

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('weeks', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fortnight_id')->constrained()->onDelete('cascade');
-            $table->integer('week_number');
-            $table->timestamps();
+            $table->string('department_name');
+            $table->foreignId('department_head')->constrained('users')->onDelete('cascade');
+            $table->string('dscription');
+            $table->timestamps(0);
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('weeks');
+        Schema::dropIfExists('departments');
     }
 };

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('quarters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('year_id')->constrained()->onDelete('cascade');
+            $table->enum('quarter', ['Q1', 'Q2', 'Q3', 'Q4']);
             $table->timestamps();
         });
     }

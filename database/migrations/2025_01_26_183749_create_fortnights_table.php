@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('fortnights', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('quarter_id')->constrained()->onDelete('cascade');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
         });
     }

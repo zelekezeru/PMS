@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('kpis', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('task_id')->constrained()->onDelete('cascade');
+            $table->string('name', 255);
+            $table->decimal('value', 10, 2)->nullable();
+            $table->string('unit', 50)->nullable();
+            $table->timestamps(0);
         });
     }
 

@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('task_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('feedback_id')->nullable()->constrained()->onDelete('set null');
+            $table->text('comment');
+            $table->timestamps(0);
         });
     }
 
