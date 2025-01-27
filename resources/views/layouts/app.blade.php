@@ -21,13 +21,20 @@
 
 <body>
     <div class="wrapper">
+
+        <!-- Navigation Content -->
+
         @include('layouts.side-navigation')
 
         @include('layouts.navigation')
 
+        <!-- End Navigation Content -->
+
         <!-- Page Content -->
 
         @yield('contents')
+
+        <!-- End Page Content -->
 
     </div>
     <!--   Core JS Files   -->
