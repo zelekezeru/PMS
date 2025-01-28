@@ -80,6 +80,31 @@
                     </div>
                 </li>
 
+                {{-- Goal Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Goal">
+                        <i class="fas fa-book"></i>
+                        <p>Goal</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Goal">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('goals.index') }}">
+                                    <i class="fas fa-list"></i>Manage Goal
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('goals.create') }}">
+                                    <i class="fas fa-plus"></i>Add Goal
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
                 {{-- Target Navigation --}}
 
                 <li class="nav-item">
@@ -104,6 +129,30 @@
                     </div>
                 </li>
 
+                {{-- Task Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Task">
+                        <i class="fas fa-book"></i>
+                        <p>Task</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Task">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('tasks.index') }}">
+                                    <i class="fas fa-list"></i>Manage Task
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('tasks.create') }}">
+                                    <i class="fas fa-plus"></i>Add Task
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
                 {{-- Template Navigation --}}
 
                 <li class="nav-item">

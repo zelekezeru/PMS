@@ -20,4 +20,9 @@ class Goal extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function strategy()
+    {
+        return $this->belongsTo(Strategy::class);
+    }
 }

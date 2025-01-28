@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('value', 10, 2)->nullable();
             $table->string('unit', 50)->nullable();
             $table->foreignId('goal_id')->onDelete('cascade');
-            $table->foreignId('kpi_id')->onDelete('cascade');
             $table->timestamps(0);
         });
     }

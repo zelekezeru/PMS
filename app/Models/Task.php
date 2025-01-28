@@ -21,9 +21,14 @@ class Task extends Model
         return $this->belongsTo(Day::class);
     }
 
-    public function kpis()
+    public function target()
     {
-        return $this->hasMany(Kpi::class);
+        return $this->belongsTo(Target::class);
+    }
+
+    public function kpi()
+    {
+        return $this->hasOne(Kpi::class);
     }
 
     public function feedbacks()
@@ -39,14 +44,5 @@ class Task extends Model
     public function departments()
     {
         return $this->belongsToMany(Department::class);
-    }
-}
-
-// Example usage in a controller or view
-$task = Task::find($id);
-
-if ($task && $task->deliverables) {
-    foreach ($task->deliverables as $deliverable) {
-        echo $deliverable->name;
     }
 }

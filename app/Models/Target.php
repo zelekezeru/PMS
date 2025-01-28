@@ -16,8 +16,13 @@ class Target extends Model
         return $this->belongsTo(Strategy::class);
     }
 
-    public function goals()
+    public function goal()
     {
-        return $this->hasMany(Goal::class);
+        return $this->belongsTo(Goal::class);
+    }
+
+    public function kpi()
+    {
+        return $this->hasOne(Kpi::class);
     }
 }

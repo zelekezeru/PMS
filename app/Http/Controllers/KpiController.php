@@ -2,64 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\KpiStoreRequest;
+use App\Http\Requests\KpiUpdateRequest;
 use App\Models\Kpi;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class KpiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $kpis = Kpi::with('task')->paginate(10);
+        return view('kpis.index', compact('kpis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $tasks = Task::all();
+        return view('kpis.create', compact('tasks'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(KpiStoreRequest $request)
     {
-        //
+        Kpi::create($request->validated());
+        return redirect()->route('kpis.index')->with('success', 'KPI created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Kpi $kpi)
     {
-        //
+        return view('kpis.show', compact('kpi'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Kpi $kpi)
     {
-        //
+        $tasks = Task::all();
+        return view('kpis.edit', compact('kpi', 'tasks'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Kpi $kpi)
+    public function update(KpiUpdateRequest $request, Kpi $kpi)
     {
-        //
+        $kpi->update($request->validated());
+        return redirect()->route('kpis.index')->with('success', 'KPI updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Kpi $kpi)
     {
-        //
+        $kpi->delete();
+        return redirect()->route('kpis.index')->with('success', 'KPI deleted successfully.');
     }
 }

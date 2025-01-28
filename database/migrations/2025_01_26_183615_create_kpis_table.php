@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('kpis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->onDelete('cascade');
+            $table->foreignId('task_id')->nullable()->default(null)->onDelete('cascade');
+            $table->foreignId('target_id')->nullable()->default(null)->onDelete('cascade');
             $table->string('name', 255);
             $table->decimal('value', 10, 2)->nullable();
             $table->string('unit', 50)->nullable();

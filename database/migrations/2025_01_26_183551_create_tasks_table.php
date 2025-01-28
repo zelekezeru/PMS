@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('barriers', 255)->nullable();
             $table->string('comunication', 255)->nullable();
             $table->boolean('is_subtask')->default(false);
-            $table->foreignId('parent_task_id')->nullable()->onDelete('set null');
+            $table->foreignId('parent_task_id')->nullable()->constrained('tasks')->onDelete('set null');
             $table->date('starting_date')->nullable();
             $table->date('due_date')->nullable();
             $table->timestamps(0);
