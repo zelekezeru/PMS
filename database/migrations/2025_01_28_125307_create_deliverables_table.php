@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
-            $table->foreignId('fortnight_id')->constrained()->onDelete('cascade');
+            $table->foreignId('task_id')->onDelete('cascade');
+            $table->foreignId('fortnight_id')->onDelete('cascade');
             $table->string('name', 255);
             $table->enum('status', ['PENDING', 'IN_PROGRESS', 'COMPLETED'])->default('Pending');
             $table->date('deadline')->nullable();
-            $table->timestamps(0);
+            $table->timestamps();
+
+            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
         });
     }
 

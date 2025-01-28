@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('days', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('week_id')->constrained()->onDelete('cascade');
-            $table->foreignId('fortnight_id')->constrained()->onDelete('cascade');
+            $table->foreignId('week_id')->onDelete('cascade');
+            $table->foreignId('fortnight_id')->onDelete('cascade');
             $table->date('date')->unique();
             $table->timestamps();
         });

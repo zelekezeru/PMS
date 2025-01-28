@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('feedback_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('task_id')->onDelete('cascade');
+            $table->foreignId('user_id')->onDelete('cascade');
+            $table->foreignId('feedback_id')->nullable()->onDelete('set null');
             $table->text('comment');
             $table->timestamps(0);
         });

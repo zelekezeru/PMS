@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('weeks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fortnight_id')->constrained()->onDelete('cascade');
+            $table->foreignId('fortnight_id')->onDelete('cascade');
             $table->integer('week_number');
             $table->timestamps();
         });

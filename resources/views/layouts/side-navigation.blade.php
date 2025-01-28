@@ -31,28 +31,106 @@
                     </a>
                 </li>
 
+                {{-- Task Navigation --}}
+
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#PerformanceDropdown" aria-expanded="false">
                         <i class="fas fa-chart-line"></i>
-                        <p>Performance Management</p>
+                        <p>Tasks</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="PerformanceDropdown">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="#">
+                                <a href="{{ route('tasks.index') }}">
                                     <i class="fas fa-edit"></i> Manage Tasks
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ route('tasks.create') }}">
                                     <i class="fas fa-plus-circle"></i> Add Task
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </li>
+
+                {{-- Strategy Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Strategy">
+                        <i class="fas fa-book"></i>
+                        <p>Strategy</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Strategy">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('strategies.index') }}">
+                                    <i class="fas fa-list"></i>Manage Strategy
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('strategies.create') }}">
+                                    <i class="fas fa-plus"></i>Add Strategy
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- Target Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Target">
+                        <i class="fas fa-book"></i>
+                        <p>Target</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Target">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('targets.index') }}">
+                                    <i class="fas fa-list"></i>Manage Target
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('targets.create') }}">
+                                    <i class="fas fa-plus"></i>Add Target
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+,
+                {{-- Template Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Template">
+                        <i class="fas fa-book"></i>
+                        <p>Template</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Template">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('templats.
+                                .index') }}">
+                                    <i class="fas fa-list"></i>Manage Template
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('templats.
+                                .create') }}">
+                                    <i class="fas fa-plus"></i>Add Template
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
 
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
