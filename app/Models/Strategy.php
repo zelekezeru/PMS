@@ -9,7 +9,11 @@ class Strategy extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'pilar_name',
+        'name',
+        'description',
+    ];
 
     public function targets()
     {

@@ -17,7 +17,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\KpiController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TemplateController;
-
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,13 +33,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-
 Route::get('/home', function () {
     return view('index');
 });
-
 //Resource Routes
+
+Route::resource('users', UserController::class);
 
 Route::resource('strategies', StrategyController::class);
 
@@ -50,7 +49,7 @@ Route::resource('goals', GoalController::class);
 Route::resource('tasks', TaskController::class);
 
 Route::resource('deliverables', DeliverableController::class);
-
+ 
 Route::resource('years', YearController::class);
 
 Route::resource('quarters', QuarterController::class);
@@ -68,3 +67,8 @@ Route::resource('kpis', KpiController::class);
 Route::resource('reports', ReportController::class);
 
 Route::resource('templates', TemplateController::class);
+
+
+
+
+require __DIR__.'/auth.php';

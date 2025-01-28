@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/kaiadmin.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/fonts.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/fonts.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
 
@@ -24,11 +24,21 @@
 
         @include('layouts.side-navigation')
 
-        @include('layouts.navigation')
 
         <!-- Page Content -->
+        <div class="main-panel">
+            <div class="main-header">
 
-        @yield('contents')
+                @include('layouts.navigation')
+
+            </div>
+            <div class="container">
+                <div class="page-inner">
+
+                    @yield('contents')
+                </div>
+            </div>
+        </div>
 
     </div>
     <!--   Core JS Files   -->

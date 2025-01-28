@@ -103,7 +103,7 @@
                         </ul>
                     </div>
                 </li>
-,
+
                 {{-- Template Navigation --}}
 
                 <li class="nav-item">
