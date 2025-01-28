@@ -39,26 +39,17 @@
                     </a>
                     <div class="collapse" id="PerformanceDropdown">
                         <ul class="nav nav-collapse">
-                            <li class="nav-item">
-                                <a data-bs-toggle="collapse" href="#TaskManagementDropdown" aria-expanded="false">
-                                    <i class="fas fa-tasks"></i> Task Management
-                                    <span class="caret"></span>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-edit"></i> Manage Tasks
                                 </a>
-                                <div class="collapse" id="TaskManagementDropdown">
-                                    <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="#">
-                                                <i class="fas fa-edit"></i> Manage Tasks
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fas fa-plus-circle"></i> Add Task
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-plus-circle"></i> Add Task
+                                </a>
+                            </li>
+                            
                         </ul>
                     </div>
                 </li>

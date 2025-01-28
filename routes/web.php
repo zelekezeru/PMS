@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PillarController;
 use App\Http\Controllers\StrategyController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TargetController;
@@ -17,6 +16,8 @@ use App\Http\Controllers\DayController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\KpiController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\TemplateController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,8 +29,6 @@ Route::get('/home', function () {
 });
 
 //Resource Routes
-
-Route::resource('pillars', PillarController::class);
 
 Route::resource('Strategies', StrategyController::class);
 
@@ -56,3 +55,10 @@ Route::resource('feedbacks', FeedbackController::class);
 Route::resource('kpis', KpiController::class);
 
 Route::resource('reports', ReportController::class);
+
+Route::resource('departments', DepartmentController::class);
+
+
+//Template Routes
+
+Route::resource('templates', TemplateController::class);
