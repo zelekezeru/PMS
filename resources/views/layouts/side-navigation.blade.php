@@ -115,14 +115,12 @@
                     <div class="collapse" id="Template">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="{{ route('templats.
-                                .index') }}">
+                                <a href="{{ route('templates.index') }}">
                                     <i class="fas fa-list"></i>Manage Template
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('templats.
-                                .create') }}">
+                                <a href="{{ route('templates.create') }}">
                                     <i class="fas fa-plus"></i>Add Template
                                 </a>
                             </li>
@@ -148,6 +146,36 @@
                     </a>
                 </li>
                 {{-- END OF ADMIN COMPONENTS --}}
+
+                @if(Auth::check())
+                    <li class="nav-item topbar-user dropdown hidden-caret">
+                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                            <div class="avatar-sm">
+                                <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'avatar.png' }}" alt="Profile Image" class="avatar-img rounded-circle" />
+                            </div>
+                            <span class="profile-username">
+                                <span class="fw-bold">{{ Auth::user()->name }}</span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <div class="dropdown-user-scroll scrollbar-outer">
+                                <li>
+                                    <div class="user-box">
+                                        <div class="avatar-lg">
+                                            <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'avatar.png' }}" alt="Profile Image">
+                                        </div>
+                                        <div class="u-text">
+                                            <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
+                                            <p class="text-muted">{{ Auth::user()->email ?? 'No email' }}</p>
+                                            <a href="{{ route('users.show', Auth::user()->id) }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                // ...existing code...
+                            </div>
+                        </ul>
+                    </li>
+                @endif
 
             </ul>
         </div>

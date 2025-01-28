@@ -15,9 +15,4 @@ class Deliverable extends Model
     {
         return $this->belongsTo(Task::class);
     }
-
-    public function fortnight()
-    {
-        return $this->belongsTo(Fortnight::class);
-    }
 }

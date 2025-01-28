@@ -41,3 +41,12 @@ class Task extends Model
         return $this->belongsToMany(Department::class);
     }
 }
+
+// Example usage in a controller or view
+$task = Task::find($id);
+
+if ($task && $task->deliverables) {
+    foreach ($task->deliverables as $deliverable) {
+        echo $deliverable->name;
+    }
+}
