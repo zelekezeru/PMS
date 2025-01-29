@@ -2,17 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Department;
+use App\Models\Home;
+use App\Models\Strategy;
+use App\Models\Task;
+use App\Models\Report;
+use App\Models\Year;
+use App\Models\Fortnight;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $strategies = Strategy::get();
+
+        $tasks = Task::get();
+
+        $reports = Report::get();
+
+        $years = Year::get();
+
+        $departments = Department::get();
+
+        $fortnights = Fortnight::get();
+
+        return view('dashboard', compact('strategies', 'tasks', 'reports', 'fortnights', 'years'));
     }
 
     /**
@@ -34,21 +52,15 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Home $home)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return redirect()->route('users.index')->with('error', 'User not found.');
-        }
-
-        return view('users.show', compact('user'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Home $home)
     {
         //
     }
@@ -56,7 +68,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Home $home)
     {
         //
     }
@@ -64,7 +76,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Home $home)
     {
         //
     }

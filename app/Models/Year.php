@@ -16,4 +16,9 @@ class Year extends Model
     {
         return $this->hasMany(Month::class);
     }
+
+    public function targets()
+    {
+        return $this->hasMany(Target::class);
+    }
 }

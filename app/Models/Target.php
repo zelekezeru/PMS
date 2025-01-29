@@ -16,7 +16,12 @@ class Target extends Model
         return $this->belongsTo(Strategy::class);
     }
 
-    public function goal()
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
+
+    public function goals()
     {
         return $this->belongsTo(Goal::class);
     }

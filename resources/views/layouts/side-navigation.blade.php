@@ -129,6 +129,7 @@
                     </div>
                 </li>
 
+<<<<<<< Updated upstream
                 {{-- Task Navigation --}}
 
                 <li class="nav-item">
@@ -154,23 +155,74 @@
                 </li>
                 
                 {{-- Template Navigation --}}
+=======
+                {{-- Goal Navigation --}}
+>>>>>>> Stashed changes
 
                 <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#Template">
+                    <a data-bs-toggle="collapse" href="#Goal">
                         <i class="fas fa-book"></i>
-                        <p>Template</p>
+                        <p>Goal</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="Template">
+                    <div class="collapse" id="Goal">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="{{ route('templates.index') }}">
-                                    <i class="fas fa-list"></i>Manage Template
+                                <a href="{{ route('goals.index') }}">
+                                    <i class="fas fa-list"></i>Manage Goal
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('templates.create') }}">
-                                    <i class="fas fa-plus"></i>Add Template
+                                <a href="{{ route('goals.create') }}">
+                                    <i class="fas fa-plus"></i>Add Goal
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- Department Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Department">
+                        <i class="fas fa-book"></i>
+                        <p>Department</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Department">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('departments.index') }}">
+                                    <i class="fas fa-list"></i>Manage Department
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('departments.create') }}">
+                                    <i class="fas fa-plus"></i>Add Department
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- Report Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Report">
+                        <i class="fas fa-book"></i>
+                        <p>Report</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Report">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('reports.index') }}">
+                                    <i class="fas fa-list"></i>Manage Report
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('reports.create') }}">
+                                    <i class="fas fa-plus"></i>Add Report
                                 </a>
                             </li>
                         </ul>
@@ -178,13 +230,48 @@
                 </li>
 
 
+                {{-- Schedule Navigation --}}
 
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
-                    <h4 class="text-section">Components</h4>
+                    <h4 class="text-section">Schedules</h4>
                 </li>
+                {{-- Schedule Navigation --}}
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Schedule">
+                        <i class="fas fa-book"></i>
+                        <p>Plan Time</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="Schedule">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('years.index') }}">
+                                    <i class="fas fa-list"></i>Manage Years
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('quarters.index') }}">
+                                    <i class="fas fa-list"></i>Manage Quarters
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('fortnights.index') }}">
+                                    <i class="fas fa-list"></i>Manage Fortnights
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('days.index') }}">
+                                    <i class="fas fa-list"></i>Manage Days
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
 
                 {{-- ONLY FOR ADMIN USERS --}}
 
@@ -194,38 +281,6 @@
                         <p>Users</p>
                     </a>
                 </li>
-                {{-- END OF ADMIN COMPONENTS --}}
-
-                @if(Auth::check())
-                    <li class="nav-item topbar-user dropdown hidden-caret">
-                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
-                            <div class="avatar-sm">
-                                <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'avatar.png' }}" alt="Profile Image" class="avatar-img rounded-circle" />
-                            </div>
-                            <span class="profile-username">
-                                <span class="fw-bold">{{ Auth::user()->name }}</span>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user animated fadeIn">
-                            <div class="dropdown-user-scroll scrollbar-outer">
-                                <li>
-                                    <div class="user-box">
-                                        <div class="avatar-lg">
-                                            <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'avatar.png' }}" alt="Profile Image">
-                                        </div>
-                                        <div class="u-text">
-                                            <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
-                                            <p class="text-muted">{{ Auth::user()->email ?? 'No email' }}</p>
-                                            <a href="{{ route('users.show', Auth::user()->id) }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                // ...existing code...
-                            </div>
-                        </ul>
-                    </li>
-                @endif
-
             </ul>
         </div>
     </div>
