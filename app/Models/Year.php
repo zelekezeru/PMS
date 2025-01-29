@@ -9,7 +9,7 @@ class Year extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['year'];
 
     public function quarters()
     {

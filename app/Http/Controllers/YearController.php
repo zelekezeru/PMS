@@ -7,59 +7,52 @@ use Illuminate\Http\Request;
 
 class YearController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $years = Year::paginate(10);
+        return view('years.index', compact('years'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('years.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'year' => 'required|integer|unique:years,year'
+        ]);
+
+        Year::create($request->all());
+
+        return redirect()->route('years.index')->with('success', 'Year created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Year $year)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Year $year)
     {
-        //
+        return view('years.edit', compact('year'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Year $year)
     {
-        //
+        $request->validate([
+            'year' => 'required|integer|unique:years,year,' . $year->id
+        ]);
+
+        $year->update($request->all());
+
+        return redirect()->route('years.index')->with('success', 'Year updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Year $year)
     {
-        //
+        $year->delete();
+        return redirect()->route('years.index')->with('success', 'Year deleted successfully.');
+    }
+
+    public function show(Year $year)
+    {
+        return view('years.show', compact('year'));
     }
 }

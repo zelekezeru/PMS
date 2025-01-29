@@ -9,8 +9,13 @@ class Fortnight extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'quarter_id',
+        'start_date',
+        'end_date',
+    ];
 
+    
     public function quarter()
     {
         return $this->belongsTo(Quarter::class);

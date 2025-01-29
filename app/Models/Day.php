@@ -9,7 +9,7 @@ class Day extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['fortnight_id', 'date'];
 
     public function week()
     {
