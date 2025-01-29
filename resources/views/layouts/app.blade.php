@@ -43,6 +43,8 @@
 
         <!-- End Page Content -->
 
+        <!-- End Page Content -->
+
     </div>
     <!--   Core JS Files   -->
     <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}"></script>
