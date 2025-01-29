@@ -18,7 +18,10 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\KpiController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TemplateController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\UserController;
+=======
+>>>>>>> Stashed changes
 use App\Models\Department;
 use App\Http\Controllers\DepartmentController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -44,8 +47,13 @@ Route::get('/home', function () {
 });
 //Resource Routes
 
+<<<<<<< Updated upstream
 Route::resource('users', UserController::class);
 Route::resource('homes', HomeController::class);
+=======
+Route::resource('homes', HomeController::class);
+
+>>>>>>> Stashed changes
 Route::resource('strategies', StrategyController::class);
 Route::resource('targets', TargetController::class);
 Route::resource('goals', GoalController::class);
@@ -60,6 +68,11 @@ Route::resource('feedbacks', FeedbackController::class);
 Route::resource('kpis', KpiController::class);
 Route::resource('reports', ReportController::class);
 Route::resource('templates', TemplateController::class);
+<<<<<<< Updated upstream
 Route::resource('departments', DepartmentController::class);
 
 require __DIR__.'/auth.php';
+=======
+
+Route::resource('departments', DepartmentController::class);
+>>>>>>> Stashed changes

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+<<<<<<< Updated upstream
     /**
      * Display a listing of the resource.
      */
@@ -68,4 +69,18 @@ class UserController extends Controller
     {
         //
     }
+=======
+    public function show($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route('users.index')->with('error', 'User not found.');
+        }
+
+        return view('users.show', compact('user'));
+    }
+
+    // ...existing code...
+>>>>>>> Stashed changes
 }
