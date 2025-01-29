@@ -4,7 +4,7 @@
 
     <div class="container mt-3">
         <div class="card pt-5">
-            <h2 class="card-header text-center">Fortnight Details</h2>
+            <h2 class="card-header text-center">{{ $fortnight->quarter->quarter }} ({{ $fortnight->quarter->year->year }}) : Fortnight Details</h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end mb-3">
                     <a class="btn btn-primary btn-sm" href="{{ route('fortnights.index') }}">
@@ -12,26 +12,22 @@
                     </a>
                 </div>
 
-                <table class="table table-bordered">
+                <table class="table table-bordered text-center">
                     <tr>
-                        <th>Quarter:</th>
-                        <td>{{ $fortnight->quarter->quarter }} ({{ $fortnight->quarter->year->year }})</td>
+                        <th class="text-center">Detail</th>
+                        <th class="text-center">Date</th>
                     </tr>
                     <tr>
                         <th>Start Date:</th>
-                        <td>{{ $fortnight->start_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
                     </tr>
                     <tr>
                         <th>End Date:</th>
-                        <td>{{ $fortnight->end_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
                     </tr>
                     <tr>
                         <th>Created At:</th>
-                        <td>{{ $fortnight->created_at->format('Y-m-d H:i') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Updated At:</th>
-                        <td>{{ $fortnight->updated_at->format('Y-m-d H:i') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($fortnight->created_at)->format('M - d - Y') }}</td>
                     </tr>
                 </table>
 

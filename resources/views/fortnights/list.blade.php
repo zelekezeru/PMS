@@ -13,14 +13,14 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $fortnight->quarter->quarter }}</td>
-                <td>{{ $fortnight->start_date }}</td>
-                <td>{{ $fortnight->end_date }}</td>
+                <td>{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
                 <td class="text-center">
                     <a href="{{ route('fortnights.show', $fortnight->id) }}" class="btn btn-info btn-sm">View</a>
                     <a href="{{ route('fortnights.edit', $fortnight->id) }}" class="btn btn-primary btn-sm">Edit</a>
                     <form action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" class="d-inline">
                         @csrf
-                        @method('DELETE')
+                        @method('dELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
                 </td>

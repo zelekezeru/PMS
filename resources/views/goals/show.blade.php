@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Goal Details</h3>
-                <a href="{{ route('goals.index') }}" class="btn btn-primary btn-sm float-end">Back to goals</a>
+                <a href="{{ route('goals.index') }}" class="btn btn-primary btn-sm float-end"><i class="fa fa-arrow-left"></i> Back</a>
             </div>
             <div class="card-body">
                 <!-- Strategie Title -->

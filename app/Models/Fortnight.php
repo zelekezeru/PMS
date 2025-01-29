@@ -15,7 +15,7 @@ class Fortnight extends Model
         'end_date',
     ];
 
-    
+
     public function quarter()
     {
         return $this->belongsTo(Quarter::class);

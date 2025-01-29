@@ -4,14 +4,14 @@
         @method('PUT')
     @endif
 
-    <div class="mb-3">
+    <div class="col-6 mb-3">
         <label for="fortnight_id" class="form-label"><strong>Select Fortnight:</strong></label>
         <select name="fortnight_id" id="fortnight_id" class="form-control @error('fortnight_id') is-invalid @enderror" required>
             <option value="">Choose Fortnight</option>
             @foreach($fortnights as $fortnight)
                 <option value="{{ $fortnight->id }}" {{ isset($day) && $day->fortnight_id == $fortnight->id ? 'selected' : '' }}>
-                    {{ $fortnight->quarter->quarter }} ({{ $fortnight->quarter->year->year }}): 
-                    {{ $fortnight->start_date }} to {{ $fortnight->end_date }}
+                    <strong>{{ $fortnight->quarter->quarter }} ({{ $fortnight->quarter->year->year }}): </strong>
+                    {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} to {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}
                 </option>
             @endforeach
         </select>
@@ -20,9 +20,9 @@
         @enderror
     </div>
 
-    <div class="mb-3">
+    <div class="col-6 mb-3">
         <label for="date" class="form-label"><strong>Date:</strong></label>
-        <input type="date" name="date" class="form-control @error('date') is-invalid @enderror" id="date" 
+        <input type="date" name="date" class="form-control @error('date') is-invalid @enderror" id="date"
                value="{{ old('date', isset($day) ? $day->date : '') }}" required>
         @error('date')
             <div class="form-text text-danger">{{ $message }}</div>

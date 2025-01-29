@@ -40,13 +40,14 @@ class GoalController extends Controller
     public function edit(Goal $goal)
     {
         $strategies = Strategy::all();
+
         return view('goals.edit', compact('goal', 'strategies'));
     }
 
     public function update(GoalUpdateRequest $request, Goal $goal)
     {
         $data = $request->validated();
-        
+
         $goal->update($data);
 
         return redirect()->route('goals.index')->with('success', 'Goal updated successfully.');

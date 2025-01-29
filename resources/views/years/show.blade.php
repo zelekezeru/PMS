@@ -27,26 +27,27 @@
                     </tr>
                 </table>
 
-                <h3 class="mt-4">Quarters</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Quarter</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($year->quarters as $index => $quarter)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $quarter->quarter }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
             </div>
         </div>
+
+
+        @if ($year->quarters)
+
+            @php
+                $quarters = $year->quarters;
+            @endphp
+
+            <div class="card-header">
+                <h3 class="card-title mb-5">Quarters of this year</h3>
+            </div>
+
+            @include('quarters.list')
+
+        @else
+            <div class="alert alert-warning mt-3">
+                <p>No quarters found for this year.</p>
+            </div>
+        @endif
     </div>
 
 @endsection

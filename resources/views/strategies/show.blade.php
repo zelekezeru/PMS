@@ -8,7 +8,7 @@
             <div class="card-header d-flex justify-content-between">
                 <h3 class="card-title col-8">Pillar Details</h3>
                 <div class="d-flex col-2">
-                    <a href="{{ route('strategies.index') }}" class="btn btn-primary btn-sm float-end mr-2">Back to Pillars</a>
+                    <a href="{{ route('strategies.index') }}" class="btn btn-primary btn-sm float-end mr-2"><i class="fa fa-arrow-left"></i> Back</a>
                 </div>
             </div>
             <div class="card-body">

@@ -18,7 +18,10 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    <a href="" class="logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="navbar brand" class="navbar-brand"
+                        height="40" />
+                </a>
                 </a>
             </div>
 

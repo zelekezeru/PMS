@@ -30,7 +30,7 @@ class HomeController extends Controller
 
         $fortnights = Fortnight::get();
 
-        return view('dashboard', compact('strategies', 'tasks', 'reports', 'fortnights', 'years'));
+        return view('index', compact('strategies', 'tasks', 'reports', 'fortnights', 'years'));
     }
 
     /**

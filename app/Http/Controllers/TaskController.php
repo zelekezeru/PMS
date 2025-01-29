@@ -10,6 +10,7 @@ use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Goal;
 use App\Models\Kpi;
 use App\Models\Target;
+use App\Models\Department;
 use Illuminate\View\View;
 
 class TaskController extends Controller
@@ -24,13 +25,16 @@ class TaskController extends Controller
     {
         $targets = Target::all();
 
+        $departments = Department::all();
+
         $parent_tasks = Task::all();
 
-        return view('tasks.create', compact('targets', 'parent_tasks'));
+        return view('tasks.create', compact('targets', 'parent_tasks', 'departments'));
     }
-    
+
     public function store(TaskStoreRequest $request)
     {
+        dd($request);
         $data = $request->validated();
 
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
@@ -40,12 +44,12 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
 
     }
-    
+
     public function show(Task $task)
     {
         return view('tasks.show', compact('task'));
     }
-    
+
     public function edit(Task $task)
     {
         $targets = Target::all();
