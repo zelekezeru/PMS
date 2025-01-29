@@ -16,7 +16,8 @@
                 <td>{{ $strategy->name }}</td>
                 <td>{{ $strategy->description }}</td>
                 <td class="text-center">
-                    <a href="{{ route('strategies.edit', $strategy->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
+                    <a href="{{ route('strategies.show', $strategy->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
+                    <a href="{{ route('strategies.edit', $strategy->id) }}" class="m-1 btn  btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
                     <a href="{{ route('strategies.show', $strategy->id) }}" class="m-1 btn  btn-primary btn-sm"><i class="fa fa-book"></i> Show</a>
                     <form action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" class="d-inline">
                         @csrf
