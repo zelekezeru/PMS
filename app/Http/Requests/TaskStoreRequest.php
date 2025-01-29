@@ -31,7 +31,8 @@ class TaskStoreRequest extends FormRequest
             'parent_task_id' => 'nullable|exists:tasks,id',
             'starting_date' => 'nullable|date',
             'due_date' => 'nullable|date',
-            'target_id' => 'required|exists:targets,id'
+            'target_id' => 'required|exists:targets,id',
+            'departments' => 'nullable|array',
         ];
     }
 }
