@@ -21,12 +21,14 @@ class GoalController extends Controller
     public function create()
     {
         $strategies = Strategy::all();
+
         return view('goals.create', compact('strategies'));
     }
 
     public function store(GoalStoreRequest $request)
     {
         Goal::create($request->validated());
+
         return redirect()->route('goals.index')->with('success', 'Goal created successfully.');
     }
 
@@ -43,7 +45,10 @@ class GoalController extends Controller
 
     public function update(GoalUpdateRequest $request, Goal $goal)
     {
-        $goal->update($request->validated());
+        $data = $request->validated();
+        
+        $goal->update($data);
+
         return redirect()->route('goals.index')->with('success', 'Goal updated successfully.');
     }
 

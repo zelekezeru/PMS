@@ -11,19 +11,14 @@ class Target extends Model
 
     protected $guarded = [];
 
-    public function strategy()
+    public function goal()
     {
-        return $this->belongsTo(Strategy::class);
+        return $this->belongsTo(Goal::class);
     }
 
     public function year()
     {
         return $this->belongsTo(Year::class);
-    }
-
-    public function goals()
-    {
-        return $this->belongsTo(Goal::class);
     }
 
     public function kpi()

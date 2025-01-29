@@ -39,6 +39,18 @@
                 </div>
             </div>
         </div>
+        @if ($target->kpis)
+
+            @php
+                $kpis = $target->kpis;
+            @endphp
+
+            @include('kpis.list')
+        @else
+            <div class="alert alert-warning mt-3">
+                No indicators found.
+            </div>
+        @endif
     </div>
 
 @endsection

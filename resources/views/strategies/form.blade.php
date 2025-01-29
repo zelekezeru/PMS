@@ -22,7 +22,7 @@
 
         <div class="col-md-12 mb-3">
             <label for="description" class="form-label"><strong>Description:</strong></label>
-            <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="3" placeholder="Strategy Description" required>{{ old('description', $strategy->description ?? '') }}</textarea>
+            <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="5" placeholder="Strategy Description" required>{{ old('description', $strategy->description ?? '') }}</textarea>
             @error('description')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror

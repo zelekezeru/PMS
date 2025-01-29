@@ -39,6 +39,19 @@
                 </div>
             </div>
         </div>
+
+        @if ($goal->targets)
+
+            @php
+                $targets = $goal->targets;
+            @endphp
+
+            @include('targets.list')
+        @else
+            <div class="alert alert-warning mt-3">
+                No targets found.
+            </div>
+        @endif
     </div>
 
 @endsection

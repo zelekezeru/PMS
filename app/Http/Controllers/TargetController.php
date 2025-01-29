@@ -29,6 +29,8 @@ class TargetController extends Controller
 
     public function store(TargetStoreRequest $request)
     {
+        $goal = Goal::where('id', $request->goal_id)->get();
+
         Target::create($request->validated());
 
         return redirect()->route('targets.index')->with('success', 'Target created successfully.');

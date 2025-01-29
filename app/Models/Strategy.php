@@ -15,8 +15,8 @@ class Strategy extends Model
         'description',
     ];
 
-    public function targets()
+    public function goals()
     {
-        return $this->hasMany(Target::class);
+        return $this->hasMany(Goal::class);
     }
 }

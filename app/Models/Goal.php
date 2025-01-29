@@ -11,9 +11,9 @@ class Goal extends Model
 
     protected $guarded = [];
 
-    public function target()
+    public function strategy()
     {
-        return $this->belongsTo(Target::class);
+        return $this->belongsTo(Strategy::class);
     }
 
     public function tasks()
@@ -21,8 +21,8 @@ class Goal extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function strategy()
+    public function targets()
     {
-        return $this->belongsTo(Strategy::class);
+        return $this->hasMany(Target::class);
     }
 }

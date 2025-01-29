@@ -16,6 +16,7 @@
                     'goal' => $goal,
                     'buttonText' => 'Update'
                 ])
+
             </div>
         </div>
     </div>

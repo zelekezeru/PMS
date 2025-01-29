@@ -44,7 +44,7 @@ class StrategyController extends Controller
         return redirect()->route('strategies.index')
             ->with('success', 'strategies created successfully.');
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -67,6 +67,7 @@ class StrategyController extends Controller
     public function update(StrategyUpdateRequest $request, Strategy $strategy): RedirectResponse
     {
         $data = $request->validated();
+
         $strategy->update($data);
 
         return redirect()->route('strategies.index')
