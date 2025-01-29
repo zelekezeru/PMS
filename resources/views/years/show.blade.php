@@ -19,11 +19,11 @@
                     </tr>
                     <tr>
                         <th>Created At:</th>
-                        <td>{{ $year->created_at->format('Y-m-d H:i') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($year->created_at)->format('M - d - Y') }}</td>
                     </tr>
                     <tr>
                         <th>Updated At:</th>
-                        <td>{{ $year->updated_at->format('Y-m-d H:i') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($year->updated_at)->format('M - d - Y') }}</td>
                     </tr>
                 </table>
 

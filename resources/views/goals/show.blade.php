@@ -2,38 +2,48 @@
 
 @section('contents')
 
-    <div class="container mt-5 pt-5">
-        <!-- Strategie Details Card -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Goal Details</h3>
-                <a href="{{ route('goals.index') }}" class="btn btn-primary btn-sm float-end"><i class="fa fa-arrow-left"></i> Back</a>
-            </div>
+    <div class="container mt-3">
+        <div class="card pt-5">
+            <h2 class="card-header text-center">Goal Details</h2>
             <div class="card-body">
-                <!-- Strategie Title -->
-                <h3 class="mb-3"><i class="fas fa-book"></i><strong class=" m-2 h2">Pilar Name:</strong>  {{ $goal->pilar_name }}</h3>
-
-                <!-- goal Details -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong class="h3">Name:</strong> {{ $goal->name }}</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong class="h3">Description:</strong> {{ $goal->description }}</p>
-                    </div>
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('goals.index') }}">
+                        <i class="fa fa-arrow-left"></i> Back to List
+                    </a>
                 </div>
 
-                <!-- Edit and Delete buttons -->
-                <div class="mt-4">
-                    <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i> Edit goal
-                    </a>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Pillar Name:</th>
+                        <td>{{ $goal->pilar_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{ $goal->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{ $goal->description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Created At:</th>
+                        <td>{{ \Carbon\Carbon::parse($goal->created_at)->format('M - d - Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Updated At:</th>
+                        <td>{{ \Carbon\Carbon::parse($goal->updated_at)->format('M - d - Y') }}</td>
+                    </tr>
+                </table>
 
-                    <form action="{{ route('goals.destroy', $goal->id) }}" method="POST" class="d-inline">
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-warning btn-sm me-2">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form action="{{ route('goals.destroy', $goal->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this goal?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this strategie?')">
-                            <i class="fas fa-trash"></i> Delete goal
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </form>
                 </div>
@@ -41,7 +51,6 @@
         </div>
 
         @if ($goal->targets)
-
             @php
                 $targets = $goal->targets;
             @endphp
@@ -52,8 +61,8 @@
 
             @include('targets.list')
         @else
-            <div class="alert alert-warning mt-5">
-                No targets found.
+            <div class="alert alert-warning mt-3">
+                <p>No targets found for this goal.</p>
             </div>
         @endif
     </div>

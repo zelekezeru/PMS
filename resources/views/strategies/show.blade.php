@@ -2,46 +2,48 @@
 
 @section('contents')
 
-    <div class="container mt-5 pt-5">
-        <!-- Strategie Details Card -->
-        <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <h3 class="card-title col-8">Pillar Details</h3>
-                <div class="d-flex col-2">
-                    <a href="{{ route('strategies.index') }}" class="btn btn-primary btn-sm float-end mr-2"><i class="fa fa-arrow-left"></i> Back</a>
-                </div>
-            </div>
+    <div class="container mt-3">
+        <div class="card pt-5">
+            <h2 class="card-header text-center">Pillar Details</h2>
             <div class="card-body">
-                <!-- Strategie Title -->
-                <h3 class="mb-3"><i class="fas fa-book"></i><strong class=" m-2 h2 text-info">Pilar:</strong>  {{ $strategy->pilar_name }}</h3>
-
-                <!-- Strategy Details -->
-                <div class="row">
-                    <div class="col mt-5">
-                        <p><strong class="h3 text-info">Strategy:</strong> {{ $strategy->name }}</p>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <p><strong class="h3 text-info">Description:</strong> {{ $strategy->description }}</p>
-                    </div>
-
-                </div>
-
-                <!-- Edit and Delete buttons -->
-                <div class="mt-4">
-                    <a href="{{ route('strategies.edit', $strategy->id) }}" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i> Edit Pillar & Strategy
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('strategies.index') }}">
+                        <i class="fa fa-arrow-left"></i> Back
                     </a>
+                </div>
 
-                    <form action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" class="d-inline">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Pillar:</th>
+                        <td>{{ $strategy->pilar_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Strategy:</th>
+                        <td>{{ $strategy->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{ $strategy->description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Created At:</th>
+                        <td>{{ \Carbon\Carbon::parse($strategy->created_at)->format('M - d - Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Updated At:</th>
+                        <td>{{ \Carbon\Carbon::parse($strategy->updated_at)->format('M - d - Y') }}</td>
+                    </tr>
+                </table>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('strategies.edit', $strategy->id) }}" class="btn btn-warning btn-sm me-2">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this strategy?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this strategie?')">
-                            <i class="fas fa-trash"></i> Delete Edit Pillar & Strategy
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </form>
                 </div>
@@ -49,7 +51,6 @@
         </div>
 
         @if ($strategy->goals)
-
             @php
                 $goals = $strategy->goals;
             @endphp
@@ -59,13 +60,11 @@
             </div>
 
             @include('goals.list')
-
         @else
             <div class="alert alert-warning mt-3">
                 <p>No goals found for this strategy.</p>
             </div>
         @endif
-
     </div>
 
 @endsection

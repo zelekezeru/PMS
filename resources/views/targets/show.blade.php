@@ -2,45 +2,55 @@
 
 @section('contents')
 
-    <div class="container mt-5 pt-5">
-        <!-- Strategie Details Card -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">target Details</h3>
-                <a href="{{ route('targets.index') }}" class="btn btn-primary btn-sm float-end">Back to targets</a>
-            </div>
+    <div class="container mt-3">
+        <div class="card pt-5">
+            <h2 class="card-header text-center">Target Details</h2>
             <div class="card-body">
-                <!-- Strategie Title -->
-                <h3 class="mb-3"><i class="fas fa-book"></i><strong class=" m-2 h2">Pilar Name:</strong>  {{ $target->pilar_name }}</h3>
-
-                <!-- target Details -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong class="h3">Name:</strong> {{ $target->name }}</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong class="h3">Description:</strong> {{ $target->description }}</p>
-                    </div>
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('targets.index') }}">
+                        <i class="fa fa-arrow-left"></i> Back to List
+                    </a>
                 </div>
 
-                <!-- Edit and Delete buttons -->
-                <div class="mt-4">
-                    <a href="{{ route('targets.edit', $target->id) }}" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i> Edit target
-                    </a>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Pillar Name:</th>
+                        <td>{{ $target->pilar_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{ $target->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{ $target->description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Created At:</th>
+                        <td>{{ \Carbon\Carbon::parse($target->created_at)->format('M - d - Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Updated At:</th>
+                        <td>{{ \Carbon\Carbon::parse($target->updated_at)->format('M - d - Y') }}</td>
+                    </tr>
+                </table>
 
-                    <form action="{{ route('targets.destroy', $target->id) }}" method="POST" class="d-inline">
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('targets.edit', $target->id) }}" class="btn btn-warning btn-sm me-2">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form action="{{ route('targets.destroy', $target->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this target?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this strategie?')">
-                            <i class="fas fa-trash"></i> Delete target
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </form>
                 </div>
             </div>
         </div>
-        @if ($target->kpis)
 
+        @if ($target->kpis)
             @php
                 $kpis = $target->kpis;
             @endphp
@@ -52,7 +62,7 @@
             @include('kpis.list')
         @else
             <div class="alert alert-warning mt-3">
-                No indicators found.
+                <p>No indicators found for this target.</p>
             </div>
         @endif
     </div>

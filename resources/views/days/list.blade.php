@@ -15,8 +15,8 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $day->fortnight->quarter->year->year }}</td>
                 <td>{{ $day->fortnight->quarter->quarter }}</td>
-                <td>{{ $day->fortnight->start_date }} to {{ $day->fortnight->end_date }}</td>
-                <td>{{ $day->date }}</td>
+                <td>{{ \Carbon\Carbon::parse($day->fortnight->start_date)->format('M - d') }} to {{ \Carbon\Carbon::parse($day->fortnight->end_date)->format('M - d') }}</td>
+                <td>{{ \Carbon\Carbon::parse($day->date)->format('M - d - Y') }}</td>
                 <td class="text-center">
                     <a href="{{ route('days.show', $day->id) }}" class="btn btn-info btn-sm">View</a>
                     <a href="{{ route('days.edit', $day->id) }}" class="btn btn-primary btn-sm">Edit</a>

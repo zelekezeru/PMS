@@ -22,8 +22,8 @@
                     <td>{{ $task->due_date }}</td>
                     <td class="text-center">
                         <div class="d-inline-flex">
+                            <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
                             <a href="{{ route('tasks.edit', $task->id) }}" class="m-1 btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                            <a href="{{ route('tasks.show', $task->id) }}" class="m-1 btn btn-primary btn-sm"><i class="fa fa-book"></i> Show</a>
                             <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="m-0 p-0">
                                 @csrf
                                 @method('DELETE')

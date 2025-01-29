@@ -16,8 +16,8 @@
                 <td>{{ $goal->name }}</td>
                 <td>{{ $goal->description }}</td>
                 <td class="text-center">
+                    <a href="{{ route('goals.show', $goal->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
                     <a href="{{ route('goals.edit', $goal->id) }}" class="m-1 btn  btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <a href="{{ route('goals.show', $goal->id) }}" class="m-1 btn  btn-primary btn-sm"><i class="fa fa-book"></i> Show</a>
                     <form action="{{ route('goals.destroy', $goal->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
