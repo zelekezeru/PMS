@@ -22,7 +22,7 @@
         </div>
 
         <!-- Navbar Header -->
-        <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom" data-background-color="dark">
+        <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"data-background-color="dark">
             <div class="container-fluid">
                 <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
                     <div class="input-group">
@@ -264,7 +264,7 @@
                                                 <div class="u-text">
                                                     <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
                                                     <p class="text-muted">{{ Auth::user()->email ?? 'No email' }}</p>
-                                                    <a href="{{ route('users.show', Auth::user()->id) }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                                    <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                                 </div>
                                             @endif
                                         </div>
@@ -291,12 +291,11 @@
                             </ul>
                     </li>
                     <li class="nav-item topbar-user dropdown hidden-caret">
-                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                            aria-expanded="false">
+                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                             @if(Auth::user())
                                 <div class="avatar-sm">
-                                    <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'avatar.png' }}" alt="Profile Image"
-                                        class="avatar-img rounded-circle" />
+                                    <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/arashmil.jpg') }}" alt="Profile Image"
+                                         class="avatar-img rounded-circle" />
                                 </div>
                                 <span class="profile-username">
                                     <span class="fw-bold">{{ Auth::user()->name }}</span>
@@ -309,12 +308,12 @@
                                     <div class="user-box">
                                         @if(Auth::user())
                                             <div class="avatar-lg">
-                                                <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'avatar.png' }}" alt="Profile Image">
+                                                <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/arashmil.jpg') }}" alt="Profile Image">
                                             </div>
-                                            <div class="u-text">
+                                            <div class="u-text text-white">
                                                 <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
-                                                <p class="text-muted">{{ Auth::user()->email ?? 'No email' }}</p>
-                                                <a href="{{ route('users.show', Auth::user()->id) }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                                <p class="text-white">{{ Auth::user()->email ?? 'No email' }}</p>
+                                                <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                             </div>
                                         @endif
                                     </div>
@@ -327,11 +326,8 @@
                                     <div class="dropdown-divider"></div>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-
-                                        <x-responsive-nav-link :href="route('logout')"
-                                            onclick="event.preventDefault();
-                                                            this.closest('form').submit();">
-                                            <div class="btn bnt-sm btn-danger btn-sm">
+                                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                            <div class="btn btn-sm btn-danger">
                                                 {{ __('Log Out') }}
                                             </div>
                                         </x-responsive-nav-link>
@@ -339,6 +335,7 @@
                                 </li>
                             </div>
                         </ul>
+                        
                     </li>
                 </ul>
             </div>

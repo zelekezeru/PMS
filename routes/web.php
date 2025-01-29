@@ -19,7 +19,6 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
-use App\Models\Department;
 use App\Http\Controllers\DepartmentController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 // Dashboard Route
@@ -34,27 +33,30 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/home', function () {
+Route::get('/', function () {
     return view('index');
-});
+})->middleware('auth');
+
 //Resource Routes
 
-Route::resource('users', UserController::class);
-Route::resource('homes', HomeController::class);
-Route::resource('strategies', StrategyController::class);
-Route::resource('targets', TargetController::class);
-Route::resource('goals', GoalController::class);
-Route::resource('tasks', TaskController::class);
-Route::resource('deliverables', DeliverableController::class);
-Route::resource('years', YearController::class);
-Route::resource('quarters', QuarterController::class);
-Route::resource('fortnights', FortnightController::class);
-Route::resource('weeks', WeekController::class);
-Route::resource('days', DayController::class);
-Route::resource('feedbacks', FeedbackController::class);
-Route::resource('kpis', KpiController::class);
-Route::resource('reports', ReportController::class);
-Route::resource('templates', TemplateController::class);
-Route::resource('departments', DepartmentController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('users', UserController::class);
+    Route::resource('homes', HomeController::class);
+    Route::resource('strategies', StrategyController::class);
+    Route::resource('targets', TargetController::class);
+    Route::resource('goals', GoalController::class);
+    Route::resource('tasks', TaskController::class);
+    Route::resource('deliverables', DeliverableController::class);
+    Route::resource('years', YearController::class);
+    Route::resource('quarters', QuarterController::class);
+    Route::resource('fortnights', FortnightController::class);
+    Route::resource('weeks', WeekController::class);
+    Route::resource('days', DayController::class);
+    Route::resource('feedbacks', FeedbackController::class);
+    Route::resource('kpis', KpiController::class);
+    Route::resource('reports', ReportController::class);
+    Route::resource('templates', TemplateController::class);
+    Route::resource('departments', DepartmentController::class);
+});
 
 require __DIR__.'/auth.php';
