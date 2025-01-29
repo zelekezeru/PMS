@@ -128,50 +128,6 @@
                     </div>
                 </li>
 
-<<<<<<< Updated upstream
-                {{-- Department Navigation --}}
-
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#Department">
-                        <i class="fas fa-book"></i>
-                        <p>Department</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="Department">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('departments.index') }}">
-                                    <i class="fas fa-list"></i>Manage Department
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('departments.create') }}">
-                                    <i class="fas fa-plus"></i>Add Department
-=======
-                {{-- Goal Navigation --}}
-
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#Goal">
-                        <i class="fas fa-book"></i>
-                        <p>Goal</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="Goal">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('goals.index') }}">
-                                    <i class="fas fa-list"></i>Manage Goal
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('goals.create') }}">
-                                    <i class="fas fa-plus"></i>Add Goal
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
                 {{-- Department Navigation --}}
 
                 <li class="nav-item">
@@ -214,40 +170,12 @@
                             <li>
                                 <a href="{{ route('reports.create') }}">
                                     <i class="fas fa-plus"></i>Add Report
->>>>>>> Stashed changes
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
 
-                {{-- Report Navigation --}}
-
-<<<<<<< Updated upstream
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#Report">
-                        <i class="fas fa-book"></i>
-                        <p>Report</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="Report">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('reports.index') }}">
-                                    <i class="fas fa-list"></i>Manage Report
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('reports.create') }}">
-                                    <i class="fas fa-plus"></i>Add Report
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-=======
->>>>>>> Stashed changes
                 {{-- Schedule Navigation --}}
 
                 <li class="nav-section">
@@ -255,42 +183,6 @@
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
                     <h4 class="text-section">Schedules</h4>
-<<<<<<< Updated upstream
-                </li>
-                {{-- Schedule Navigation --}}
-
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#Schedule">
-                        <i class="fas fa-book"></i>
-                        <p>Plan Time</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="Schedule">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('years.index') }}">
-                                    <i class="fas fa-list"></i>Manage Years
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('quarters.index') }}">
-                                    <i class="fas fa-list"></i>Manage Quarters
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('fortnights.index') }}">
-                                    <i class="fas fa-list"></i>Manage Fortnights
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('days.index') }}">
-                                    <i class="fas fa-list"></i>Manage Days
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-=======
->>>>>>> Stashed changes
                 </li>
                 {{-- Schedule Navigation --}}
 

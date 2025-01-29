@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Month;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,9 +11,9 @@ class Year extends Model
 
     protected $guarded = [];
 
-    public function months()
+    public function quarters()
     {
-        return $this->hasMany(Month::class);
+        return $this->hasMany(Quarter::class);
     }
 
     public function targets()

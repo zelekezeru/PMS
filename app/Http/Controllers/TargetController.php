@@ -16,18 +16,21 @@ class TargetController extends Controller
     public function index()
     {
         $targets = Target::with(['goal'])->paginate(10);
+
         return view('targets.index', compact('targets'));
     }
 
     public function create()
     {
         $goals = Goal::all();
+
         return view('targets.create', compact('goals'));
     }
 
     public function store(TargetStoreRequest $request)
     {
         Target::create($request->validated());
+
         return redirect()->route('targets.index')->with('success', 'Target created successfully.');
     }
 
@@ -39,19 +42,23 @@ class TargetController extends Controller
     public function edit(Target $target)
     {
         $goals = Goal::all();
+
         $kpis = Kpi::all();
+
         return view('targets.edit', compact('target', 'goals', 'kpis'));
     }
 
     public function update(TargetUpdateRequest $request, Target $target)
     {
         $target->update($request->validated());
+
         return redirect()->route('targets.index')->with('success', 'Target updated successfully.');
     }
 
     public function destroy(Target $target)
     {
         $target->delete();
+
         return redirect()->route('targets.index')->with('success', 'Target deleted successfully.');
     }
 }
