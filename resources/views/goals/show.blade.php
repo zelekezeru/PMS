@@ -6,7 +6,7 @@
         <!-- Strategie Details Card -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">goal Details</h3>
+                <h3 class="card-title">Goal Details</h3>
                 <a href="{{ route('goals.index') }}" class="btn btn-primary btn-sm float-end">Back to goals</a>
             </div>
             <div class="card-body">
@@ -46,9 +46,13 @@
                 $targets = $goal->targets;
             @endphp
 
+            <div class="card-header">
+                <h3 class="card-title mb-5">Targets of this Goal</h3>
+            </div>
+
             @include('targets.list')
         @else
-            <div class="alert alert-warning mt-3">
+            <div class="alert alert-warning mt-5">
                 No targets found.
             </div>
         @endif

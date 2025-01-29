@@ -45,6 +45,10 @@
                 $kpis = $target->kpis;
             @endphp
 
+            <div class="card-header">
+                <h3 class="card-title mb-5">Indicators of this Target</h3>
+            </div>
+
             @include('kpis.list')
         @else
             <div class="alert alert-warning mt-3">

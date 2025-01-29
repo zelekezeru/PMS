@@ -54,6 +54,10 @@
                 $goals = $strategy->goals;
             @endphp
 
+            <div class="card-header">
+                <h3 class="card-title mb-5">Goals of this Strategy</h3>
+            </div>
+
             @include('goals.list')
 
         @else
