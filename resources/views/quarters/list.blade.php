@@ -14,9 +14,9 @@
                 <td>{{ $quarter->year->year }}</td>
                 <td>{{ $quarter->quarter }}</td>
                 <td class="text-center" style="white-space: nowrap;">
-                    <a href="{{ route('quarters.edit', $quarter->id) }}" class="btn btn-primary btn-sm">
-                        <i class="fa fa-edit"></i> Edit
-                    </a>
+                    <a href="{{ route('quarters.show', $quarter->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
+                    <a href="{{ route('quarters.edit', $quarter->id) }}" class="btn btn-primary btn-sm">Edit</a>
+
                     <form action="{{ route('quarters.destroy', $quarter->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')

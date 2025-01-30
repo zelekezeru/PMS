@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Task Details</h3>
-                <a href="{{ route('tasks.index') }}" class="btn btn-primary btn-sm float-end">
+                <a href="{{ route('home.index') }}" class="btn btn-primary btn-sm float-end">
                     <i class="fa fa-arrow-left"></i> Back
                 </a>
             </div>
@@ -61,7 +61,7 @@
                             <p><strong class="h3">Subtasks:</strong>
                                 {{-- @if($task->is_subtask == 1)
                                     @foreach($task->subtasks as $subtask)
-                                        <strong> -> </strong>{{ $subtask->name }},
+                                        <strong> -> </strong{{ $subtask->name }},
                                     @endforeach
                                 @endif --}}
                             </p>

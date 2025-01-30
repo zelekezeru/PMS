@@ -21,24 +21,18 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DepartmentController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-// Dashboard Route
 
-Route::get('/', [HomeController::class, 'index'])->name('index');
+// Dashboard Route
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 // Auth Routes
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/', function () {
-    return view('index');
-})->middleware('auth');
-
-//Resource Routes
-
+// Resource Routes
 Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('homes', HomeController::class);

@@ -32,6 +32,12 @@ class QuarterController extends Controller
         return redirect()->route('quarters.index')->with('success', 'Quarter added successfully.');
     }
 
+    // Display the specified quarter
+    public function show(Quarter $quarter)
+    {
+        return view('quarters.show', compact('quarter'));
+    }
+
     public function edit(Quarter $quarter)
     {
         $years = Year::all();
