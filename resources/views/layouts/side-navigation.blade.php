@@ -221,12 +221,32 @@
 
                 {{-- ONLY FOR ADMIN USERS --}}
 
+                @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+                {{-- User Navigation --}}
+
                 <li class="nav-item">
-                    <a href="#">
-                        <i class="fas fa-user-circle"></i>
-                        <p>Users</p>
+                    <a data-bs-toggle="collapse" href="#User">
+                        <i class="fas fa-book"></i>
+                        <p>User</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse" id="User">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('users.index') }}">
+                                    <i class="fas fa-list"></i>Manage User
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('users.waiting') }}">
+                                    <i class="fas fa-plus"></i>Waiting Approval
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
+                    
+                @endif
             </ul>
         </div>
     </div>

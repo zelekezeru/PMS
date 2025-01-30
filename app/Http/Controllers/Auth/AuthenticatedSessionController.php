@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        $status = session('status') ?? null;
+        return view('auth.login', compact('status'));
     }
 
     /**
@@ -25,6 +27,10 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+        
+        if (User::where('email', $request->email)->first()->is_approved == false) {
+            return redirect()->back()->with('status', "Please wait for your approval to login. You'll receive an email following your approval!");
+        }
 
         $request->session()->regenerate();
 

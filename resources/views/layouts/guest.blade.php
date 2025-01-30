@@ -29,5 +29,7 @@
                 {{ $slot }}
             </div>
         </div>
+            <!-- Sweet Alert -->
+            <script src="{{ asset('js/plugin/sweetalert/sweetalert.min.js') }}"></script>
     </body>
 </html>

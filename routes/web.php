@@ -20,6 +20,7 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Middleware\IsApprovedMiddleware;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Dashboard Route
@@ -32,8 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 // Resource Routes
 Route::middleware('auth')->group(function () {
+    Route::get('users/waiting-approval', [UserController::class, 'waitingApproval'])->name('users.waiting');
+    Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
     Route::resource('users', UserController::class);
     Route::resource('homes', HomeController::class);
     Route::resource('strategies', StrategyController::class);

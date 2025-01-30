@@ -9,6 +9,12 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <div class="mt-4">
+            <x-input-label for="phone_number" :value="__('Phone number')" />
+            <x-text-input id="phone_number" class="block mt-1 w-full" type="text" name="phone_number" :value="old('phone_number')" required autofocus autocomplete="phone_number" />
+            <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />

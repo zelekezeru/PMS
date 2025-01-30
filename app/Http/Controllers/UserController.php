@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserUpdateRequest;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -12,9 +15,38 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::paginate(15);
+        return view('users.index', compact('users'));
     }
 
+    /**
+     * Display a listing of the resource.
+     */
+    public function waitingApproval()
+    {
+        $users = User::where('is_approved', false)->get();
+        return view('users.waiting', compact('users'));
+    }
+    
+    public function approve(Request $request)
+    {
+        $request->validate([
+            'approve' => 'required'
+        ]);
+
+        foreach ($request->approve as $key => $value) {
+
+            $user = User::find($value);
+
+            $user->is_approved = true;
+
+            $user->is_active = true;
+
+            $user->save();
+        };
+
+        return redirect()->route('users.index')->with('status', 'users-approved');
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -26,9 +58,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserUpdateRequest $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -50,7 +82,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        $departments = Department::all();
+        return view('users.edit', compact('roles', 'departments', 'user'));
     }
 
     /**

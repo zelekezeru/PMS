@@ -1,0 +1,57 @@
+@extends('layouts.app')
+
+@section('contents')
+
+    <div class="container mt-3">
+        <div class="card pt-5">
+            <h2 class="card-header text-center">Department Details</h2>
+            <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('departments.index') }}">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
+
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Department Name:</th>
+                        <td>{{ $department->department_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{ $department->description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Department Head:</th>
+                        <td>{{ $head->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Created At:</th>
+                        <td>{{ $department->created_at->format('Y-m-d H:i') }}</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+
+        @if ($department->users)
+
+            @php
+                $users = $department->users;
+            @endphp
+
+            <div class="card-header">
+                <h3 class="card-title mb-5">Users of this Department</h3>
+            </div>
+
+            {{-- @include('users.list') --}}
+
+        @else
+            <div class="alert alert-warning mt-3">
+                <p>No users found for this Department.</p>
+            </div>
+        @endif
+    </div>
+
+@endsection

@@ -31,20 +31,35 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'phone_number' => $request->phone_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        if (User::first()->id == $user->id) {
+
+            $user->assignRole('SUPER_ADMIN');
+
+            $user->is_approved = true;
+
+            $user->is_active = true;
+
+            $user->save();
+
+            Auth::login($user);
+
+            return redirect(route('index', absolute: false));
+        }
+
         event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('index', absolute: false));
+        
+        return redirect()->route('login')->with('status', "Successfully registered to PMS, Wait for admin approval. You'll receive an email following your approval!");;
     }
 }
