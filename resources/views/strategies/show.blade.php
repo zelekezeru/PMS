@@ -39,7 +39,7 @@
                     <a href="{{ route('strategies.edit', $strategy->id) }}" class="btn btn-warning btn-sm me-2">
                         <i class="fas fa-edit"></i> Edit
                     </a>
-                    <form action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this strategy?')">
+                    <form action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" >
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">

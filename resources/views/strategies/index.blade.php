@@ -12,6 +12,20 @@
 
                 @include('strategies.list')
 
+                <!-- SweetAlert Success Notifications -->
+                @if (session('status'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '{{ ucfirst(session('status')) }}',
+                                text: 'Your strategy has been successfully {{ session('status') }}.',
+                                confirmButtonText: 'Okay'
+                            });
+                        });
+                    </script>
+                @endif
+
                 <div class="mt-3">
                     {{ $strategies->links() }}
                 </div>

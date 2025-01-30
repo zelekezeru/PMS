@@ -1,10 +1,9 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
 use App\Models\Strategy;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StrategyStoreRequest;
 use App\Http\Requests\StrategyUpdateRequest;
 use Illuminate\View\View;
@@ -12,17 +11,13 @@ use Illuminate\View\View;
 class StrategyController extends Controller
 {
     /**
-     * Display a indexing of the resource.
+     * Display a listing of the resource.
      */
     public function index(): View
     {
-
-    $strategies = Strategy::paginate(10); // Use pagination to avoid loading too many records at once
-
-    return view('strategies.index', compact('strategies'));
-
+        $strategies = Strategy::paginate(10); // Use pagination to avoid loading too many records at once
+        return view('strategies.index', compact('strategies'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -34,21 +29,9 @@ class StrategyController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StrategyStoreRequest $request) : RedirectResponse
-    {
-        Strategy::create($request->validated());
-
-        // Redirect to the create page with a success message
-        return redirect()->route('strategies.index')
-            ->with('success', 'strategies created successfully.');
-    }
-
-    /**
      * Display the specified resource.
      */
-    public function show(Strategy $strategy) : View
+    public function show(Strategy $strategy): View
     {
         return view('strategies.show', compact('strategy'));
     }
@@ -56,32 +39,44 @@ class StrategyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Strategy $strategy) : View
+    public function edit(Strategy $strategy): View
     {
         return view('strategies.edit', compact('strategy'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(StrategyUpdateRequest $request, Strategy $strategy): RedirectResponse
+    public function store(Request $request)
     {
-        $data = $request->validated();
-
-        $strategy->update($data);
-
-        return redirect()->route('strategies.index')
-            ->with('success', 'strategies updated successfully');
+        $request->validate([
+            'pilar_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+    
+        $strategy = new Strategy($request->all());
+        $strategy->save();
+    
+        return redirect()->route('strategies.index')->with('status', 'strategy-created');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
+    public function update(Request $request, Strategy $strategy)
+    {
+        $request->validate([
+            'pilar_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+    
+        $strategy->update($request->all());
+    
+        return redirect()->route('strategies.index')->with('status', 'strategy-updated');
+    }
+    
     public function destroy(Strategy $strategy)
     {
         $strategy->delete();
-
+    
         return redirect()->route('strategies.index')
-            ->with('success', 'strategies deleted successfully');
+            ->with('status', 'strategy-deleted');
     }
+    
 }

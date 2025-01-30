@@ -33,7 +33,6 @@ class GoalController extends Controller
     
         return view('goals.index', compact('goals', 'strategies'));
     }
-    
 
     public function create()
     {
@@ -46,7 +45,7 @@ class GoalController extends Controller
     {
         Goal::create($request->validated());
 
-        return redirect()->route('goals.index')->with('success', 'Goal created successfully.');
+        return redirect()->route('goals.index')->with('status', 'goal-created');
     }
 
     public function show(Goal $goal)
@@ -67,12 +66,12 @@ class GoalController extends Controller
 
         $goal->update($data);
 
-        return redirect()->route('goals.index')->with('success', 'Goal updated successfully.');
+        return redirect()->route('goals.index')->with('status', 'goal-updated');
     }
 
     public function destroy(Goal $goal)
     {
         $goal->delete();
-        return redirect()->route('goals.index')->with('success', 'Goal deleted successfully.');
+        return redirect()->route('goals.index')->with('status', 'goal-deleted');
     }
 }

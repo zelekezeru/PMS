@@ -12,6 +12,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/plugins.min.css') }}" />
+    
     <link rel="stylesheet" href="{{ asset('css/kaiadmin.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/fonts.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -22,7 +23,7 @@
 
 <body>
     <div class="wrapper">
-
+        
         @include('layouts.side-navigation')
 
 
@@ -35,20 +36,15 @@
             </div>
             <div class="container">
                 <div class="page-inner">
-
+                    
                     @yield('contents')
                 </div>
             </div>
         </div>
-
-        <!-- End Page Content -->
-
-        <!-- End Page Content -->
-
-        <!-- End Page Content -->
-
+        
     </div>
     <!--   Core JS Files   -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('js/core/popper.min.js') }}"></script>
     <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>

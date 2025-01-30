@@ -2,8 +2,8 @@
     <thead class="thead-dark">
         <tr>
             <th>#</th>
-            <th>Pillar</th>
-            <th>Strategy</th>
+            <th>Pillar Name</th>
+            <th>Strategy Name</th>
             <th>Description</th>
             <th>Actions</th>
         </tr>
@@ -16,15 +16,38 @@
                 <td>{{ $strategy->name }}</td>
                 <td>{{ $strategy->description }}</td>
                 <td class="text-center">
-                    <a href="{{ route('strategies.show', $strategy->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
-                    <a href="{{ route('strategies.edit', $strategy->id) }}" class="m-1 btn  btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <form action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" class="d-inline">
+                    <a href="{{ route('strategies.show', $strategy->id) }}" class="btn btn-info btn-sm">
+                        <i class="fa fa-eye"></i> View
+                    </a>
+                    <a href="{{ route('strategies.edit', $strategy->id) }}" class="m-1 btn btn-primary btn-sm">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $strategy->id }})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+
+                    <form id="delete-form-{{ $strategy->id }}" action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" style="display: none;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="m-1 btn  btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this strategy?')">
-                            <i class="fa fa-trash"></i> Delete
-                        </button>
                     </form>
+
+                    <script>
+                        function confirmDelete(strategyId) {
+                            Swal.fire({
+                                title: "Are you sure?",
+                                text: "Once deleted, this strategy cannot be recovered!",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#d33",
+                                cancelButtonColor: "#3085d6",
+                                confirmButtonText: "Yes, delete it!"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    document.getElementById('delete-form-' + strategyId).submit();
+                                }
+                            });
+                        }
+                    </script>
                 </td>
             </tr>
         @empty

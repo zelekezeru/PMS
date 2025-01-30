@@ -39,26 +39,23 @@
                     <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-warning btn-sm me-2">
                         <i class="fas fa-edit"></i> Edit
                     </a>
-                    <form action="{{ route('goals.destroy', $goal->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this goal?')">
+
+                    <button type="button" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+
+                    <form id="delete-form-{{ $goal->id }}" action="{{ route('goals.destroy', $goal->id) }}" method="POST" style="display: none;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
                     </form>
                 </div>
             </div>
         </div>
 
         @if ($goal->targets)
-            @php
-                $targets = $goal->targets;
-            @endphp
-
             <div class="card-header">
                 <h3 class="card-title mb-5">Targets of this Goal</h3>
             </div>
-
             @include('targets.list')
         @else
             <div class="alert alert-warning mt-3">
@@ -66,5 +63,23 @@
             </div>
         @endif
     </div>
+
+    <script>
+        function confirmDelete(goalId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Once deleted, this goal cannot be recovered!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + goalId).submit();
+                }
+            });
+        }
+    </script>
 
 @endsection
