@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Task Details</h3>
-                <a href="{{ route('home.index') }}" class="btn btn-primary btn-sm float-end">
+                <a href="{{ route('index') }}" class="btn btn-primary btn-sm float-end">
                     <i class="fa fa-arrow-left"></i> Back
                 </a>
             </div>

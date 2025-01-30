@@ -24,10 +24,10 @@ class TargetUpdateRequest extends FormRequest
         return [
             'name' => 'sometimes|required|string|max:255',
             'budget' => 'sometimes|nullable|string|max:255',
-            'department' => 'sometimes|required|string|max:255',
             'value' => 'sometimes|nullable|numeric|min:0',
             'unit' => 'sometimes|nullable|string|max:50',
             'goal_id' => 'sometimes|required|exists:goals,id',
+            'departments' => 'sometimes|array|max:255',
         ];
     }
 }

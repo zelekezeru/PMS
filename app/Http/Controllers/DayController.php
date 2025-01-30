@@ -11,13 +11,13 @@ class DayController extends Controller
 {
     public function index()
     {
-        $days = Day::all();
+        $days = Day::get();
         return view('days.index', compact('days'));
     }
 
     public function create()
 {
-    
+
     $fortnights = Fortnight::with('quarter.year')->get();
 
     return view('days.create', compact('fortnights'));
@@ -41,12 +41,12 @@ class DayController extends Controller
     {
         return view('days.show', compact('day'));
     }
-    
+
     public function edit(Day $day)
     {
-        
+
         $fortnights = Fortnight::with('quarter.year')->get();
-    
+
         return view('days.edit', compact('day', 'fortnights'));
     }
 

@@ -15,23 +15,37 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Pillar Name:</th>
-                        <td>{{ $target->pilar_name }}</td>
+                        <td>{{ $target->goal->strategy->pilar_name }}</td>
                     </tr>
                     <tr>
-                        <th>Name:</th>
+                        <th>Target:</th>
                         <td>{{ $target->name }}</td>
                     </tr>
                     <tr>
-                        <th>Description:</th>
-                        <td>{{ $target->description }}</td>
+                        <th>Budget:</th>
+                        <td>{{ $target->budget }}</td>
+                    </tr>
+                    <tr>
+                        <th>Value:</th>
+                        <td>{{ $target->value }} {{ $target->unit }}</td>
+                    </tr>
+                    <tr>
+                        <th>Departments:</th>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <td>
+                                    @if($target->departments && $target->departments->count() > 0)
+                                        @foreach($target->departments as $department)
+                                            <strong>{{ $department->department_name }}</strong>,
+                                        @endforeach
+                                    @endif
+                                </td>
+                            </div>
+                        </div>
                     </tr>
                     <tr>
                         <th>Created At:</th>
                         <td>{{ \Carbon\Carbon::parse($target->created_at)->format('M - d - Y') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Updated At:</th>
-                        <td>{{ \Carbon\Carbon::parse($target->updated_at)->format('M - d - Y') }}</td>
                     </tr>
                 </table>
 

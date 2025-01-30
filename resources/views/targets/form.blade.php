@@ -5,8 +5,8 @@
     @endif
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label for="name" class="form-label"><strong>Name:</strong></label>
-            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $target->name ?? '') }}" placeholder="Name" required>
+            <label for="name" class="form-label"><strong>Target Name:</strong></label>
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $target->name ?? '') }}" placeholder="Target Name" required>
             @error('name')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
@@ -16,14 +16,6 @@
             <label for="budget" class="form-label"><strong>Budget:</strong></label>
             <input type="text" name="budget" class="form-control @error('budget') is-invalid @enderror" id="budget" value="{{ old('budget', $target->budget ?? '') }}" placeholder="Budget">
             @error('budget')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="department" class="form-label"><strong>Department:</strong></label>
-            <input type="text" name="department" class="form-control @error('department') is-invalid @enderror" id="department" value="{{ old('department', $target->department ?? '') }}" placeholder="Department" required>
-            @error('department')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
         </div>
@@ -47,6 +39,8 @@
         <div class="col-md-6 mb-3">
             <label for="goal_id" class="form-label"><strong>Goal:</strong></label>
             <select name="goal_id" class="form-control @error('goal_id') is-invalid @enderror" id="goal_id" required>
+                <!-- Assuming you have a list of goals -->
+                <option value="" {{ old('goal_id') == '' ? 'selected' : '' }}>Select Goal</option>
                 @foreach($goals as $goal)
                     <option value="{{ $goal->id }}" {{ old('goal_id', $target->goal_id ?? '') == $goal->id ? 'selected' : '' }}>{{ $goal->name }}</option>
                 @endforeach
@@ -55,6 +49,23 @@
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
         </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="department_id" class="form-label"><strong>Responsible Departments:</strong></label>
+            <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
+                @php
+                    $selectedDepartments = old('department_id', isset($target) && $target->department_id ? $target->department_id->pluck('id')->toArray() : []);
+                @endphp
+
+                @foreach($departments as $department)
+                    <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                @endforeach
+            </select>
+            @error('department_id')
+                <div class="form-text text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
     </div>
 
     <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> {{ $buttonText }}</button>

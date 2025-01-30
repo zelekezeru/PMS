@@ -25,6 +25,7 @@
             <label for="strategy_id" class="form-label"><strong>Strategy:</strong></label>
             <select name="strategy_id" class="form-control @error('strategy_id') is-invalid @enderror" id="strategy_id" required>
                 <!-- Assuming you have a list of strategies -->
+                <option value="" {{ old('strategy_id') == '' ? 'selected' : '' }}>Select strategy</option>
                 @foreach($strategies as $strategy)
                     <option value="{{ $strategy->id }}" {{ old('strategy_id', $goal->strategy_id ?? '') == $strategy->id ? 'selected' : '' }}>{{ $strategy->name }}</option>
                 @endforeach

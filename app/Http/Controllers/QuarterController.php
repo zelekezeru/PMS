@@ -16,7 +16,7 @@ class QuarterController extends Controller
 
     public function create()
     {
-        $years = Year::all();
+        $years = Year::get();
         return view('quarters.create', compact('years'));
     }
 
@@ -40,7 +40,7 @@ class QuarterController extends Controller
 
     public function edit(Quarter $quarter)
     {
-        $years = Year::all();
+        $years = Year::get();
         return view('quarters.edit', compact('quarter', 'years'));
     }
 

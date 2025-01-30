@@ -15,28 +15,29 @@ class GoalController extends Controller
     public function index(Request $request)
     {
         $query = Goal::with('strategy');
-    
+
         // Filtering by strategy
         if ($request->filled('strategy_id')) {
             $query->where('strategy_id', $request->strategy_id);
         }
-    
+
         // Sorting by name (asc/desc)
         if ($request->filled('sort') && in_array($request->sort, ['asc', 'desc'])) {
             $query->orderBy('name', $request->sort);
         } else {
             $query->orderBy('name', 'asc'); // Default sorting
         }
-    
+
         $goals = $query->paginate(10);
-        $strategies = Strategy::all(); // Fetch all strategies for the dropdown
-    
+
+        $strategies = Strategy::get(); // Fetch all strategies for the dropdown
+
         return view('goals.index', compact('goals', 'strategies'));
     }
 
     public function create()
     {
-        $strategies = Strategy::all();
+        $strategies = Strategy::get();
 
         return view('goals.create', compact('strategies'));
     }
@@ -55,13 +56,14 @@ class GoalController extends Controller
 
     public function edit(Goal $goal)
     {
-        $strategies = Strategy::all();
+        $strategies = Strategy::get();
 
         return view('goals.edit', compact('goal', 'strategies'));
     }
 
     public function update(GoalUpdateRequest $request, Goal $goal)
     {
+        dd($request);
         $data = $request->validated();
 
         $goal->update($data);

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('budget', 255)->nullable();
-            $table->string('department', 255);
             $table->decimal('value', 10, 2)->nullable();
             $table->string('unit', 50)->nullable();
             $table->foreignId('goal_id')->onDelete('cascade');

@@ -25,4 +25,9 @@ class Target extends Model
     {
         return $this->hasOne(Kpi::class);
     }
+
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class);
+    }
 }

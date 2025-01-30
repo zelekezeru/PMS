@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -16,6 +16,7 @@ class StrategyController extends Controller
     public function index(): View
     {
         $strategies = Strategy::paginate(10); // Use pagination to avoid loading too many records at once
+
         return view('strategies.index', compact('strategies'));
     }
 
@@ -25,6 +26,7 @@ class StrategyController extends Controller
     public function create(): View
     {
         $strategy = new Strategy;
+
         return view('strategies.create', compact('strategy'));
     }
 
@@ -51,13 +53,13 @@ class StrategyController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
-    
+
         $strategy = new Strategy($request->all());
         $strategy->save();
-    
+
         return redirect()->route('strategies.index')->with('status', 'strategy-created');
     }
-    
+
     public function update(Request $request, Strategy $strategy)
     {
         $request->validate([
@@ -65,18 +67,18 @@ class StrategyController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
-    
+
         $strategy->update($request->all());
-    
+
         return redirect()->route('strategies.index')->with('status', 'strategy-updated');
     }
-    
+
     public function destroy(Strategy $strategy)
     {
         $strategy->delete();
-    
+
         return redirect()->route('strategies.index')
             ->with('status', 'strategy-deleted');
     }
-    
+
 }

@@ -18,7 +18,7 @@ class KpiController extends Controller
 
     public function create()
     {
-        $tasks = Task::all();
+        $tasks = Task::get();
         return view('kpis.create', compact('tasks'));
     }
 
@@ -35,7 +35,7 @@ class KpiController extends Controller
 
     public function edit(Kpi $kpi)
     {
-        $tasks = Task::all();
+        $tasks = Task::get();
         return view('kpis.edit', compact('kpi', 'tasks'));
     }
 

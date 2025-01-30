@@ -23,11 +23,11 @@ class TaskController extends Controller
 
     public function create()
     {
-        $targets = Target::all();
+        $targets = Target::get();
 
-        $departments = Department::all();
+        $departments = Department::get();
 
-        $parent_tasks = Task::all();
+        $parent_tasks = Task::get();
 
         return view('tasks.create', compact('targets', 'parent_tasks', 'departments'));
     }
@@ -57,9 +57,9 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $targets = Target::all();
+        $targets = Target::get();
 
-        $departments = Department::all();
+        $departments = Department::get();
 
         $parent_tasks = Task::where('is_subtask', false)->get();
 
