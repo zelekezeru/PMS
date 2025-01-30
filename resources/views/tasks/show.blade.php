@@ -12,30 +12,60 @@
                 </a>
             </div>
             <div class="card-body">
-                <!-- Task Pilar Name -->
-                <h3 class="mb-3">
-                    <i class="fas fa-book"></i>
-                    <strong class="m-2 h2">Pilar Name:</strong>  
-                    {{ $task->pilar_name }}
-                </h3>
+                <!-- Task Title -->
+                <h3 class="mb-3"><i class="fas fa-book"></i><strong class=" m-2 h2">Task Name:</strong>  {{ $task->name }}</h3>
 
                 <!-- Task Details -->
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong class="h4">Task Name:</strong> {{ $task->name }}</p>
+                        <p><strong class="h3">Task Description:</strong> {{ $task->description }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong class="h4">Description:</strong> {{ $task->description }}</p>
+                        <p><strong class="h3">Target:</strong> {{ $task->target->name }}</p>
                     </div>
-                </div>
 
-                <!-- Task Create Date -->
-                <div class="row">
                     <div class="col-md-6">
-                        <p><strong class="h4">Created At:</strong> {{ $task->created_at->format('d-m-Y') }}</p>
+                        <p><strong class="h3">Starting Date:</strong> {{ \Carbon\Carbon::parse($task->starting_date)->format('M - d - Y') }}</p>
                     </div>
+
                     <div class="col-md-6">
-                        <p><strong class="h4">Updated At:</strong> {{ $task->updated_at->format('d-m-Y') }}</p>
+                        <p><strong class="h3">Due Date:</strong> {{ \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p><strong class="h3">Budget:</strong> {{ $task->budget }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p><strong class="h3">Barriers:</strong> {{ $task->barriers }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p><strong class="h3">Communication:</strong> {{ $task->comunication }}</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong class="h3">Departments:</strong>
+                                @if($task->departments && $task->departments->count() > 0)
+                                    @foreach($task->departments as $department)
+                                        <strong> -> </strong>{{ $department->department_name }},
+                                    @endforeach
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong class="h3">Subtasks:</strong>
+                                {{-- @if($task->is_subtask == 1)
+                                    @foreach($task->subtasks as $subtask)
+                                        <strong> -> </strong>{{ $subtask->name }},
+                                    @endforeach
+                                @endif --}}
+                            </p>
+                        </div>
                     </div>
                 </div>
 

@@ -11,6 +11,10 @@ class Task extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'departments' => 'array',
+    ];
+
     public function goal()
     {
         return $this->belongsTo(Goal::class);

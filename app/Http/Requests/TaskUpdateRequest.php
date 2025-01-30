@@ -31,7 +31,7 @@ class TaskUpdateRequest extends FormRequest
             'parent_task_id' => 'sometimes|nullable|exists:tasks,id',
             'starting_date' => 'sometimes|nullable|date',
             'due_date' => 'sometimes|nullable|date',
-            'target_id' => 'sometimes|required|exists:targets,id',    
+            'target_id' => 'sometimes|required|exists:targets,id',
         ];
     }
 }

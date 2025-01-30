@@ -39,7 +39,7 @@ class TaskController extends Controller
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
 
         $departments = $data['departments'];
-        
+
         unset($data['departments']);
 
         $task = Task::create($data);
@@ -59,20 +59,32 @@ class TaskController extends Controller
     {
         $targets = Target::all();
 
+        $departments = Department::all();
+
         $parent_tasks = Task::where('is_subtask', false)->get();
 
-        return view('tasks.edit', compact('task', 'targets', 'parent_tasks'));
+        return view('tasks.edit', compact('task', 'targets', 'parent_tasks', 'departments'));
     }
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
-        $task->update($request->validated());
+        $data = $request->validated();
+
+        $task->update($data);
+
+        $departments = $request['departments'];
+
+        unset($data['departments']);
+
+        $task->departments()->attach($departments);
+
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
+
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
     }
 }

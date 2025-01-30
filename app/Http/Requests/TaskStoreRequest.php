@@ -32,7 +32,7 @@ class TaskStoreRequest extends FormRequest
             'starting_date' => 'nullable|date',
             'due_date' => 'nullable|date',
             'target_id' => 'required|exists:targets,id',
-            'departments' => 'nullable|array',
+            'departments' => 'nullable|array|max:255',
         ];
     }
 }

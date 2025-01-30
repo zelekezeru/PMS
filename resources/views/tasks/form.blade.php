@@ -97,8 +97,11 @@
         <div class="col-md-6 mb-3">
             <label for="departments" class="form-label"><strong>Responsible Departments:</strong></label>
             <select name="departments[]" class="form-control @error('departments') is-invalid @enderror" id="departments" multiple required>
+                @php
+                    $selectedDepartments = old('departments', $task->departments ? $task->departments->pluck('id')->toArray() : []);
+                @endphp
                 @foreach($departments as $department)
-                    <option value="{{ $department->id }}" {{ in_array($department->id, old('departments', $task->departments ?? [])) ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                    <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
                 @endforeach
             </select>
             @error('departments')
