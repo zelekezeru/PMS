@@ -11,7 +11,7 @@ class FortnightController extends Controller
     // Display a listing of the fortnights
     public function index()
     {
-        $fortnights = Fortnight::with('quarter.year')->get();
+        $fortnights = Fortnight::with('quarter.year')->paginate(10);
         return view('fortnights.index', compact('fortnights'));
     }
 
@@ -33,7 +33,7 @@ class FortnightController extends Controller
 
         Fortnight::create($request->all());
 
-        return redirect()->route('fortnights.index')->with('success', 'Fortnight created successfully.');
+        return redirect()->route('fortnights.index')->with('status', 'created');
     }
 
     // Display the specified fortnight
@@ -60,13 +60,13 @@ class FortnightController extends Controller
 
         $fortnight->update($request->all());
 
-        return redirect()->route('fortnights.index')->with('success', 'Fortnight updated successfully.');
+        return redirect()->route('fortnights.index')->with('status', 'updated');
     }
 
     // Remove the specified fortnight from the database
     public function destroy(Fortnight $fortnight)
     {
         $fortnight->delete();
-        return redirect()->route('fortnights.index')->with('success', 'Fortnight deleted successfully.');
+        return redirect()->route('fortnights.index')->with('status', 'deleted');
     }
 }

@@ -7,10 +7,26 @@
             <h2 class="card-header text-center">Fortnights List</h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end mb-3">
-                    <a class="btn btn-success btn-sm" href="{{ route('fortnights.create') }}"><i class="fa fa-plus"></i> Add New Fortnight</a>
+                    <a class="btn btn-success btn-sm" href="{{ route('fortnights.create') }}">
+                        <i class="fa fa-plus"></i> Add New Fortnight
+                    </a>
                 </div>
 
                 @include('fortnights.list')
+
+                <!-- SweetAlert Success Notifications -->
+                @if (session('status'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Fortnight {{ ucfirst(session('status')) }}',
+                                text: 'Your fortnight has been successfully {{ session('status') }}.',
+                                confirmButtonText: 'Okay'
+                            });
+                        });
+                    </script>
+                @endif
 
             </div>
         </div>

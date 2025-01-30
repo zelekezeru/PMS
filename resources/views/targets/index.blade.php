@@ -11,6 +11,20 @@
 
                 @include('targets.list')
 
+                <!-- SweetAlert Success Notifications -->
+                @if (session('status'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Target {{ ucfirst(session('status')) }}',
+                                text: 'Your target has been successfully {{ session('status') }}.',
+                                confirmButtonText: 'Okay'
+                            });
+                        });
+                    </script>
+                @endif
+
                 <div class="mt-3">
                     {{ $targets->links() }}
                 </div>

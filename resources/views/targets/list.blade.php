@@ -52,11 +52,11 @@
                 <td>{{ $target->unit }}</td>
                 <td class="text-center">
                     <a href="{{ route('targets.show', $target->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
-                    <a href="{{ route('targets.edit', $target->id) }}" class="m-1 btn  btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <form action="{{ route('targets.destroy', $target->id) }}" method="POST" class="d-inline">
+                    <a href="{{ route('targets.edit', $target->id) }}" class="m-1 btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                    <form action="{{ route('targets.destroy', $target->id) }}" method="POST" class="d-inline" id="delete-form-{{ $target->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="m-1 btn  btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this target?')">
+                        <button type="button" class="m-1 btn btn-danger btn-sm" onclick="confirmDelete({{ $target->id }})">
                             <i class="fa fa-trash"></i> Delete
                         </button>
                     </form>
@@ -69,3 +69,22 @@
         @endforelse
     </tbody>
 </table>
+
+<script>
+    function confirmDelete(targetId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this target!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + targetId).submit();
+            }
+        });
+    }
+</script>

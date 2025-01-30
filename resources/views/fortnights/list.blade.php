@@ -1,30 +1,53 @@
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead class="table-dark">
         <tr>
             <th>#</th>
             <th>Quarter</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th class="text-center">Actions</th>
+            <th class="text-center" style="width: 40%;">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($fortnights as $index => $fortnight)
+        @foreach ($fortnights as $fortnight)
             <tr>
-                <td>{{ $index + 1 }}</td>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $fortnight->quarter->quarter }}</td>
                 <td>{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
                 <td>{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
-                <td class="text-center">
+                <td class="text-center" style="white-space: nowrap;">
                     <a href="{{ route('fortnights.show', $fortnight->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
-                    <a href="{{ route('fortnights.edit', $fortnight->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                    <form action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" class="d-inline">
+                    <a href="{{ route('fortnights.edit', $fortnight->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
+
+                    <!-- Delete Button -->
+                    <form action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" class="d-inline" id="delete-form-{{ $fortnight->id }}">
                         @csrf
-                        @method('dELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        @method('DELETE')
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $fortnight->id }})">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
                     </form>
                 </td>
             </tr>
         @endforeach
     </tbody>
 </table>
+
+<script>
+    function confirmDelete(fortnightId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this fortnight!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + fortnightId).submit();
+            }
+        });
+    }
+</script>

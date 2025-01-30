@@ -13,6 +13,20 @@
 
             @include('quarters.list')
 
+            <!-- SweetAlert Success Notifications -->
+            @if (session('status'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Quarter {{ ucfirst(session('status')) }} Successfully!',
+                            text: 'Your quarter has been successfully {{ session('status') }}.',
+                            confirmButtonText: 'Okay'
+                        });
+                    });
+                </script>
+            @endif
+
         </div>
     </div>
 </div>

@@ -12,6 +12,20 @@
 
             @include('years.list')
 
+            <!-- SweetAlert Success Notifications -->
+            @if (session('status'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Year {{ ucfirst(session('status')) }} Successfully!',
+                            text: 'Your year has been successfully {{ session('status') }}.',
+                            confirmButtonText: 'Okay'
+                        });
+                    });
+                </script>
+            @endif
+
             <div class="mt-3">
                 {{ $years->links() }}
             </div>

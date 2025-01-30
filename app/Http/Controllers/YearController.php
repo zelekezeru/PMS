@@ -26,7 +26,7 @@ class YearController extends Controller
 
         Year::create($request->all());
 
-        return redirect()->route('years.index')->with('success', 'Year created successfully.');
+        return redirect()->route('years.index')->with('status', 'created');
     }
 
     public function edit(Year $year)
@@ -42,13 +42,13 @@ class YearController extends Controller
 
         $year->update($request->all());
 
-        return redirect()->route('years.index')->with('success', 'Year updated successfully.');
+        return redirect()->route('years.index')->with('status', 'updated');
     }
 
     public function destroy(Year $year)
     {
         $year->delete();
-        return redirect()->route('years.index')->with('success', 'Year deleted successfully.');
+        return redirect()->route('years.index')->with('status', 'deleted');
     }
 
     public function show(Year $year)

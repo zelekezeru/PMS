@@ -14,10 +14,10 @@
                 <td class="text-center">
                     <a href="{{ route('years.show', $year->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
                     <a href="{{ route('years.edit', $year->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <form action="{{ route('years.destroy', $year->id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('years.destroy', $year->id) }}" method="POST" class="d-inline" id="delete-form-{{ $year->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this year?')">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $year->id }})">
                             <i class="fa fa-trash"></i> Delete
                         </button>
                     </form>
@@ -30,3 +30,23 @@
         @endforelse
     </tbody>
 </table>
+
+
+<script>
+    function confirmDelete(yearId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this year!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + yearId).submit();
+            }
+        });
+    }
+</script>

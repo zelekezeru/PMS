@@ -19,7 +19,6 @@ class DepartmentController extends Controller
     public function create()
     {
         $users = User::get();
-
         return view('departments.create', compact('users'));
     }
 
@@ -27,35 +26,36 @@ class DepartmentController extends Controller
     {
         Department::create($request->validated());
 
-        return redirect()->route('departments.index')->with('success', 'Department created successfully.');
+        // Return with success status
+        return redirect()->route('departments.index')->with('status', 'created');
     }
 
     public function edit(Department $department)
     {
         $users = User::get();
-
         return view('departments.edit', compact('department', 'users'));
     }
 
     public function update(DepartmentUpdateRequest $request, Department $department)
     {
         $data = $request->validated();
-
         $department->update($data);
 
-        return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
+        // Return with success status
+        return redirect()->route('departments.index')->with('status', 'updated');
     }
 
     public function destroy(Department $department)
     {
         $department->delete();
-        return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
+
+        // Return with success status
+        return redirect()->route('departments.index')->with('status', 'deleted');
     }
 
     public function show(Department $department)
     {
         $head = User::find($department->department_head);
-
         return view('departments.show', compact('department', 'head'));
     }
 }

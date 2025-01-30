@@ -15,12 +15,13 @@
                 <td>{{ $quarter->quarter }}</td>
                 <td class="text-center" style="white-space: nowrap;">
                     <a href="{{ route('quarters.show', $quarter->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
-                    <a href="{{ route('quarters.edit', $quarter->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{{ route('quarters.edit', $quarter->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
 
-                    <form action="{{ route('quarters.destroy', $quarter->id) }}" method="POST" class="d-inline">
+                    <!-- Delete Button -->
+                    <form action="{{ route('quarters.destroy', $quarter->id) }}" method="POST" class="d-inline" id="delete-form-{{ $quarter->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $quarter->id }})">
                             <i class="fa fa-trash"></i> Delete
                         </button>
                     </form>
@@ -29,3 +30,22 @@
         @endforeach
     </tbody>
 </table>
+
+<script>
+    function confirmDelete(quarterId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this quarter!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + quarterId).submit();
+            }
+        });
+    }
+</script>

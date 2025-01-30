@@ -12,21 +12,56 @@
     <tbody>
         @foreach ($days as $index => $day)
             <tr>
-                <td>{{ $index + 1 }}</td>
+                <td>{{ $days->firstItem() + $index }}</td> <!-- Works with pagination -->
                 <td>{{ $day->fortnight->quarter->year->year }}</td>
                 <td>{{ $day->fortnight->quarter->quarter }}</td>
-                <td>{{ \Carbon\Carbon::parse($day->fortnight->start_date)->format('M - d') }} to {{ \Carbon\Carbon::parse($day->fortnight->end_date)->format('M - d') }}</td>
-                <td>{{ \Carbon\Carbon::parse($day->date)->format('M - d - Y') }}</td>
+                <td>
+                    {{ \Carbon\Carbon::parse($day->fortnight->start_date)->format('M d') }} - 
+                    {{ \Carbon\Carbon::parse($day->fortnight->end_date)->format('M d, Y') }}
+                </td>
+                <td>{{ \Carbon\Carbon::parse($day->date)->format('M d, Y') }}</td>
                 <td class="text-center">
-                    <a href="{{ route('days.show', $day->id) }}" class="btn btn-info btn-sm">View</a>
-                    <a href="{{ route('days.edit', $day->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                    <form action="{{ route('days.destroy', $day->id) }}" method="POST" class="d-inline">
+                    <a href="{{ route('days.show', $day->id) }}" class="btn btn-info btn-sm">
+                        <i class="fa fa-eye"></i> View
+                    </a>
+                    <a href="{{ route('days.edit', $day->id) }}" class="btn btn-primary btn-sm">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <form action="{{ route('days.destroy', $day->id) }}" method="POST" class="d-inline delete-form">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        <button type="button" class="btn btn-danger btn-sm delete-btn">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
                     </form>
                 </td>
             </tr>
         @endforeach
     </tbody>
 </table>
+
+<!-- SweetAlert Delete Confirmation -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                let form = this.closest('.delete-form');
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "This action cannot be undone!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
