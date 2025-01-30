@@ -25,10 +25,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 // Dashboard Route
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-Route::get('/', function () {
-    return view('index');
-})->middleware('auth')->name('index');
-
 // Auth Routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
