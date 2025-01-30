@@ -2,9 +2,9 @@
     <thead class="thead-dark">
         <tr>
             <th>#</th>
-            <th>Pillar Name</th>
-            <th>Strategy Name</th>
-            <th>Description</th>
+            <th>Pillars</th>
+            <th>Strategic Goals</th>
+            <th>Strategic Objectives</th>
             <th>Actions</th>
         </tr>
     </thead>

@@ -43,12 +43,12 @@
         @forelse ($goals as $goal)
             <tr>
                 <td>{{ $loop->iteration }}</td>
+                <td>{{ $goal->name }}</td>
                 <td>
                     @if($goal->strategy)
                         {{ $goal->strategy->name }}
                     @endif
                 </td>
-                <td>{{ $goal->name }}</td>
                 <td>{{ $goal->description }}</td>
                 <td class="text-center">
                     <a href="{{ route('goals.show', $goal->id) }}" class="btn btn-info btn-sm">

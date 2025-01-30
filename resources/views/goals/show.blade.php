@@ -53,6 +53,11 @@
         </div>
 
         @if ($goal->targets)
+
+        @php
+            $targets = $goal->targets;
+        @endphp
+
             <div class="card-header">
                 <h3 class="card-title mb-5">Targets of this Goal</h3>
             </div>

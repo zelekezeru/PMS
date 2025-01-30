@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->text('description')->nullable();
             $table->string('budget', 255)->nullable();
-            $table->string('responsibilities', 255);
+            $table->string('responsibilities', 255)->nullable();
             $table->string('barriers', 255)->nullable();
             $table->string('comunication', 255)->nullable();
             $table->boolean('is_subtask')->default(false);

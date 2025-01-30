@@ -5,7 +5,7 @@
     @endif
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label for="name" class="form-label"><strong>Name:</strong></label>
+            <label for="name" class="form-label"><strong>Task Title:</strong></label>
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $task->name ?? '') }}" placeholder="Name" required>
             @error('name')
                 <div class="form-text text-danger">{{ $message }}</div>
@@ -14,7 +14,7 @@
 
         <div class="col-md-6 mb-3">
             <label for="description" class="form-label"><strong>Description:</strong></label>
-            <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="5" placeholder="Description">{{ old('description', $task->description ?? '') }}</textarea>
+            <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="3" placeholder="Description">{{ old('description', $task->description ?? '') }}</textarea>
             @error('description')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
@@ -52,7 +52,11 @@
             @enderror
         </div>
 
-        <div class="col-md-6 mb-3">
+        <div>
+            <div class="mb-4"></div>
+        </div>
+
+        <div class="col-md-4 mb-3">
             <label for="starting_date" class="form-label"><strong>Starting Date:</strong></label>
             <input type="date" name="starting_date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" value="{{ old('starting_date', $task->starting_date ?? '') }}">
             @error('starting_date')
@@ -60,7 +64,7 @@
             @enderror
         </div>
 
-        <div class="col-md-6 mb-3">
+        <div class="col-md-4 mb-3">
             <label for="due_date" class="form-label"><strong>Due(End) Date:</strong></label>
             <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" value="{{ old('due_date', $task->due_date ?? '') }}">
             @error('due_date')
@@ -68,17 +72,8 @@
             @enderror
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label for="target_id" class="form-label"><strong>Target:</strong></label>
-            <select name="target_id" class="form-control @error('target_id') is-invalid @enderror" id="target_id" required>
-                <option value="" {{ old('target_id') == '' ? 'selected' : '' }}>Select Target</option>
-                @foreach($targets as $target)
-                    <option value="{{ $target->id }}" {{ old('target_id', $task->target_id ?? '') == $target->id ? 'selected' : '' }}>{{ $target->name }}</option>
-                @endforeach
-            </select>
-            @error('target_id')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
+        <div>
+            <div class="mb-4"></div>
         </div>
 
         <div class="col-md-6 mb-3">
@@ -95,16 +90,17 @@
         </div>
 
         <div class="col-md-6 mb-3">
-            <label for="departments" class="form-label"><strong>Responsible Departments:</strong></label>
-            <select name="departments[]" class="form-control @error('departments') is-invalid @enderror" id="departments" multiple required>
+            <label for="department_id" class="form-label"><strong>Responsible Departments:</strong></label>
+            <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
                 @php
-                    $selectedDepartments = old('departments', $task->departments ? $task->departments->pluck('id')->toArray() : []);
+                    $selectedDepartments = old('department_id', isset($task) && $task->department_id ? $task->department_id->pluck('id')->toArray() : []);
                 @endphp
+
                 @foreach($departments as $department)
                     <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
                 @endforeach
             </select>
-            @error('departments')
+            @error('department_id')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
         </div>
