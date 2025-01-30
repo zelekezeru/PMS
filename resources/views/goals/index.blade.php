@@ -8,7 +8,8 @@
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
                     <a class="btn btn-success btn-sm" href="{{ route('goals.create') }}"><i class="fa fa-plus"></i> Add New Goal</a>
                 </div>
-
+                
+                
                 @include('goals.list')
 
                 <div class="mt-3">

@@ -12,11 +12,28 @@ use Illuminate\View\View;
 
 class GoalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $goals = Goal::with('strategy')->paginate(10);
-        return view('goals.index', compact('goals'));
+        $query = Goal::with('strategy');
+    
+        // Filtering by strategy
+        if ($request->filled('strategy_id')) {
+            $query->where('strategy_id', $request->strategy_id);
+        }
+    
+        // Sorting by name (asc/desc)
+        if ($request->filled('sort') && in_array($request->sort, ['asc', 'desc'])) {
+            $query->orderBy('name', $request->sort);
+        } else {
+            $query->orderBy('name', 'asc'); // Default sorting
+        }
+    
+        $goals = $query->paginate(10);
+        $strategies = Strategy::all(); // Fetch all strategies for the dropdown
+    
+        return view('goals.index', compact('goals', 'strategies'));
     }
+    
 
     public function create()
     {
