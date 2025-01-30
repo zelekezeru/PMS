@@ -31,6 +31,21 @@
                     </tr>
                 </table>
 
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-warning btn-sm me-2">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+
+                    <button type="button" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+
+                    <form id="delete-form-{{ $department->id }}" action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+
             </div>
         </div>
 

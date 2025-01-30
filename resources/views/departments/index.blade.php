@@ -4,13 +4,13 @@
 
 <div class="container mt-3">
     <div class="card pt-5">
-        <h2 class="card-header text-center">Fortnights List</h2>
+        <h2 class="card-header text-center">Departments List</h2>
         <div class="card-body">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-                <a class="btn btn-success btn-sm" href="{{ route('fortnights.create') }}"><i class="fa fa-plus"></i> Add New Fortnight</a>
+                <a class="btn btn-success btn-sm" href="{{ route('departments.create') }}"><i class="fa fa-plus"></i> Add New Department</a>
             </div>
 
-            @include('fortnights.list')
+            @include('departments.list')
 
             <!-- SweetAlert Success Notifications -->
             @if (session('status'))
@@ -18,8 +18,8 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Fortnight {{ ucfirst(session('status')) }}',
-                            text: 'Your fortnight has been successfully {{ session('status') }}.',
+                            title: 'Department {{ ucfirst(session('status')) }}',
+                            text: 'Your department has been successfully {{ session('status') }}.',
                             confirmButtonText: 'Okay'
                         });
                     });

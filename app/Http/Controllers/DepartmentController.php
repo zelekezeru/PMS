@@ -13,6 +13,7 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = Department::paginate(10);
+
         return view('departments.index', compact('departments'));
     }
 
@@ -33,12 +34,14 @@ class DepartmentController extends Controller
     public function edit(Department $department)
     {
         $users = User::get();
+
         return view('departments.edit', compact('department', 'users'));
     }
 
     public function update(DepartmentUpdateRequest $request, Department $department)
     {
         $data = $request->validated();
+
         $department->update($data);
 
         // Return with success status
@@ -56,6 +59,7 @@ class DepartmentController extends Controller
     public function show(Department $department)
     {
         $head = User::find($department->department_head);
+
         return view('departments.show', compact('department', 'head'));
     }
 }
