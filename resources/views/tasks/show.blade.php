@@ -61,7 +61,7 @@
                             <p><strong class="h3">Subtasks:</strong>
                                 {{-- @if($task->is_subtask == 1)
                                     @foreach($task->subtasks as $subtask)
-                                        <strong> -> </strong{{ $subtask->name }},
+                                        <strong> -> </strong>{{ $subtask->name }},
                                     @endforeach
                                 @endif --}}
                             </p>
