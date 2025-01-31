@@ -242,6 +242,11 @@
                                         <i class="fas fa-user-clock"></i> Waiting Approval
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('users.create') }}">
+                                        <i class="fas fa-user-plus"></i> Register User
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>

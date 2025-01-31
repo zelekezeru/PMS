@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['sometimes', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
         }
 
         event(new Registered($user));
-        
+
         return redirect()->route('login')->with('status', "Successfully registered to PMS, Wait for admin approval. You'll receive an email following your approval!");;
     }
 }

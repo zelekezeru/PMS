@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\UserStoreRequest;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -25,7 +29,7 @@ class UserController extends Controller
      */
     public function waitingApproval()
     {
-        
+
         $users = User::where('is_approved', 0)->get();
 
         return view('users.waiting', compact('users'));
@@ -55,14 +59,38 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $user = new User;
+
+        $roles = Role::all();
+
+        $departments = Department::get();
+
+        return view('users.create', compact('user', 'departments', 'roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserUpdateRequest $request)
+    public function store(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['pms@SITS'],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'department_id' => $request->department_id,
+            'role_id' => $request->role_id,
+        ]);
+
+        return redirect()->route('users.waiting')->with('status', "user-updated");
+
     }
 
     /**
@@ -71,6 +99,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id)->load('tasks');
+
         $tasks = $user->tasks;
 
         if (!$user) {
@@ -86,7 +115,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
+
         $departments = Department::all();
+
         return view('users.edit', compact('roles', 'departments', 'user'));
     }
 

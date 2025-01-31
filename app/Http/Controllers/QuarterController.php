@@ -17,6 +17,7 @@ class QuarterController extends Controller
     public function create()
     {
         $years = Year::get();
+
         return view('quarters.create', compact('years'));
     }
 

@@ -11,7 +11,7 @@
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
     </div>
-    
+
     <div class="col-md-6 mb-3">
         <label for="email" class="form-label"><strong>Email:</strong></label>
         <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ old('email', $user->email ?? '') }}" placeholder="Email" required>
@@ -29,16 +29,13 @@
     </div>
 
     <div class="col-md-6 mb-3">
-        <label for="is_active" class="form-label"><strong>Approved(if checked):</strong></label>
-        <input type="checkbox" @if($user->is_active) checked @endif name="is_active" value="1" id="is_active">
-
+        <label for="is_active" class="form-label"><strong>Active (if checked):</strong></label>
+        <input type="checkbox" name="is_active" value="1" id="is_active" {{ old('is_active', $user->is_active ?? false) ? 'checked' : '' }}>
     </div>
     <div class="col-md-6 mb-3">
-        <label for="is_approved" class="form-label"><strong>Approved(if checked):</strong></label>
-        <input type="checkbox" @if($user->is_approved) checked @endif name="is_approved" value="1" id="is_approved">
-
+        <label for="is_approved" class="form-label"><strong>Approved (if checked):</strong></label>
+        <input type="checkbox" name="is_approved" value="1" id="is_approved" {{ old('is_approved', $user->is_approved ?? false) ? 'checked' : '' }}>
     </div>
-
 
     <div class="col-md-6 mb-3">
         <label for="role_id" class="form-label"><strong>Role:</strong></label>
@@ -54,13 +51,14 @@
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
     </div>
+
+    <!-- Assign Departments -->
     <div class="col-md-6 mb-3">
-        <label for="department_id" class="form-label"><strong>Department Head:</strong></label>
+        <label for="department_id" class="form-label">Responsible Departments:</label>
         <select name="department_id" class="form-control @error('department_id') is-invalid @enderror" id="department_id" required>
-            <!-- Assuming you have a list of department_ids -->
             <option value="" {{ old('department_id') == '' ? 'selected' : '' }}>Select Department</option>
             @foreach($departments as $department)
-                <option value="{{ $department->id }}" {{ old('department_id', $department->department_name ?? '') == $department->department_name ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                <option value="{{ $department->id }}" {{ old('department_id', $user->department_id ?? '') == $department->id ? 'selected' : '' }}>{{ $department->department_name }}</option>
             @endforeach
         </select>
         @error('department_id')
