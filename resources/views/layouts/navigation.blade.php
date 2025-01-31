@@ -259,7 +259,7 @@
                                 <div class="user-box">
                                     @if(Auth::user())
                                         <div class="avatar-lg">
-                                            <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/arashmil.jpg') }}" alt="Profile Image">
+                                            <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/user.png') }}" alt="Profile Image">
                                         </div>
                                         <div class="u-text text-white">
                                             <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
@@ -294,7 +294,7 @@
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                     @if(Auth::user())
                         <div class="avatar-sm">
-                            <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/arashmil.jpg') }}" alt="Profile Image"
+                            <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/user.png') }}" alt="Profile Image"
                                     class="avatar-img rounded-circle" />
                         </div>
                         <span class="profile-username">
@@ -308,7 +308,7 @@
                             <div class="user-box">
                                 @if(Auth::user())
                                     <div class="avatar-lg">
-                                        <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/arashmil.jpg') }}" alt="Profile Image">
+                                        <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/user.png') }}" alt="Profile Image">
                                     </div>
                                     <div class="u-text text-white">
                                         <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>

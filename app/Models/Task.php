@@ -10,20 +10,15 @@ class Task extends Model
     use HasFactory;
 
     protected $guarded = [];
-    
-    public function goal()
+
+    public function target()
     {
-        return $this->belongsTo(Goal::class);
+        return $this->belongsTo(Target::class);
     }
 
     public function day()
     {
         return $this->belongsTo(Day::class);
-    }
-
-    public function target()
-    {
-        return $this->belongsTo(Target::class);
     }
 
     public function kpi()
@@ -45,7 +40,7 @@ class Task extends Model
     {
         return $this->belongsToMany(Department::class);
     }
-    
+
     public function fortnights()
     {
         return $this->belongsToMany(Fortnight::class);

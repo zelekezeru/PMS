@@ -77,9 +77,6 @@
                 } else if (message === "Item-updated") {
                     title = "Item Updated!";
                     text = "Your Item has been successfully updated.";
-                } else if (message === "Item-related") {
-                    title = "Item can't be Deleted!";
-                    text = "This Item has related Items, First remove the relations.";
                 } else if (message === "Item-deleted") {
                     title = "Item Deleted!";
                     text = "Your Item has been successfully deleted.";
@@ -99,12 +96,12 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 let message = "{{ session('related') }}";
-                let title = "";
-                let text = "";
+                    title = "This Item can't be Deleted!";
+                    text = "This Item has related to other Items, First remove the relations.";
 
                 if (message === "Item-related") {
-                    title = "Item can't be Deleted!";
-                    text = "This Item has related Items, First remove the relations.";
+                    title = "This Item can't be Deleted!";
+                    text = "This Item has related to other  Items, First remove the relations.";
                 }
 
                 Swal.fire({

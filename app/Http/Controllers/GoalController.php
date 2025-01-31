@@ -72,8 +72,15 @@ class GoalController extends Controller
 
     public function destroy(Goal $goal)
     {
+        if(count($goal->targets) != 0)
+        {
+            return redirect()->route('goals.index')
+            ->with('related', 'goal-deleted');
+        }
+
         $goal->delete();
 
-        return redirect()->route('goals.index')->with('status', 'goal-deleted');
+        return redirect()->route('strategies.index')
+            ->with('status', 'goal-deleted');
     }
 }

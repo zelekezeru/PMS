@@ -50,6 +50,7 @@
                 </table>
 
                 <div class="d-flex justify-content-end mt-4">
+
                     <a href="{{ route('targets.edit', $target->id) }}" class="btn btn-warning btn-sm me-2">
                         <i class="fas fa-edit"></i> Edit
                     </a>
@@ -63,6 +64,10 @@
                     </form>
                 </div>
             </div>
+        </div>
+
+        <div class="col">
+            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create', ['target' => $target->id]) }}"><i class="fa fa-plus"></i> Add Target Indicators</a>
         </div>
 
         @if ($target->kpis)

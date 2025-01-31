@@ -6,6 +6,7 @@ use App\Http\Requests\KpiStoreRequest;
 use App\Http\Requests\KpiUpdateRequest;
 use App\Models\Kpi;
 use App\Models\Task;
+use App\Models\Target;
 use Illuminate\Http\Request;
 
 class KpiController extends Controller
@@ -16,10 +17,20 @@ class KpiController extends Controller
         return view('kpis.index', compact('kpis'));
     }
 
-    public function create()
+    public function create($target)
     {
-        $tasks = Task::get();
-        return view('kpis.create', compact('tasks'));
+        dd($target);
+        $target = Target::findOrFail($target);
+
+        return view('kpis.create', compact('target'));
+    }
+
+    public function create_task($task)
+    {
+        dd($task);
+        $task = Task::findOrFail($task);
+
+        return view('kpis.create', compact('task'));
     }
 
     public function store(KpiStoreRequest $request)

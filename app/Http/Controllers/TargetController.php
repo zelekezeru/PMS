@@ -79,6 +79,12 @@ class TargetController extends Controller
 
     public function destroy(Target $target)
     {
+        if(count($target->tasks) != 0 || count($target->year) != 0 || count($target->kpi) != 0 || count($target->departments) != 0)
+        {
+            return redirect()->route('targets.index')
+            ->with('related', 'target-deleted');
+        }
+
         $target->delete();
 
         return redirect()->route('targets.index')->with('success', 'Target deleted successfully.');

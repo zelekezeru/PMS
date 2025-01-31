@@ -16,7 +16,7 @@
                         <!-- Task Title and Description -->
                         <div class="col-md-6 mb-3">
                             <label for="name" class="form-label">Task Title:</label>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $task->name ?? '') }}" placeholder="Name" required>
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $task->name ?? '') }}" placeholder="Title" required>
                             @error('name')
                                 <div class="form-text text-danger">{{ $message }}</div>
                             @enderror
@@ -133,7 +133,7 @@
 
                                 <option value=""> Select Fortnights</option>
                                 @foreach($fortnights as $fortnight)
-                                    <option value="{{ $fortnight->id }}" {{ in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : '' }}>=> {{ $fortnight->start_date }} to {{ $fortnight->end_date }} </option>
+                                    <option value="{{ $fortnight->id }}" {{ in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : '' }}> From: {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span  class="text-info"> - To - </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }} </option>
                                 @endforeach
                             </select>
                             @error('fortnight')

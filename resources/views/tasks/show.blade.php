@@ -4,7 +4,7 @@
 
     <div class="container mt-3">
         <div class="card pt-5">
-            <h2 class="card-header text-center">Pillar Details</h2>
+            <h2 class="card-header text-center">Task Details</h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end">
                     <a class="btn btn-primary btn-sm mb-3" href="{{ route('tasks.index') }}">
@@ -14,7 +14,7 @@
 
                 <table class="table table-bordered">
                     <tr>
-                        <th>Pillar:</th>
+                        <th>Task Title:</th>
                         <td>{{ $task->name }}</td>
                     </tr>
                     <tr>
@@ -71,6 +71,10 @@
                     </form>
                 </div>
             </div>
+        </div>
+
+        <div class="col">
+            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task Indicators</a>
         </div>
 
         @if ($task->kpis)

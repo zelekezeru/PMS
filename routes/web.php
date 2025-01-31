@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('days', DayController::class);
     Route::resource('feedbacks', FeedbackController::class);
     Route::resource('kpis', KpiController::class);
+    Route::get('kpis/create/{target}', [KpiController::class, 'create'])->name('kpis.create');
     Route::resource('reports', ReportController::class);
     Route::resource('templates', TemplateController::class);
     Route::resource('departments', DepartmentController::class);
