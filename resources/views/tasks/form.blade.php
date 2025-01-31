@@ -64,8 +64,8 @@
                                         </div><div class="row"> <!-- New Row -->
                                     @endif
                                     <div class="col-md-6">
-                                        <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" >
-                                        {{-- <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}> --}}
+                                        {{-- <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" > --}}
+                                        <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
                                     </div>
                                 @endforeach

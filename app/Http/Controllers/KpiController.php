@@ -71,11 +71,6 @@ class KpiController extends Controller
 
     public function destroy(Kpi $kpi)
     {
-        if($kpi->task()->exists() || $kpi->target()->exists())
-        {
-            return redirect()->route('kpis.index')
-            ->with('related', 'kpi-deleted');
-        }
         $kpi->delete();
 
         return redirect()->route('kpis.index')->with('success', 'KPI deleted successfully.');
