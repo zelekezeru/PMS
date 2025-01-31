@@ -100,7 +100,7 @@ class TaskController extends Controller
         $users = $request['user_id'];
 
         $oldDepartments = $task->departments()->pluck('departments.id')->toArray();
-        
+
         unset($request['department_id']);
         unset($request['fortnight_id']);
         unset($request['user_id']);
@@ -118,6 +118,12 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        if($task->kpi()->exists() || $task->deliverables()->exists())
+        {
+            return redirect()->route('tasks.index')
+            ->with('related', 'task-deleted');
+        }
+
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');

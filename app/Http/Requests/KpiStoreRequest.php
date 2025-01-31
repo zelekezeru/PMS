@@ -25,7 +25,9 @@ class KpiStoreRequest extends FormRequest
             'name' => 'required|string|max:255',
             'value' => 'nullable|numeric|min:0',
             'unit' => 'nullable|string|max:50',
-            'task_id' => 'required|exists:tasks,id'
+            'status' => 'nullable|string|max:50',
+            'task_id' => 'nullable|exists:tasks,id',
+            'target_id' => 'nullable|exists:targets,id',
         ];
     }
 }

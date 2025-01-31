@@ -16,6 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(15);
+
         return view('users.index', compact('users'));
     }
 
@@ -24,10 +25,11 @@ class UserController extends Controller
      */
     public function waitingApproval()
     {
-        $users = User::where('is_approved', false)->get();
+        $users = User::where('is_approved', 1)->get();
+
         return view('users.waiting', compact('users'));
     }
-    
+
     public function approve(Request $request)
     {
         $request->validate([
@@ -61,7 +63,7 @@ class UserController extends Controller
     public function store(UserUpdateRequest $request)
     {
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -73,10 +75,10 @@ class UserController extends Controller
         if (!$user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
-        
+
         return view('users.show', compact('user', 'tasks'));
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -86,7 +88,7 @@ class UserController extends Controller
         $departments = Department::all();
         return view('users.edit', compact('roles', 'departments', 'user'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -95,20 +97,34 @@ class UserController extends Controller
         $data = $request->validated();
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
-        
+
         $user->update($data);
 
         return redirect()->route('users.show', $user)->with('status', "user-updated");
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
-        if ($user->hasRole('SUPER_ADMIN')) {
+        if ($user->hasRole('SUPER_ADMIN') ) {
             return redirect()->route('users.index')->with('status', 'not-allowed.');
         }
+
+        $dep = Department::where('department_head', $user->id)->first();
+        dd($dep);
+        if($dep)
+        {
+            return redirect()->route('users.index')->with('status', 'user-is-department-head');
+        }
+
+        if($user->tasks()->exists())
+        {
+            return redirect()->route('users.index')
+            ->with('related', 'user-deleted');
+        }
+
         $user->delete();
 
         return redirect()->route('users.index')->with('status', 'user-deleted.');

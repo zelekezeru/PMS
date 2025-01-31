@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->decimal('value', 10, 2)->nullable();
             $table->string('unit', 50)->nullable();
+            $table->string('status', 50)->nullable()->default('Created');
             $table->timestamps(0);
         });
     }

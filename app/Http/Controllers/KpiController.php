@@ -14,12 +14,12 @@ class KpiController extends Controller
     public function index()
     {
         $kpis = Kpi::with('task')->paginate(10);
+
         return view('kpis.index', compact('kpis'));
     }
 
     public function create($target)
     {
-        dd($target);
         $target = Target::findOrFail($target);
 
         return view('kpis.create', compact('target'));
@@ -27,7 +27,6 @@ class KpiController extends Controller
 
     public function create_task($task)
     {
-        dd($task);
         $task = Task::findOrFail($task);
 
         return view('kpis.create', compact('task'));
@@ -36,6 +35,7 @@ class KpiController extends Controller
     public function store(KpiStoreRequest $request)
     {
         Kpi::create($request->validated());
+
         return redirect()->route('kpis.index')->with('success', 'KPI created successfully.');
     }
 
@@ -46,19 +46,38 @@ class KpiController extends Controller
 
     public function edit(Kpi $kpi)
     {
-        $tasks = Task::get();
-        return view('kpis.edit', compact('kpi', 'tasks'));
+        if($kpi->task_id != null)
+        {
+            $task = Task::where('id', $kpi->task_id)->first();
+
+            $target = null;
+        }
+        elseif($kpi->target_id != null)
+        {
+            $target = Target::where('id', $kpi->target_id)->first();
+
+            $task = null;
+        }
+
+        return view('kpis.edit', compact('kpi', 'task', 'target'));
     }
 
     public function update(KpiUpdateRequest $request, Kpi $kpi)
     {
         $kpi->update($request->validated());
+
         return redirect()->route('kpis.index')->with('success', 'KPI updated successfully.');
     }
 
     public function destroy(Kpi $kpi)
     {
+        if($kpi->task()->exists() || $kpi->target()->exists())
+        {
+            return redirect()->route('kpis.index')
+            ->with('related', 'kpi-deleted');
+        }
         $kpi->delete();
+
         return redirect()->route('kpis.index')->with('success', 'KPI deleted successfully.');
     }
 }

@@ -30,4 +30,9 @@ class Target extends Model
     {
         return $this->belongsToMany(Department::class);
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

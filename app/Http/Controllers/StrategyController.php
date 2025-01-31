@@ -75,11 +75,12 @@ class StrategyController extends Controller
 
     public function destroy(Strategy $strategy)
     {
-        if(count($strategy->goals) != 0)
+        if($strategy->goals()->exists())
         {
             return redirect()->route('strategies.index')
             ->with('related', 'strategy-deleted');
         }
+
         $strategy->delete();
 
         return redirect()->route('strategies.index')

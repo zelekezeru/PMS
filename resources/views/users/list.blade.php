@@ -11,14 +11,14 @@
     </thead>
     <tbody>
         @forelse ($users as $user)
-            @if (!$user->hasRole('SUPER_ADMIN'))
+            @if ($user->hasRole('SUPER_ADMIN'))
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>
                         @if ($user->is_approved)
-                            Approved!
+                            <p class="badge badge-success">Approved!</p>
                         @else
-                        <a href="{{ route('users.waiting') }}">Waiting!</a>
+                            <a href="{{ route('users.waiting') }}"><p class="badge badge-warning">Waiting!</p>!</a>
                         @endif
                     </td>
                     <td>{{ $user->name }}</td>

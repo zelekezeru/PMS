@@ -16,7 +16,7 @@
                 @endphp
 
                 @if($task != null)
-                    @include('kpis.task_form', [
+                    @include('kpis.form', [
                         'action' => route('kpis.store'),
                         'method' => 'POST',
                         'target' => null,
@@ -30,7 +30,7 @@
                         'buttonText' => 'Create'
                     ])
                 @else
-                    @include('kpis.task', [
+                    @include('kpis.form', [
                         'action' => route('kpis.store'),
                         'method' => 'POST',
                         'buttonText' => 'Create'
