@@ -44,21 +44,21 @@ class TaskController extends Controller
         $data = $request->validated();
 
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
-
         $departments = $request['department_id'];
         $fortnights = $request['fortnight_id'];
         $users = $request['user_id'];
-
-        unset($request['department_id']);
-        unset($request['fortnight_id']);
-        unset($request['user_id']);
-
+        
+        unset($data['department_id']);
+        unset($data['fortnight_id']);
+        unset($data['user_id']);
+        
         $task = Task::create($data);
-
+        
         $task->departments()->attach($departments);
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
-
+        
+        // dd($data);
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
@@ -92,26 +92,47 @@ class TaskController extends Controller
     {
         $data = $request->validated();
 
-
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
-
-        $departments = $request['department_id'];
-        $fortnights = $request['fortnight_id'];
-        $users = $request['user_id'];
-
-        $oldDepartments = $task->departments()->pluck('departments.id')->toArray();
         
-        unset($request['department_id']);
-        unset($request['fortnight_id']);
-        unset($request['user_id']);
+        // Retrieve the ids of the related entries
+        $oldDepartments = $task->departments()->pluck('departments.id')->toArray();
+        $oldFortnights = $task->fortnights()->pluck('fortnights.id')->toArray();
+        $oldUsers = $task->users()->pluck('users.id')->toArray();
+        
+        // Pass the request fields of many-to-many related fields to their repective variables and if there is no such field just set it to an empty array
+        $departments = $request['department_id'] ?? [];
+        $fortnights = $request['fortnight_id'] ?? [];
+        $users = $request['user_id'] ?? [];
 
+        // Now remove $oldDepartment relations(detach) if it is also not in the user edit request
+        foreach ($oldDepartments as $oldDepartment) {
+            if (!in_array($oldDepartment, $departments)) {
+                $task->departments()->detach($oldDepartment);
+            }
+        }
+
+        foreach ($oldFortnights as $oldFortnight) {
+            if (!in_array($oldFortnight, $fortnights)) {
+                $task->fortnights()->detach($oldFortnight);
+            }
+        }
+
+        foreach ($oldUsers as $oldUser) {
+            if (!in_array($oldUser, $users)) {
+                $task->users()->detach($oldUser);
+            }
+        }
+        
+        unset($data['department_id']);
+        unset($data['fortnight_id']);
+        unset($data['user_id']);
+        
         $task->update($data);
 
+        // Attach the new relation based on the edit form
         $task->departments()->attach($departments);
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
-
-
 
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
