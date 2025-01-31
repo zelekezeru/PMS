@@ -29,7 +29,14 @@
             if (message === "users-approved") {
                 title = "Successfuly Approved!";
                 text = "Your User can now login to the system.";
+            } else if (message === "user-deleted") {
+                title = "User!";
+                text = "The selected user has been deleted.";
+            } else if (message === "not-allowed") {
+                title = "User!";
+                text = "Action Not Allowed.";
             }
+            
             Swal.fire({
                 icon: 'success',
                 title: title,

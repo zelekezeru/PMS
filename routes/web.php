@@ -36,9 +36,13 @@ Route::middleware('auth')->group(function () {
 
 // Resource Routes
 Route::middleware('auth')->group(function () {
-    Route::get('users/waiting-approval', [UserController::class, 'waitingApproval'])->name('users.waiting');
-    Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
-    Route::resource('users', UserController::class);
+
+    //The way to assign specific roles to users
+    Route::middleware('role:SUPER_ADMIN|ADMIN')->group(function () {
+        Route::get('users/waiting-approval', [UserController::class, 'waitingApproval'])->name('users.waiting');
+        Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
+        Route::resource('users', UserController::class);
+    });
     Route::resource('homes', HomeController::class);
     Route::resource('strategies', StrategyController::class);
     Route::resource('targets', TargetController::class);

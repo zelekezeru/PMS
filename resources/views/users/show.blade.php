@@ -4,54 +4,63 @@
 
     <div class="container mt-3">
         <div class="card pt-5">
-            <h2 class="card-header text-center">Department Details</h2>
+            <h2 class="card-header text-center">User Details</h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end">
-                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('departments.index') }}">
+                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('users.index') }}">
                         <i class="fa fa-arrow-left"></i> Back
                     </a>
                 </div>
 
                 <table class="table table-bordered">
                     <tr>
-                        <th>Department Name:</th>
-                        <td>{{ $department->department_name }}</td>
+                        <th>Name:</th>
+                        <td>{{ $user->name }}</td>
                     </tr>
+
                     <tr>
-                        <th>Description:</th>
-                        <td>{{ $department->description }}</td>
+                        <th>Email:</th>
+                        <td>{{ $user->email }}</td>
                     </tr>
+
+
                     <tr>
-                        <th>Department Head:</th>
-                        <td>{{ $head->name }}</td>
+                        <th>Phone number:</th>
+                        <td>{{ $user->phone_number }}</td>
                     </tr>
+                    
+                    <tr>
+                        <th>Department:</th>
+                        <td>{{ $user->department->department_name }}</td>
+                    </tr>
+
                     <tr>
                         <th>Created At:</th>
-                        <td>{{ $department->created_at->format('Y-m-d H:i') }}</td>
+                        <td>{{ $user->created_at->format('Y-m-d H:i') }}</td>
                     </tr>
                 </table>
 
             </div>
         </div>
-
-
-        @if ($department->users)
-
-            @php
-                $users = $department->users;
-            @endphp
-
-            <div class="card-header">
-                <h3 class="card-title mb-5">Users of this Department</h3>
-            </div>
-
-            {{-- @include('users.list') --}}
-
-        @else
-            <div class="alert alert-warning mt-3">
-                <p>No users found for this Department.</p>
-            </div>
-        @endif
     </div>
+    @if(session('status'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let message = "{{ session('status') }}";
+            let title = "";
+            let text = "";
 
+            if (message === "user-updated") {
+                title = "Updated The User!";
+                text = "Successfully Updated The User.";
+            }
+            Swal.fire({
+                icon: 'success',
+                title: title,
+                text: text,
+                confirmButtonText: 'Okay'
+            });
+        });
+    </script>
+@endif
 @endsection

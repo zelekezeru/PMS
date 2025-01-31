@@ -26,11 +26,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-        
-        if (User::where('email', $request->email)->first()->is_approved == false) {
+        if (User::where('email', $request->email)->exists() && User::where('email', $request->email)->first()->is_approved == false) {
             return redirect()->back()->with('status', "Please wait for your approval to login. You'll receive an email following your approval!");
         }
+
+        $request->authenticate();
+        
 
         $request->session()->regenerate();
 

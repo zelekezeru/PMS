@@ -11,51 +11,56 @@
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
     </div>
-
+    
     <div class="col-md-6 mb-3">
         <label for="email" class="form-label"><strong>Email:</strong></label>
-        <input type="text" email="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ old('email', $user->email ?? '') }}" placeholder="Email" required>
+        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ old('email', $user->email ?? '') }}" placeholder="Email" required>
         @error('email')
+        <div class="form-text text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="phone_number" class="form-label"><strong>Phone Number:</strong></label>
+        <input type="text" name="phone_number" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" value="{{ old('phone_number', $user->phone_number ?? '') }}" placeholder="Phone Number" required>
+        @error('phone_number')
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
     </div>
 
     <div class="col-md-6 mb-3">
         <label for="is_active" class="form-label"><strong>Approved(if checked):</strong></label>
-        <input type="checkbox" @if($user->is_active) checked @endif name="is_active" id="is_active">
-        @error('email')
-            <div class="form-text text-danger">{{ $message }}</div>
-        @enderror
+        <input type="checkbox" @if($user->is_active) checked @endif name="is_active" value="1" id="is_active">
+
     </div>
     <div class="col-md-6 mb-3">
         <label for="is_approved" class="form-label"><strong>Approved(if checked):</strong></label>
-        <input type="checkbox" @if($user->is_approved) checked @endif name="is_approved" id="is_approved">
-        @error('email')
-            <div class="form-text text-danger">{{ $message }}</div>
-        @enderror
+        <input type="checkbox" @if($user->is_approved) checked @endif name="is_approved" value="1" id="is_approved">
+
     </div>
 
 
     <div class="col-md-6 mb-3">
         <label for="role_id" class="form-label"><strong>Role:</strong></label>
         <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
-            <!-- Assuming you have a list of roles -->
             <option value="" {{ old('role') == '' ? 'selected' : '' }}>Select Role</option>
             @foreach($roles as $role)
-                <option value="{{ $role->id }}" {{ old('role', $role->name ?? '') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                @if ($role->name !== 'SUPER_ADMIN')
+                    <option value="{{ $role->id }}" {{ old('role', $role->name ?? '') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                @endif
             @endforeach
         </select>
-        @error('role')
+        @error('role_id')
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
     </div>
     <div class="col-md-6 mb-3">
         <label for="department_id" class="form-label"><strong>Department Head:</strong></label>
-        <select name="head" class="form-control @error('head') is-invalid @enderror" id="department_id" required>
+        <select name="department_id" class="form-control @error('department_id') is-invalid @enderror" id="department_id" required>
             <!-- Assuming you have a list of department_ids -->
-            <option value="" {{ old('department_id') == '' ? 'selected' : '' }}>Select Department_id</option>
+            <option value="" {{ old('department_id') == '' ? 'selected' : '' }}>Select Department</option>
             @foreach($departments as $department)
-                <option value="{{ $department_id->id }}" {{ old('department_id', $department_id->name ?? '') == $department_id->name ? 'selected' : '' }}>{{ $department_id->name }}</option>
+                <option value="{{ $department->id }}" {{ old('department_id', $department->department_name ?? '') == $department->department_name ? 'selected' : '' }}>{{ $department->department_name }}</option>
             @endforeach
         </select>
         @error('department_id')

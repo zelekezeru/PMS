@@ -60,9 +60,8 @@ class UserController extends Controller
      */
     public function store(UserUpdateRequest $request)
     {
-        dd($request);
     }
-
+    
     /**
      * Display the specified resource.
      */
@@ -73,10 +72,10 @@ class UserController extends Controller
         if (!$user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
-
+        
         return view('users.show', compact('user'));
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -86,20 +85,31 @@ class UserController extends Controller
         $departments = Department::all();
         return view('users.edit', compact('roles', 'departments', 'user'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
-    }
+        $data = $request->validated();
+        $data['is_approved'] = $request->is_approved ? 1 : 0;
+        $data['is_active'] = $request->is_active ? 1 : 0;
+        
+        $user->update($data);
 
+        return redirect()->route('users.show', $user)->with('status', "user-updated");
+    }
+    
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
-        //
+        if ($user->hasRole('SUPER_ADMIN')) {
+            return redirect()->route('users.index')->with('status', 'not-allowed.');
+        }
+        $user->delete();
+
+        return redirect()->route('users.index')->with('status', 'user-deleted.');
     }
 }
