@@ -32,6 +32,9 @@ class TaskUpdateRequest extends FormRequest
             'starting_date' => 'sometimes|nullable|date',
             'due_date' => 'sometimes|nullable|date',
             'target_id' => 'sometimes|required|exists:targets,id',
+            'departments' => 'sometimes|array',
+            'fortnights' => 'sometimes|array',
+            'users' => 'sometimes|array',
         ];
     }
 }

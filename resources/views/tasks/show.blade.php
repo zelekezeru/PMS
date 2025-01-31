@@ -45,11 +45,12 @@
                     </div>
 
                     <div class="row">
+                        {{-- @dd($task) --}}
                         <div class="col-md-6">
                             <p><strong class="h3">Departments:</strong>
                                 @if($task->departments && $task->departments->count() > 0)
                                     @foreach($task->departments as $department)
-                                        <strong> -> </strong>{{ $department->department_name }},
+                                        {{ $department->department_name }},
                                     @endforeach
                                 @endif
                             </p>
@@ -82,6 +83,10 @@
                             <i class="fas fa-trash"></i> Delete Task
                         </button>
                     </form>
+                </div>
+
+                <div class="card mt-5">
+                    @include('users.list')
                 </div>
             </div>
         </div>
