@@ -68,11 +68,15 @@
                                     <i class="fas fa-list-ul"></i> Manage Strategy
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ route('strategies.create') }}">
-                                    <i class="fas fa-plus"></i> Add Strategy
-                                </a>
-                            </li>
+
+                            {{-- ONLY FOR ADMIN USERS --}}
+                            @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+                                <li>
+                                    <a href="{{ route('strategies.create') }}">
+                                        <i class="fas fa-plus"></i> Add Strategy
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </li>
@@ -91,11 +95,15 @@
                                     <i class="fas fa-list-check"></i> Manage Goal
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ route('goals.create') }}">
-                                    <i class="fas fa-plus"></i> Add Goal
-                                </a>
-                            </li>
+
+                            {{-- ONLY FOR ADMIN USERS --}}
+                            @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+                                <li>
+                                    <a href="{{ route('goals.create') }}">
+                                        <i class="fas fa-plus"></i> Add Goal
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </li>
@@ -114,37 +122,48 @@
                                     <i class="fas fa-bullseye"></i> Manage Target
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ route('targets.create') }}">
-                                    <i class="fas fa-plus"></i> Add Target
-                                </a>
-                            </li>
+
+                            {{-- ONLY FOR ADMIN USERS --}}
+                            @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+
+                                <li>
+                                    <a href="{{ route('targets.create') }}">
+                                        <i class="fas fa-plus"></i> Add Target
+                                    </a>
+                                </li>
+                            @endif
+
                         </ul>
                     </div>
                 </li>
 
-                {{-- Department Navigation --}}
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#Department">
-                        <i class="fas fa-building"></i>
-                        <p>Department</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="Department">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('departments.index') }}">
-                                    <i class="fas fa-users-cog"></i> Manage Department
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('departments.create') }}">
-                                    <i class="fas fa-plus"></i> Add Department
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+
+                {{-- ONLY FOR ADMIN USERS --}}
+                @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+
+                    {{-- Department Navigation --}}
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#Department">
+                            <i class="fas fa-building"></i>
+                            <p>Department</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="Department">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('departments.index') }}">
+                                        <i class="fas fa-users-cog"></i> Manage Department
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('departments.create') }}">
+                                        <i class="fas fa-plus"></i> Add Department
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endif
 
                 {{-- Report Navigation --}}
                 <li class="nav-item">
@@ -169,63 +188,65 @@
                     </div>
                 </li>
 
-                {{-- Schedule Navigation --}}
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#Schedule">
-                        <i class="fas fa-calendar-alt"></i>
-                        <p>Plan Time</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="Schedule">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('years.index') }}">
-                                    <i class="fas fa-calendar"></i> Manage Years
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('quarters.index') }}">
-                                    <i class="fas fa-calendar-week"></i> Manage Quarters
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('fortnights.index') }}">
-                                    <i class="fas fa-calendar-day"></i> Manage Fortnights
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('days.index') }}">
-                                    <i class="fas fa-calendar-check"></i> Manage Days
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
 
                 {{-- ONLY FOR ADMIN USERS --}}
                 @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#User">
-                        <i class="fas fa-user-shield"></i>
-                        <p>User Management</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="User">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('users.index') }}">
-                                    <i class="fas fa-users"></i> Manage Users
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('users.waiting') }}">
-                                    <i class="fas fa-user-clock"></i> Waiting Approval
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+
+                    {{-- Schedule Navigation --}}
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#Schedule">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p>Plan Time</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="Schedule">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('years.index') }}">
+                                        <i class="fas fa-calendar"></i> Manage Years
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('quarters.index') }}">
+                                        <i class="fas fa-calendar-week"></i> Manage Quarters
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('fortnights.index') }}">
+                                        <i class="fas fa-calendar-day"></i> Manage Fortnights
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('days.index') }}">
+                                        <i class="fas fa-calendar-check"></i> Manage Days
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#User">
+                            <i class="fas fa-user-shield"></i>
+                            <p>User Management</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="User">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('users.index') }}">
+                                        <i class="fas fa-users"></i> Manage Users
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('users.waiting') }}">
+                                        <i class="fas fa-user-clock"></i> Waiting Approval
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 @endif
+
             </ul>
         </div>
     </div>
