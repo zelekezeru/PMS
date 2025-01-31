@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function waitingApproval()
     {
-        $users = User::where('is_approved', 1)->get();
+        $users = User::where('is_approved', 0)->get();
 
         return view('users.waiting', compact('users'));
     }

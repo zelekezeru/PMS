@@ -15,10 +15,10 @@
                     <tbody>
                         @forelse ($strategies as $strategy)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $strategy->pilar_name }}</td>
-                                <td>{{ $strategy->name }}</td>
-                                <td>{{ $strategy->description }}</td>
+                                <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $strategy->pilar_name }}</td>
+                                <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $strategy->name }}</td>
+                                <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $strategy->description }}</td>
                                 <td class="text-center">
                                     <div class="form-button-action">
                                         <a href="{{ route('strategies.show', $strategy->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
@@ -49,4 +49,3 @@
     </div>
 </div>
 
-                    
