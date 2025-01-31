@@ -3,7 +3,7 @@
         <thead class="thead-dark">
             <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Title</th>
                 <th>Description</th>
                 <th>Budget</th>
                 <th>Starting Date</th>

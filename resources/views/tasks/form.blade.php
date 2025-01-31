@@ -64,7 +64,8 @@
                                         </div><div class="row"> <!-- New Row -->
                                     @endif
                                     <div class="col-md-6">
-                                        <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
+                                        <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" >
+                                        {{-- <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}> --}}
                                         <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
                                     </div>
                                 @endforeach
@@ -111,7 +112,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -129,7 +130,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="fortnight" class="form-label">Is this a Fortnight Task? if so, please select the fornights the task belongs to.</label>
                             <select name="fortnight_id[]" class="form-control @error('fortnight_id') is-invalid @enderror" id="fortnight" multiple>
-                                
+
                                 <option value=""> Select Fortnights</option>
                                 @foreach($fortnights as $fortnight)
                                     <option value="{{ $fortnight->id }}" {{ in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : '' }}>=> {{ $fortnight->start_date }} to {{ $fortnight->end_date }} </option>

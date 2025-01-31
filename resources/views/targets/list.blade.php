@@ -2,7 +2,7 @@
     <thead class="thead-dark">
         <tr>
             <th>#</th>
-            <th>Name</th>
+            <th>Title</th>
             <th>Budget</th>
             <th class="d-flex align-items-center text-white">
                 <span class="me-2">Goal</span>

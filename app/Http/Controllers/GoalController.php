@@ -63,7 +63,6 @@ class GoalController extends Controller
 
     public function update(GoalUpdateRequest $request, Goal $goal)
     {
-        dd($request);
         $data = $request->validated();
 
         $goal->update($data);

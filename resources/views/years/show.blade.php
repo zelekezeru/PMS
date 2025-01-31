@@ -17,14 +17,6 @@
                         <th>Year:</th>
                         <td>{{ $year->year }}</td>
                     </tr>
-                    <tr>
-                        <th>Created At:</th>
-                        <td>{{ \Carbon\Carbon::parse($year->created_at)->format('M - d - Y') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Updated At:</th>
-                        <td>{{ \Carbon\Carbon::parse($year->updated_at)->format('M - d - Y') }}</td>
-                    </tr>
                 </table>
 
             </div>

@@ -21,10 +21,6 @@
                         <th>End Date:</th>
                         <td>{{ \Carbon\Carbon::parse($quarter->end_date)->format('M - d - Y') }}</td>
                     </tr>
-                    <tr>
-                        <th>Created At:</th>
-                        <td>{{ \Carbon\Carbon::parse($quarter->created_at)->format('M - d - Y') }}</td>
-                    </tr>
                 </table>
 
                 <div class="d-flex justify-content-end mt-4">
@@ -41,6 +37,25 @@
                 </div>
             </div>
         </div>
+
+
+        @if ($quarter->fortnights)
+
+            @php
+                $fortnights = $quarter->fortnights;
+            @endphp
+
+            <div class="card-header">
+                <h3 class="card-title mb-5">Fortnights of this quarter</h3>
+            </div>
+
+            @include('fortnights.list')
+
+        @else
+            <div class="alert alert-warning mt-3">
+                <p>No fortnights found for this quarter.</p>
+            </div>
+        @endif
     </div>
 
 @endsection

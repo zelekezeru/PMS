@@ -13,7 +13,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Value</th>
                             <th>Unit</th>
                             <th>Task</th>

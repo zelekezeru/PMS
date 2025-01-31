@@ -25,14 +25,6 @@
                         <th>Description:</th>
                         <td>{{ $strategy->description }}</td>
                     </tr>
-                    <tr>
-                        <th>Created At:</th>
-                        <td>{{ \Carbon\Carbon::parse($strategy->created_at)->format('M - d - Y') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Updated At:</th>
-                        <td>{{ \Carbon\Carbon::parse($strategy->updated_at)->format('M - d - Y') }}</td>
-                    </tr>
                 </table>
 
                 <div class="d-flex justify-content-end mt-4">

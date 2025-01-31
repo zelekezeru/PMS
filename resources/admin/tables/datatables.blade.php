@@ -748,7 +748,7 @@
                       >
                         <thead>
                           <tr>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Position</th>
                             <th>Office</th>
                             <th>Age</th>
@@ -758,7 +758,7 @@
                         </thead>
                         <tfoot>
                           <tr>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Position</th>
                             <th>Office</th>
                             <th>Age</th>
@@ -1243,7 +1243,7 @@
                       >
                         <thead>
                           <tr>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Position</th>
                             <th>Office</th>
                             <th>Age</th>
@@ -1253,7 +1253,7 @@
                         </thead>
                         <tfoot>
                           <tr>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Position</th>
                             <th>Office</th>
                             <th>Age</th>
@@ -1835,7 +1835,7 @@
                       >
                         <thead>
                           <tr>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Position</th>
                             <th>Office</th>
                             <th style="width: 10%">Action</th>
@@ -1843,7 +1843,7 @@
                         </thead>
                         <tfoot>
                           <tr>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Position</th>
                             <th>Office</th>
                             <th>Action</th>

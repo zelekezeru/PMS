@@ -15,23 +15,19 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Pillar Name:</th>
-                        <td>{{ $goal->pilar_name }}</td>
+                        <td>{{ $goal->strategy->pilar_name }}</td>
                     </tr>
                     <tr>
-                        <th>Name:</th>
+                        <th>Strategic Goal:</th>
+                        <td>{{ $goal->strategy->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Goal:</th>
                         <td>{{ $goal->name }}</td>
                     </tr>
                     <tr>
                         <th>Description:</th>
                         <td>{{ $goal->description }}</td>
-                    </tr>
-                    <tr>
-                        <th>Created At:</th>
-                        <td>{{ \Carbon\Carbon::parse($goal->created_at)->format('M - d - Y') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Updated At:</th>
-                        <td>{{ \Carbon\Carbon::parse($goal->updated_at)->format('M - d - Y') }}</td>
                     </tr>
                 </table>
 

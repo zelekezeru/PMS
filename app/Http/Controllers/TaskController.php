@@ -33,7 +33,7 @@ class TaskController extends Controller
         $parent_tasks = Task::get();
 
         $users = User::get();
-        
+
         $fortnights = Fortnight::get();
 
         return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights'));
@@ -52,14 +52,14 @@ class TaskController extends Controller
         unset($request['department_id']);
         unset($request['fortnight_id']);
         unset($request['user_id']);
-        
+
         $task = Task::create($data);
-        
+
         $task->departments()->attach($departments);
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
-        
-        
+
+
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
 
@@ -92,28 +92,26 @@ class TaskController extends Controller
     {
         $data = $request->validated();
 
-        
+
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
-        
+
         $departments = $request['department_id'];
         $fortnights = $request['fortnight_id'];
         $users = $request['user_id'];
 
         $oldDepartments = $task->departments()->pluck('departments.id')->toArray();
-        dd($departments);
         
-        dd($data);
         unset($request['department_id']);
         unset($request['fortnight_id']);
         unset($request['user_id']);
-        
+
         $task->update($data);
-        
+
         $task->departments()->attach($departments);
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
-        
-        
+
+
 
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }

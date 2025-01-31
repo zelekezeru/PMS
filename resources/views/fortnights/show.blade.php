@@ -18,12 +18,8 @@
                         <td>{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
                     </tr>
                     <tr>
-                        <th>End Date:</th>
+                        <th>Start Date:</th>
                         <td>{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Created At:</th>
-                        <td>{{ \Carbon\Carbon::parse($fortnight->created_at)->format('M - d - Y') }}</td>
                     </tr>
                 </table>
 
