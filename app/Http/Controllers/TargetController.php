@@ -14,14 +14,21 @@ use Illuminate\View\View;
 
 class TargetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $targets = Target::with(['goal', 'departments'])->paginate(10);
-
+        $query = Target::with(['goal', 'departments']);
+    
+        if ($request->has('goal_id') && !empty($request->goal_id)) {
+            $query->where('goal_id', $request->goal_id);
+        }
+    
+        $targets = $query->paginate(10);
+    
         $goals = Goal::with(['targets'])->get();
-
+    
         return view('targets.index', compact('targets', 'goals'));
     }
+    
 
     public function create()
     {
