@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
         Route::resource('users', UserController::class);
     });
+
     Route::resource('homes', HomeController::class);
     Route::resource('strategies', StrategyController::class);
     Route::resource('targets', TargetController::class);

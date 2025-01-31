@@ -11,7 +11,7 @@
     </thead>
     <tbody>
         @forelse ($users as $user)
-            @if ($user->hasRole('SUPER_ADMIN'))
+            @if (!$user->hasRole('SUPER_ADMIN'))
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>

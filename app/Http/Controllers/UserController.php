@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function waitingApproval()
     {
-        $users = User::where('is_approved', 1)->get();
+        $users = User::where('is_approved', false)->get();
 
         return view('users.waiting', compact('users'));
     }
@@ -99,6 +99,12 @@ class UserController extends Controller
         $data['is_active'] = $request->is_active ? 1 : 0;
 
         $user->update($data);
+
+        if ($data['role_id']) {
+            $user->roles()->detach();
+            $role = Role::findById($data['role_id']);
+            $user->assignRole($role);
+        }
 
         return redirect()->route('users.show', $user)->with('status', "user-updated");
     }

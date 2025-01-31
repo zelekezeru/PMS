@@ -123,15 +123,19 @@ return new class extends Migration
         Role::create([
             'name' => 'SUPER_ADMIN'
         ]);
+
         Role::create([
             'name' => 'ADMIN'
         ]);
+
         Role::create([
             'name' => 'DEPARTMENT_HEAD'
         ]);
+
         Role::create([
             'name' => 'EMPLOYEE'
         ]);
+        
     }
 
     /**
