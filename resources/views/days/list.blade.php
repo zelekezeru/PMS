@@ -16,7 +16,7 @@
                 <td>{{ $day->fortnight->quarter->year->year }}</td>
                 <td>{{ $day->fortnight->quarter->quarter }}</td>
                 <td>
-                    {{ \Carbon\Carbon::parse($day->fortnight->start_date)->format('M d') }} - 
+                    {{ \Carbon\Carbon::parse($day->fortnight->start_date)->format('M d') }} -
                     {{ \Carbon\Carbon::parse($day->fortnight->end_date)->format('M d, Y') }}
                 </td>
                 <td>{{ \Carbon\Carbon::parse($day->date)->format('M d, Y') }}</td>
@@ -39,29 +39,3 @@
         @endforeach
     </tbody>
 </table>
-
-<!-- SweetAlert Delete Confirmation -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                let form = this.closest('.delete-form');
-
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "This action cannot be undone!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-    });
-</script>

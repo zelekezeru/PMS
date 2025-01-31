@@ -69,24 +69,6 @@
                         @csrf
                         @method('DELETE')
                     </form>
-
-                    <script>
-                        function confirmDelete(taskId) {
-                            Swal.fire({
-                                title: "Are you sure?",
-                                text: "Once deleted, this task cannot be recovered!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#d33",
-                                cancelButtonColor: "#3085d6",
-                                confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    document.getElementById('delete-form-' + taskId).submit();
-                                }
-                            });
-                        }
-                    </script>
                 </div>
             </div>
         </div>

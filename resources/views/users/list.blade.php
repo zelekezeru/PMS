@@ -18,7 +18,7 @@
                         @if ($user->is_approved)
                             Approved!
                         @else
-                        <a href="{{ route('users.waiting') }}">Waiting!</a> 
+                        <a href="{{ route('users.waiting') }}">Waiting!</a>
                         @endif
                     </td>
                     <td>{{ $user->name }}</td>
@@ -27,10 +27,10 @@
                     <td class="text-center">
                     <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
                     <a href="{{ route('users.edit', $user->id) }}" class="m-1 btn  btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline" id="delete-form-{{ $user->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="m-1 btn  btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})">
                             <i class="fa fa-trash"></i> Delete
                         </button>
                     </form>

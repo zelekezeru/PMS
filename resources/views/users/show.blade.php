@@ -28,7 +28,7 @@
                         <th>Phone number:</th>
                         <td>{{ $user->phone_number }}</td>
                     </tr>
-                    
+
                     <tr>
                         <th>Department:</th>
                         <td>{{ $user->department->department_name }}</td>
@@ -49,24 +49,4 @@
         </div>
 
     </div>
-    @if(session('status'))
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let message = "{{ session('status') }}";
-            let title = "";
-            let text = "";
-
-            if (message === "user-updated") {
-                title = "Updated The User!";
-                text = "Successfully Updated The User.";
-            }
-            Swal.fire({
-                icon: 'success',
-                title: title,
-                text: text,
-                confirmButtonText: 'Okay'
-            });
-        });
-    </script>
-@endif
 @endsection

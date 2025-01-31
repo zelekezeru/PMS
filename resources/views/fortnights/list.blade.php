@@ -32,22 +32,3 @@
         @endforeach
     </tbody>
 </table>
-
-<script>
-    function confirmDelete(fortnightId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this fortnight!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + fortnightId).submit();
-            }
-        });
-    }
-</script>

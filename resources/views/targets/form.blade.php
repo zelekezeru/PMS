@@ -54,7 +54,7 @@
             <label for="department_id" class="form-label"><strong>Responsible Departments:</strong></label>
             <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
                 @php
-                    $selectedDepartments = old('department_id', isset($target) && $target->department_id ? $target->department_id->pluck('id')->toArray() : []);
+                    $selectedDepartments = old('department_id', isset($target) && $target->departments ? $target->departments->pluck('id')->toArray() : []);
                 @endphp
 
                 @foreach($departments as $department)

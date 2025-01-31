@@ -35,8 +35,7 @@
                     <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-warning btn-sm me-2">
                         <i class="fas fa-edit"></i> Edit
                     </a>
-
-                    <button type="button" class="btn btn-danger btn-sm">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $goal->id }})">
                         <i class="fas fa-trash"></i> Delete
                     </button>
 

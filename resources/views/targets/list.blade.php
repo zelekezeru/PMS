@@ -23,9 +23,6 @@
                 </div>
             @endif
             </th>
-            <th>Department</th>
-            <th>Value</th>
-            <th>Unit</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -41,24 +38,20 @@
                         {{ $target->goal->name }}
                     @endif
                 </td>
-                <td>
-                    @if($target->departments && $target->departments->count() > 0)
-                        @foreach($target->departments as $department)
-                            <strong>{{ $department->department_name }}</strong>,
-                        @endforeach
-                    @endif
-                </td>
-                <td>{{ $target->value }}</td>
-                <td>{{ $target->unit }}</td>
                 <td class="text-center">
-                    <a href="{{ route('targets.show', $target->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</a>
-                    <a href="{{ route('targets.edit', $target->id) }}" class="m-1 btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                    <form action="{{ route('targets.destroy', $target->id) }}" method="POST" class="d-inline" id="delete-form-{{ $target->id }}">
+                    <a href="{{ route('targets.show', $target->id) }}" class="btn btn-info btn-sm">
+                        <i class="fa fa-eye"></i> View
+                    </a>
+                    <a href="{{ route('targets.edit', $target->id) }}" class="m-1 btn btn-primary btn-sm">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $target->id }})">
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
+
+                    <form id="delete-form-{{ $target->id }}" action="{{ route('targets.destroy', $target->id) }}" method="POST" style="display: none;">
                         @csrf
                         @method('DELETE')
-                        <button type="button" class="m-1 btn btn-danger btn-sm" onclick="confirmDelete({{ $target->id }})">
-                            <i class="fa fa-trash"></i> Delete
-                        </button>
                     </form>
                 </td>
             </tr>
@@ -69,22 +62,3 @@
         @endforelse
     </tbody>
 </table>
-
-<script>
-    function confirmDelete(targetId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this target!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + targetId).submit();
-            }
-        });
-    }
-</script>

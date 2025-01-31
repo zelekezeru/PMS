@@ -12,7 +12,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/plugins.min.css') }}" />
-    
+
     <link rel="stylesheet" href="{{ asset('css/kaiadmin.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/fonts.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -23,7 +23,7 @@
 
 <body>
     <div class="wrapper">
-        
+
         @include('layouts.side-navigation')
 
 
@@ -36,13 +36,87 @@
             </div>
             <div class="container">
                 <div class="page-inner">
-                    
+
                     @yield('contents')
                 </div>
             </div>
         </div>
-        
+
     </div>
+
+
+
+    <script>
+        function confirmDelete(ItemId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Once deleted, this Item cannot be recovered!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + ItemId).submit();
+                }
+            });
+        }
+    </script>
+
+    @if(session('status'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let message = "{{ session('status') }}";
+                let title = "";
+                let text = "";
+
+                if (message === "Item-created") {
+                    title = "Item Created!";
+                    text = "Your Item has been successfully created.";
+                } else if (message === "Item-updated") {
+                    title = "Item Updated!";
+                    text = "Your Item has been successfully updated.";
+                } else if (message === "Item-related") {
+                    title = "Item can't be Deleted!";
+                    text = "This Item has related Items, First remove the relations.";
+                } else if (message === "Item-deleted") {
+                    title = "Item Deleted!";
+                    text = "Your Item has been successfully deleted.";
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: title,
+                    text: text,
+                    confirmButtonText: 'Okay'
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('related'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let message = "{{ session('related') }}";
+                let title = "";
+                let text = "";
+
+                if (message === "Item-related") {
+                    title = "Item can't be Deleted!";
+                    text = "This Item has related Items, First remove the relations.";
+                }
+
+                Swal.fire({
+                    icon: 'danger',
+                    title: title,
+                    text: text,
+                    confirmButtonText: 'Okay'
+                });
+            });
+        </script>
+    @endif
+
     <!--   Core JS Files   -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}"></script>

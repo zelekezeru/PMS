@@ -73,6 +73,7 @@ class GoalController extends Controller
     public function destroy(Goal $goal)
     {
         $goal->delete();
+
         return redirect()->route('goals.index')->with('status', 'goal-deleted');
     }
 }

@@ -36,38 +36,12 @@
                 @include('goals.list')
 
                 <div class="mt-3">
-                    {{ $goals->links() }}
+                    @if ($goals->isNotEmpty())
+                        {{ $goals->links() }}
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-
-    @if(session('status'))
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let message = "{{ session('status') }}";
-            let title = "";
-            let text = "";
-
-            if (message === "goal-created") {
-                title = "Goal Created!";
-                text = "Your goal has been successfully created.";
-            } else if (message === "goal-updated") {
-                title = "Goal Updated!";
-                text = "Your goal has been successfully updated.";
-            } else if (message === "goal-deleted") {
-                title = "Goal Deleted!";
-                text = "Your goal has been successfully deleted.";
-            }
-
-            Swal.fire({
-                icon: 'success',
-                title: title,
-                text: text,
-                confirmButtonText: 'Okay'
-            });
-        });
-    </script>
-@endif
 
 @endsection

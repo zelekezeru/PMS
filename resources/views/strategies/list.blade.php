@@ -31,23 +31,6 @@
                         @method('DELETE')
                     </form>
 
-                    <script>
-                        function confirmDelete(strategyId) {
-                            Swal.fire({
-                                title: "Are you sure?",
-                                text: "Once deleted, this strategy cannot be recovered!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#d33",
-                                cancelButtonColor: "#3085d6",
-                                confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    document.getElementById('delete-form-' + strategyId).submit();
-                                }
-                            });
-                        }
-                    </script>
                 </td>
             </tr>
         @empty
