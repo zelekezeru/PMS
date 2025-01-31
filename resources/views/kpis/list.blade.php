@@ -10,9 +10,9 @@
                             <th>Value</th>
                             <th>Unit</th>
 
-                            @if($kpis->first()->task_id != null)
+                            @if(isset($kpis) && $kpis->isNotEmpty() && $kpis->first()->task_id !== null)
                                 <th>Task</th>
-                            @elseif($kpis->first()->target_id != null)
+                            @elseif(isset($kpis) && $kpis->isNotEmpty() && $kpis->first()->target_id !== null)
                                 <th>Target</th>
                             @endif
 
@@ -22,15 +22,15 @@
                     <tbody>
                         @forelse ($kpis as $kpi)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $kpi->name }}</td>
-                                <td>{{ $kpi->value }}</td>
-                                <td>{{ $kpi->unit }}</td>
+                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->name }}</td>
+                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->value }}</td>
+                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->unit }}</td>
 
-                                @if($kpi->task_id != null)
-                                    <td>{{ $kpi->task->name }}</td>
-                                @elseif($kpi->target_id != null)
-                                    <td>{{ $kpi->target->name }}</td>
+                                @if($kpi->task_id !== null)
+                                    <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->task->name }}</td>
+                                @elseif($kpi->target_id !== null)
+                                    <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->target->name }}</td>
                                 @endif
 
                                 <td class="text-center">
@@ -53,7 +53,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center">No kpis found.</td>
+                                <td colspan="5" class="text-center">No KPIs found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -62,3 +62,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action cannot be undone!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>

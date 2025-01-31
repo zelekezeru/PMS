@@ -1,17 +1,4 @@
-<style>
-    .custom-dropdown-menu {
-        background-color: #343a40; /* Matches the dark background of the table header */
-        border-color: #454d55; /* Slightly lighter border to match the theme */
-    }
-    .custom-dropdown-menu .dropdown-item {
-        color: #fff; /* White text to maintain readability */
-    }
-    .custom-dropdown-menu .dropdown-item:hover {
-        background-color: #495057; /* Slightly lighter hover color */
-    }
-</style>
-
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped table-hover">
     <thead class="thead-dark">
         <tr>
             <th>#</th>
@@ -36,35 +23,36 @@
                 @endif
             </th>
             <th>Description</th>
-            <th>Actions</th>
+            <th style="width: 10%; text-align: center;">Actions</th>
         </tr>
     </thead>
     <tbody>
         @forelse ($goals as $goal)
             <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $goal->name }}</td>
-                <td>
+                <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ $loop->iteration }}</td>
+                <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ $goal->name }}</td>
+                <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">
                     @if($goal->strategy)
                         {{ $goal->strategy->name }}
                     @endif
                 </td>
-                <td>{{ $goal->description }}</td>
+                <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ $goal->description }}</td>
                 <td class="text-center">
-                    <a href="{{ route('goals.show', $goal->id) }}" class="btn btn-info btn-sm">
-                        <i class="fa fa-eye"></i> View
-                    </a>
-                    <a href="{{ route('goals.edit', $goal->id) }}" class="m-1 btn btn-primary btn-sm">
-                        <i class="fa fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $goal->id }})">
-                        <i class="fa fa-trash"></i> Delete
-                    </button>
-
-                    <form id="delete-form-{{ $goal->id }}" action="{{ route('goals.destroy', $goal->id) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                    <div class="form-button-action">
+                        <a href="{{ route('goals.show', $goal->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                        <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $goal->id }})">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <form id="delete-form-{{ $goal->id }}" action="{{ route('goals.destroy', $goal->id) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    </div>
                 </td>
             </tr>
         @empty
