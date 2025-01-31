@@ -36,7 +36,9 @@ class TaskController extends Controller
 
         $fortnights = Fortnight::get();
 
-        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights'));
+        $assignedUsers = [];
+
+        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers'));
     }
 
     public function store(TaskStoreRequest $request)
