@@ -16,8 +16,8 @@ class TargetController extends Controller
 {
     public function index()
     {
-        $targets = Target::with(['goal'])->paginate(10);
-
+        $targets = Target::with(['goal', 'departments'])->paginate(10);
+        
         $goals = Goal::with(['targets'])->get();
 
         return view('targets.index', compact('targets', 'goals'));
@@ -49,6 +49,7 @@ class TargetController extends Controller
 
     public function show(Target $target)
     {
+        dd($target->with('departments')->get());
         return view('targets.show', compact('target'));
     }
 

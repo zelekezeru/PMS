@@ -42,6 +42,12 @@
 
             </div>
         </div>
+
+        <div class="card pt-5">
+            <h2 class="card-header text-center">Assigned Tasks</h2>
+            @include('tasks.list')
+        </div>
+
     </div>
     @if(session('status'))
     <script>

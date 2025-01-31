@@ -10,11 +10,7 @@ class Task extends Model
     use HasFactory;
 
     protected $guarded = [];
-
-    protected $casts = [
-        'departments' => 'array',
-    ];
-
+    
     public function goal()
     {
         return $this->belongsTo(Goal::class);
@@ -48,5 +44,15 @@ class Task extends Model
     public function departments()
     {
         return $this->belongsToMany(Department::class);
+    }
+    
+    public function fortnights()
+    {
+        return $this->belongsToMany(Fortnight::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }
