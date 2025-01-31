@@ -60,7 +60,7 @@
                 <h3 class="card-title mb-5">Users of this Department</h3>
             </div>
 
-            {{-- @include('users.list') --}}
+            @include('users.list')
 
         @else
             <div class="alert alert-warning mt-3">
