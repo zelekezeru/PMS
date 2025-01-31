@@ -13,9 +13,15 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->date('report_date');
+            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('target_id');
+            $table->string('schedule');
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.
