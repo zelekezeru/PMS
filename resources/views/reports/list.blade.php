@@ -17,7 +17,7 @@
                 <td>{{ $report->report_date }}</td>
                 <td>{{ $report->department->department_name }}</td>
                 <td>{{ $report->user->name }}</td>
-                <td>{{ $report->target }}</td>
+                <td>{{ $report->target->name }}</td>
                 <td>{{ $report->schedule }}</td>
                 <td class="text-center">
                     <a href="{{ route('reports.show', $report->id) }}" class="btn btn-info btn-sm">

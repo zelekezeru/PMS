@@ -22,7 +22,7 @@
 
     <div class="col-md-6 mb-3">
         <label for="department_head" class="form-label"><strong>Department Head:</strong></label>
-        <select name="department_head" class="form-control @error('department_head') is-invalid @enderror" id="department_head" required>
+        <select name="department_head" class="form-control @error('department_head') is-invalid @enderror" id="department_head">
             <!-- Assuming you have a list of users -->
             <option value="" {{ old('department_head') == '' ? 'selected' : '' }}>Select User</option>
             @foreach($users as $user)
