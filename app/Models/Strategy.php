@@ -10,7 +10,7 @@ class Strategy extends Model
     use HasFactory;
 
     protected $fillable = [
-        'pilar_name',
+        'pillar_name',
         'name',
         'description',
     ];

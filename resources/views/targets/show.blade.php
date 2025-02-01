@@ -15,7 +15,7 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Pillar Name:</th>
-                        <td>{{ $target->goal->strategy->pilar_name }}</td>
+                        <td>{{ $target->goal->strategy->pillar_name }}</td>
                     </tr>
                     <tr>
                         <th>Target:</th>

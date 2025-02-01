@@ -5,9 +5,9 @@
     @endif
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label for="pilar_name" class="form-label"><strong>Organizational Pilar:</strong></label>
-            <input type="text" name="pilar_name" class="form-control @error('pilar_name') is-invalid @enderror" id="pilar_name" value="{{ old('pilar_name', $strategy->pilar_name ?? '') }}" placeholder="Type Pillar" required>
-            @error('pilar_name')
+            <label for="pillar_name" class="form-label"><strong>Organizational Pilar:</strong></label>
+            <input type="text" name="pillar_name" class="form-control @error('pillar_name') is-invalid @enderror" id="pillar_name" value="{{ old('pillar_name', $strategy->pillar_name ?? '') }}" placeholder="Type Pillar" required>
+            @error('pillar_name')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
         </div>

@@ -49,7 +49,7 @@ class StrategyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pilar_name' => 'required|string|max:255',
+            'pillar_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
@@ -63,7 +63,7 @@ class StrategyController extends Controller
     public function update(Request $request, Strategy $strategy)
     {
         $request->validate([
-            'pilar_name' => 'required|string|max:255',
+            'pillar_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
         ]);

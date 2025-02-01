@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             StrategySeeder::class,
             TargetSeeder::class,
             FortnightSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

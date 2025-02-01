@@ -22,7 +22,7 @@ class StrategyUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pilar_name' => 'sometimes|required|string|max:255',
+            'pillar_name' => 'sometimes|required|string|max:255',
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
         ];

@@ -18,9 +18,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $strategies = Strategy::get();
+        $strategies = Strategy::all();
 
-        $tasks = Task::get();
+        $tasks = Task::count();
 
         $reports = Report::get();
 
