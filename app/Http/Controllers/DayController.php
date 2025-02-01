@@ -16,8 +16,18 @@ class DayController extends Controller
 
     public function create()
     {
-        $fortnights = Fortnight::with('quarter.year')->get();
-        return view('days.create', compact('fortnights'));
+        $fortnights = Fortnight::get();
+
+        if(count($fortnights) == 0)
+        {
+            return redirect()->route('quarters.index')->with('status', 'parent');
+        }
+        else{
+            $fortnights = Fortnight::with('quarter.year')->get();
+
+            return view('days.create', compact('fortnights'));
+        }
+
     }
 
     public function store(Request $request)

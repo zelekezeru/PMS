@@ -234,7 +234,7 @@
                             <ul class="nav nav-collapse">
                                 <li>
                                     <a href="{{ route('users.index') }}">
-                                        <i class="fas fa-users"></i> Manage Users
+                                        <i class="fas fa-users"></i> Registered Users
                                     </a>
                                 </li>
                                 <li>

@@ -23,11 +23,7 @@
                     </tr>
                     <tr>
                         <th>Department Head:</th>
-                        <td>{{ $head->name }}</td>
-                    </tr>
-                    <tr>
-                        <th>Created At:</th>
-                        <td>{{ $department->created_at->format('Y-m-d H:i') }}</td>
+                        <td>{{ optional($department->user)->name ?? 'Not Assigned' }}</td>
                     </tr>
                 </table>
 

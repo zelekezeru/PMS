@@ -96,12 +96,15 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 let message = "{{ session('related') }}";
-                    title = "This Item can't be Deleted!";
-                    text = "This Item has related to other Items, First remove the relations.";
+                let title = "";
+                let text = "";
 
                 if (message === "Item-related") {
                     title = "This Item can't be Deleted!";
                     text = "This Item has related to other  Items, First remove the relations.";
+                }else if (message === "Item-parent") {
+                    title = "This Item can't be Created!";
+                    text = "This Item needa a Parent Item.";
                 }
 
                 Swal.fire({

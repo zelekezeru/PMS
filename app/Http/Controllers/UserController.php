@@ -54,6 +54,20 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('status', 'users-approved');
     }
+
+    public function approved(Request $request, User $user)
+    {
+        // $request->validate([
+        //     'approve' => 'required|boolean'
+        // ]);
+
+        $user->is_approved =  1;
+        $user->is_active =  1;
+        $user->save();
+
+        return redirect()->route('users.index')->with('status', 'user-approved');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -98,15 +112,16 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id)->load('tasks');
+        $user = User::find($id)->load('tasks', 'department');
 
         $tasks = $user->tasks;
+        $department = $user->department;
 
         if (!$user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
 
-        return view('users.show', compact('user', 'tasks'));
+        return view('users.show', compact('user', 'tasks', 'department'));
     }
 
     /**
@@ -150,21 +165,27 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('status', 'not-allowed.');
         }
 
-        $dep = Department::where('department_head', $user->id)->first();
-        dd($dep);
-        if($dep)
-        {
-            return redirect()->route('users.index')->with('status', 'user-is-department-head');
-        }
+        if ($user->department()->exists() ) {
 
-        if($user->tasks()->exists())
+            $department = $user->department;
+
+            if($user->id == $department->department_head)
+            {
+                return redirect()->route('users.index')
+                ->with('related', 'Item-related');
+            }
+
+        }
+        elseif($user->tasks()->exists())
         {
             return redirect()->route('users.index')
-            ->with('related', 'user-deleted');
+            ->with('related', 'Item-related');
+
         }
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('status', 'user-deleted.');
+        return redirect()->route('users.index')->with('status', 'Item-related.');
+
     }
 }

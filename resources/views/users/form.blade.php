@@ -30,20 +30,20 @@
 
     <div class="col-md-6 mb-3">
         <label for="is_active" class="form-label"><strong>Active (if checked):</strong></label>
-        <input type="checkbox" name="is_active" value="1" id="is_active" {{ old('is_active', $user->is_active ?? false) ? 'checked' : '' }}>
+        <input type="checkbox" name="is_active" value="1" id="is_active" {{ old('is_active', isset($user) ? $user->is_active : false) ? 'checked' : '' }}>
     </div>
     <div class="col-md-6 mb-3">
         <label for="is_approved" class="form-label"><strong>Approved (if checked):</strong></label>
-        <input type="checkbox" name="is_approved" value="1" id="is_approved" {{ old('is_approved', $user->is_approved ?? false) ? 'checked' : '' }}>
+        <input type="checkbox" name="is_approved" value="1" id="is_approved" {{ old('is_approved', isset($user) ? $user->is_approved : false) ? 'checked' : '' }}>
     </div>
 
     <div class="col-md-6 mb-3">
         <label for="role_id" class="form-label"><strong>Role:</strong></label>
         <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
-            <option value="" {{ old('role') == '' ? 'selected' : '' }}>Select Role</option>
+            <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
             @foreach($roles as $role)
                 @if ($role->name !== 'SUPER_ADMIN')
-                    <option value="{{ $role->id }}" {{ old('role', $role->name ?? '') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                    <option value="{{ $role->id }}" {{ old('role_id', isset($user) && $user->roles->contains($role->id) ? $role->id : '') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                 @endif
             @endforeach
         </select>

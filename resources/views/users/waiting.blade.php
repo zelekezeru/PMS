@@ -21,9 +21,6 @@
                 <a href="{{ route('users.waiting') }}" class="btn btn-warning btn-sm">
                     <i class="fa fa-clock"></i> Waiting Users
                 </a>
-                <button class="btn btn-info btn-sm" type="submit">
-                    Approve The Selected
-                </button>
             </div>
 
             <form action="{{ route('users.approve') }}" method="POST">
@@ -49,9 +46,13 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
-                                  <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm">
-                                    <i class="fa fa-eye"></i> View
-                                </a>
+                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+
+                                    <a href="{{ route('users.approved', $user->id) }}" class="btn btn-success btn-sm me-2">
+                                        <i class="fa-solid fa-user-check"> </i> Approve
+                                    </a>
                                 </td>
                             </tr>
                         @empty

@@ -11,6 +11,7 @@ class QuarterController extends Controller
     public function index()
     {
         $quarters = Quarter::with('year')->get();
+
         return view('quarters.index', compact('quarters'));
     }
 
@@ -18,7 +19,14 @@ class QuarterController extends Controller
     {
         $years = Year::get();
 
-        return view('quarters.create', compact('years'));
+        if(count($years) == 0)
+        {
+            return redirect()->route('quarters.index')->with('status', 'parent');
+        }
+        else{
+
+            return view('quarters.create', compact('years'));
+        }
     }
 
     public function store(Request $request)
@@ -58,7 +66,16 @@ class QuarterController extends Controller
 
     public function destroy(Quarter $quarter)
     {
-        $quarter->delete();
-        return redirect()->route('quarters.index')->with('status', 'deleted');
+        if($quarter->fortnights()->exists())
+        {
+            return redirect()->route('quarters.index')
+            ->with('related', 'Item-related');
+        }
+        else{
+            $quarter->delete();
+
+            return redirect()->route('quarters.index')->with('status', 'quarter-deleted.');
+        }
+
     }
 }

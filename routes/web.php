@@ -40,7 +40,11 @@ Route::middleware('auth')->group(function () {
     //The way to assign specific roles to users
     Route::middleware('role:SUPER_ADMIN|ADMIN')->group(function () {
         Route::get('users/waiting-approval', [UserController::class, 'waitingApproval'])->name('users.waiting');
+
+        //Approval
         Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
+        Route::get('users/{user}/approve', [UserController::class, 'approved'])->name('users.approved');
+
         Route::resource('users', UserController::class);
     });
 

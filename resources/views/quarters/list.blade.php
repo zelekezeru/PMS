@@ -6,8 +6,8 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Year</th>
                             <th>Quarter</th>
+                            <th>Year</th>
                             <th class="text-center" style="width: 40%;">Actions</th>
                         </tr>
                     </thead>
@@ -15,8 +15,8 @@
                         @foreach ($quarters as $quarter)
                             <tr>
                                 <td onclick="window.location='{{ route('quarters.show', $quarter->id) }}'">{{ $loop->iteration }}</td>
-                                <td onclick="window.location='{{ route('quarters.show', $quarter->id) }}'">{{ $quarter->year->year }}</td>
                                 <td onclick="window.location='{{ route('quarters.show', $quarter->id) }}'">{{ $quarter->quarter }}</td>
+                                <td onclick="window.location='{{ route('quarters.show', $quarter->id) }}'">{{ optional($quarter->year)->year ?? 'N/A' }}</td>
                                 <td class="text-center">
                                     <div class="form-button-action">
                                         <a href="{{ route('quarters.show', $quarter->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">

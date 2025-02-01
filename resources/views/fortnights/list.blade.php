@@ -6,9 +6,9 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Quarter</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Quarter</th>
                             <th class="text-center" style="width: 40%;">Actions</th>
                         </tr>
                     </thead>
@@ -16,9 +16,9 @@
                         @foreach ($fortnights as $fortnight)
                             <tr>
                                 <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ $loop->iteration }}</td>
-                                <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ $fortnight->quarter->quarter }}</td>
                                 <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
                                 <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
+                                <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ $fortnight->quarter->quarter }}</td>
                                 <td class="text-center">
                                     <div class="form-button-action">
                                         <a href="{{ route('fortnights.show', $fortnight->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">

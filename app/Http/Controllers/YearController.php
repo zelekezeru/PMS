@@ -29,6 +29,11 @@ class YearController extends Controller
         return redirect()->route('years.index')->with('status', 'created');
     }
 
+    public function show(Year $year)
+    {
+        return view('years.show', compact('year'));
+    }
+
     public function edit(Year $year)
     {
         return view('years.edit', compact('year'));
@@ -47,12 +52,14 @@ class YearController extends Controller
 
     public function destroy(Year $year)
     {
-        $year->delete();
-        return redirect()->route('years.index')->with('status', 'deleted');
-    }
+        if($year->quarters()->exists())
+        {
+            return redirect()->route('years.index')
+            ->with('related', 'Item-related');
+        }
 
-    public function show(Year $year)
-    {
-        return view('years.show', compact('year'));
+        $year->delete();
+
+        return redirect()->route('years.index')->with('status', 'year-deleted.');
     }
 }

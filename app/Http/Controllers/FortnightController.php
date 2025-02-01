@@ -19,7 +19,16 @@ class FortnightController extends Controller
     public function create()
     {
         $quarters = Quarter::with('year')->get();
-        return view('fortnights.create', compact('quarters'));
+
+        if(count($quarters) == 0)
+        {
+            return redirect()->route('fortnights.index')->with('status', 'parent');
+        }
+        else{
+
+            return view('fortnights.create', compact('quarters'));
+        }
+
     }
 
     // Store a newly created fortnight in the database
@@ -66,7 +75,15 @@ class FortnightController extends Controller
     // Remove the specified fortnight from the database
     public function destroy(Fortnight $fortnight)
     {
-        $fortnight->delete();
-        return redirect()->route('fortnights.index')->with('status', 'deleted');
+        if($fortnight->tasks()->exists() || $fortnight->days()->exists())
+        {
+            return redirect()->route('fortnights.index')
+            ->with('related', 'Item-related');
+        }
+        else{
+            $fortnight->delete();
+
+            return redirect()->route('fortnights.index')->with('status', 'fortnight-deleted.');
+        }
     }
 }
