@@ -66,4 +66,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Task::class);
     }
 
+    public function headOf()
+    {
+        return $this->hasOne(Department::class, 'department_head');
+    }
 }

@@ -28,35 +28,38 @@
                 </table>
 
                 <div class="d-flex justify-content-end mt-4">
-                    <a href="{{ route('strategies.edit', $strategy->id) }}" class="btn btn-warning btn-sm me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $strategy->id }})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                    @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                        <a href="{{ route('strategies.edit', $strategy->id) }}" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $strategy->id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
 
-                    <form id="delete-form-{{ $strategy->id }}" action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                        <form id="delete-form-{{ $strategy->id }}" action="{{ route('strategies.destroy', $strategy->id) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
 
-                    <script>
-                        function confirmDelete(strategyId) {
-                            Swal.fire({
-                                title: "Are you sure?",
-                                text: "Once deleted, this strategy cannot be recovered!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#d33",
-                                cancelButtonColor: "#3085d6",
-                                confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    document.getElementById('delete-form-' + strategyId).submit();
-                                }
-                            });
-                        }
-                    </script>
+                        <script>
+                            function confirmDelete(strategyId) {
+                                Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "Once deleted, this strategy cannot be recovered!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#d33",
+                                    cancelButtonColor: "#3085d6",
+                                    confirmButtonText: "Yes, delete it!"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        document.getElementById('delete-form-' + strategyId).submit();
+                                    }
+                                });
+                            }
+                        </script>
+                        
+                    @endif
                 </div>
             </div>
         </div>

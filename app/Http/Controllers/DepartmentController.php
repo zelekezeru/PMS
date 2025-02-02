@@ -25,7 +25,15 @@ class DepartmentController extends Controller
 
     public function store(DepartmentStoreRequest $request)
     {
-        Department::create($request->validated());
+        $data = $request->validated();
+
+        if ($data['department_head']) {
+            $user = User::find($data['department_head']);
+            $user->roles()->detach();
+            $user->assignRole('DEPARTMENT_HEAD');
+        }
+
+        Department::create($data);
 
         // Return with success status
         return redirect()->route('departments.index')->with('status', 'created');
@@ -41,6 +49,14 @@ class DepartmentController extends Controller
     public function update(DepartmentUpdateRequest $request, Department $department)
     {
         $data = $request->validated();
+        if ($data['department_head'] !== $department->department_head) {
+            $department->departmentHead->roles()->detach();
+            $department->departmentHead->assignRole('EMPLOYEE');
+
+            $user = User::find($data['department_head']);
+            $user->roles()->detach();
+            $user->assignRole('DEPARTMENT_HEAD');
+        }
 
         $department->update($data);
 

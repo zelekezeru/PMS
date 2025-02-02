@@ -18,11 +18,17 @@ class Department extends Model
 
     public function users()
     {
+        
         return $this->hasMany(User::class);
     }
 
     public function targets()
     {
         return $this->belongsToMany(Target::class);
+    }
+
+    public function departmentHead()
+    {
+        return $this->belongsTo(User::class, 'department_head');
     }
 }

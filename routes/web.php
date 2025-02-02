@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
 // Resource Routes
 Route::middleware('auth')->group(function () {
 
-    //The way to assign specific roles to users
+    //Routes Accessible for SUPER_ADMIN, ADMIN
     Route::middleware('role:SUPER_ADMIN|ADMIN')->group(function () {
         Route::get('users/waiting-approval', [UserController::class, 'waitingApproval'])->name('users.waiting');
 
@@ -45,24 +45,40 @@ Route::middleware('auth')->group(function () {
         Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
         Route::get('users/{user}/approve', [UserController::class, 'approved'])->name('users.approved');
 
-        Route::resource('users', UserController::class);
+        Route::resource('users', UserController::class)->only('create', 'store', 'edit', 'update', 'destroy');
+
+        Route::resource('strategies', StrategyController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('targets', TargetController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('goals', GoalController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+
+        Route::resource('years', YearController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('quarters', QuarterController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('days', DayController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        
+        Route::resource('departments', DepartmentController::class);
     });
 
+    // Routes Accessible for SUPER_ADMIN, ADMIN, DEPARTMENT_HEAD
+    Route::middleware('role:SUPER_ADMIN|ADMIN|DEPARTMENT_HEAD')->group(function () {
+        Route::resource('users', UserController::class)->only('index', 'show');
+        
+    });
+    
     Route::resource('homes', HomeController::class);
-    Route::resource('strategies', StrategyController::class);
-    Route::resource('targets', TargetController::class);
-    Route::resource('goals', GoalController::class);
+    Route::resource('strategies', StrategyController::class)->only(['index', 'show']);
+    Route::resource('targets', TargetController::class)->only(['index', 'show']);
+    Route::resource('goals', GoalController::class)->only(['index', 'show']);
+
+    Route::resource('years', YearController::class)->only(['index', 'show']);
+    Route::resource('quarters', QuarterController::class)->only(['index', 'show']);
+    Route::resource('days', DayController::class)->only(['index', 'show']);
     Route::resource('tasks', TaskController::class);
     Route::resource('deliverables', DeliverableController::class);
-    Route::resource('years', YearController::class);
-    Route::resource('quarters', QuarterController::class);
     Route::resource('fortnights', FortnightController::class);
     Route::resource('weeks', WeekController::class);
-    Route::resource('days', DayController::class);
     Route::resource('feedbacks', FeedbackController::class);
     Route::resource('reports', ReportController::class);
     Route::resource('templates', TemplateController::class);
-    Route::resource('departments', DepartmentController::class);
     Route::resource('kpis', KpiController::class);
 
     //KPI

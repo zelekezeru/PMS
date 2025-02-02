@@ -28,9 +28,11 @@
             <h2 class="card-header text-center">Goals List</h2>
             <div class="card-body">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+                    @if(request()->user()->hasAnyRole('ADMIN', 'SUPER_ADMIN'))
                     <a class="btn btn-success btn-sm" href="{{ route('goals.create') }}">
                         <i class="fa fa-plus"></i> Add New Goal
                     </a>
+                    @endif
                 </div>
 
                 @include('goals.list')

@@ -17,9 +17,11 @@
                             <input type="text" placeholder="Search ..." class="form-control" />
                         </div>
                     </nav>
-                    <a class="btn btn-success btn-sm" href="{{ route('strategies.create') }}">
-                        <i class="fa fa-plus"></i> Add New Strategy
-                    </a>
+                    @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                        <a class="btn btn-success btn-sm" href="{{ route('strategies.create') }}">
+                            <i class="fa fa-plus"></i> Add New Strategy
+                        </a>
+                    @endif
                 </div>
 
                 @include('strategies.list')
@@ -37,7 +39,7 @@
                         });
                     </script>
                 @endif
-
+                
                 <div class="mt-3">
                     {{ $strategies->links() }}
                 </div>

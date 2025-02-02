@@ -50,25 +50,27 @@
                 </table>
 
                 <div class="d-flex justify-content-end mt-4">
+                    @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                        <a href="{{ route('targets.edit', $target->id) }}" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $target->id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
 
-                    <a href="{{ route('targets.edit', $target->id) }}" class="btn btn-warning btn-sm me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $target->id }})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
-
-                    <form id="delete-form-{{ $target->id }}" action="{{ route('targets.destroy', $target->id) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                        <form id="delete-form-{{ $target->id }}" action="{{ route('targets.destroy', $target->id) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
-
-        <div class="col">
-            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create', ['target' => $target->id]) }}"><i class="fa fa-plus"></i> Add Target Indicators</a>
-        </div>
+        @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+            <div class="col">
+                <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create', ['target' => $target->id]) }}"><i class="fa fa-plus"></i> Add Target Indicators</a>
+            </div>
+        @endif
 
         @if ($target->kpis)
             @php

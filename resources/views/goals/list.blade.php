@@ -23,7 +23,10 @@
                 @endif
             </th>
             <th>Description</th>
-            <th style="width: 10%; text-align: center;">Actions</th>
+            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                <th style="width: 10%; text-align: center;">Actions</th>
+                
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -37,23 +40,25 @@
                     @endif
                 </td>
                 <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ $goal->description }}</td>
-                <td class="text-center">
-                    <div class="form-button-action">
-                        <a href="{{ route('goals.show', $goal->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                        <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $goal->id }})">
-                            <i class="fa fa-times"></i>
-                        </button>
-                        <form id="delete-form-{{ $goal->id }}" action="{{ route('goals.destroy', $goal->id) }}" method="POST" style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                    </div>
-                </td>
+                @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                    <td class="text-center">
+                        <div class="form-button-action">
+                            <a href="{{ route('goals.show', $goal->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $goal->id }})">
+                                <i class="fa fa-times"></i>
+                            </button>
+                            <form id="delete-form-{{ $goal->id }}" action="{{ route('goals.destroy', $goal->id) }}" method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        </div>
+                    </td>
+                @endif
             </tr>
         @empty
             <tr>

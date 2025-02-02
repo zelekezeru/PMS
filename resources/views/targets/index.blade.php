@@ -5,9 +5,11 @@
         <div class="card mt-5">
             <h2 class="card-header text-center">Targets List</h2>
             <div class="card-body">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-                    <a class="btn btn-success btn-sm" href="{{ route('targets.create') }}"><i class="fa fa-plus"></i> Add New Target</a>
-                </div>
+                @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+                        <a class="btn btn-success btn-sm" href="{{ route('targets.create') }}"><i class="fa fa-plus"></i> Add New Target</a>
+                    </div>
+                @endif
 
                 @include('targets.list')
 

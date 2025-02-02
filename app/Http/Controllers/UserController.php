@@ -19,7 +19,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(15);
+        if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
+            $users = request()->user()->headOf->users;
+
+        } else {
+            $users = User::paginate(15);
+        }
 
         return view('users.index', compact('users'));
     }

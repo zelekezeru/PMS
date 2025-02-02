@@ -72,7 +72,7 @@ class GoalController extends Controller
 
     public function destroy(Goal $goal)
     {
-        if($goal->tsrgets()->exists())
+        if($goal->targets()->exists())
         {
             return redirect()->route('goals.index')
             ->with('related', 'goal-deleted');

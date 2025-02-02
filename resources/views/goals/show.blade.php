@@ -32,17 +32,37 @@
                 </table>
 
                 <div class="d-flex justify-content-end mt-4">
-                    <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-warning btn-sm me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $goal->id }})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                    @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                        <a href="{{ route('goals.edit', $goal->id) }}" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $goal->id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
 
-                    <form id="delete-form-{{ $goal->id }}" action="{{ route('goals.destroy', $goal->id) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                        <form id="delete-form-{{ $goal->id }}" action="{{ route('goals.destroy', $goal->id) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+
+                        <script>
+                            function confirmDelete(goalId) {
+                                Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "Once deleted, this goal cannot be recovered!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#d33",
+                                    cancelButtonColor: "#3085d6",
+                                    confirmButtonText: "Yes, delete it!"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        document.getElementById('delete-form-' + goalId).submit();
+                                    }
+                                });
+                            }
+                        </script>
+                    @endif
                 </div>
             </div>
         </div>
@@ -63,23 +83,5 @@
             </div>
         @endif
     </div>
-
-    <script>
-        function confirmDelete(goalId) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Once deleted, this goal cannot be recovered!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + goalId).submit();
-                }
-            });
-        }
-    </script>
 
 @endsection

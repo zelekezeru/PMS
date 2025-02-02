@@ -10,7 +10,9 @@
                             <th>Email</th>
                             <th>Role</th>
                             <th>Approve</th>
-                            <th class="text-center" style="width: 20%;">Actions</th>
+                            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                                <th class="text-center" style="width: 20%;">Actions</th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -34,23 +36,25 @@
                                         <a href="{{ route('users.waiting') }}"><p class="badge badge-warning">Waiting!</p></a>
                                     @endif
                                 </td>
-                                <td class="text-center">
-                                    <div class="form-button-action">
-                                        <a href="{{ route('users.show', $user->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $user->id }})">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                        <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </div>
-                                </td>
+                                @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                                    <td class="text-center">
+                                        <div class="form-button-action">
+                                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $user->id }})">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
