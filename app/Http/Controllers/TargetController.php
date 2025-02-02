@@ -56,7 +56,7 @@ class TargetController extends Controller
 
     public function show(Target $target)
     {
-
+        // $target->load('strategy');
         return view('targets.show', compact('target'));
     }
 

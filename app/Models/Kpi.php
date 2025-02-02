@@ -18,6 +18,6 @@ class Kpi extends Model
 
     public function target()
     {
-        return $this->belongsTo(Task::class);
+        return $this->belongsTo(Target::class);
     }
 }
