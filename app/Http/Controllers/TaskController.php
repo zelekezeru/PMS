@@ -19,8 +19,14 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with(['target', 'departments'])->paginate(10);
-
+        if(request()->user()->hasAnyRole(['DEPARTMENT_HEAD']))
+        {
+            $tasks = request()->user()->headOf->tasks()->with(['target', 'departments'])->paginate(10);
+        } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+            $tasks = Task::with(['target', 'departments'])->paginate(10);
+        } else {
+            $tasks = request()->user()->tasks()->with(['target', 'departments'])->paginate(10);
+        }
         return view('tasks.index', compact('tasks'));
     }
 
@@ -51,9 +57,9 @@ class TaskController extends Controller
         $fortnights = $request['fortnight_id'];
         $users = $request['user_id'];
 
-        unset($request['department_id']);
-        unset($request['fortnight_id']);
-        unset($request['user_id']);
+        unset($data['department_id']);
+        unset($data['fortnight_id']);
+        unset($data['user_id']);
 
         $task = Task::create($data);
 
@@ -97,15 +103,17 @@ class TaskController extends Controller
 
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
 
-        $departments = $request['department_id'];
-        $fortnights = $request['fortnight_id'];
-        $users = $request['user_id'];
+        $departments = $data['department_id'];
+        $fortnights = $data['fortnight_id'];
+        $users = $data['user_id'];
 
-        $oldDepartments = $task->departments()->pluck('departments.id')->toArray();
+        $task->departments()->detach();
+        $task->fortnights()->detach();
+        $task->users()->detach();
 
-        unset($request['department_id']);
-        unset($request['fortnight_id']);
-        unset($request['user_id']);
+        unset($data['department_id']);
+        unset($data['fortnight_id']);
+        unset($data['user_id']);
 
         $task->update($data);
 

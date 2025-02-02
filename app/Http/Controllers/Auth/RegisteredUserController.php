@@ -46,18 +46,20 @@ class RegisteredUserController extends Controller
         if (User::first()->id == $user->id) {
 
             $user->assignRole('SUPER_ADMIN');
-
+            
             $user->is_approved = true;
-
+            
             $user->is_active = true;
-
+            
             $user->save();
-
+            
             Auth::login($user);
-
+            
             return redirect(route('index', absolute: false));
         }
 
+        $user->assignRole('EMPLOYEE');
+        
         event(new Registered($user));
 
         return redirect()->route('login')->with('status', "Successfully registered to PMS, Wait for admin approval. You'll receive an email following your approval!");;

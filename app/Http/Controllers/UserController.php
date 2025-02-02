@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
-            $users = request()->user()->headOf->users;
+            $users = request()->user()->headOf->users()->paginate(15);
 
         } else {
             $users = User::paginate(15);

@@ -130,10 +130,12 @@
                         <div class="col-md-6 mb-3">
                             <label for="fortnight" class="form-label">Is this a Fortnight Task? if so, please select the fornights the task belongs to.</label>
                             <select name="fortnight_id[]" class="form-control @error('fortnight_id') is-invalid @enderror" id="fortnight" multiple>
-
+                                @php
+                                    $taskFortnights = $task ? $task->fortnights()->pluck('fortnights.id')->toArray() : [];
+                                @endphp
                                 <option value=""> Select Fortnights</option>
                                 @foreach($fortnights as $fortnight)
-                                    <option value="{{ $fortnight->id }}" {{ in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : '' }}> From: {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span  class="text-info"> - To - </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }} </option>
+                                    <option value="{{ $fortnight->id }}" {{ (in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : in_array($fortnight->id, $taskFortnights)) ? 'selected' : '' }}> From: {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span  class="text-info"> - To - </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }} </option>
                                 @endforeach
                             </select>
                             @error('fortnight')

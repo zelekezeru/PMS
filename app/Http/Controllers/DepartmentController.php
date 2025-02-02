@@ -19,7 +19,10 @@ class DepartmentController extends Controller
 
     public function create()
     {
-        $users = User::get();
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'SUPER_ADMIN');
+        })->get();
+
         return view('departments.create', compact('users'));
     }
 
@@ -29,8 +32,12 @@ class DepartmentController extends Controller
 
         if ($data['department_head']) {
             $user = User::find($data['department_head']);
-            $user->roles()->detach();
-            $user->assignRole('DEPARTMENT_HEAD');
+            if ($user->id != User::first()->id) {
+                $user->roles()->detach();
+                $user->assignRole('DEPARTMENT_HEAD');
+            } else {
+                return redirect()->back();
+            }
         }
 
         Department::create($data);
@@ -41,7 +48,9 @@ class DepartmentController extends Controller
 
     public function edit(Department $department)
     {
-        $users = User::get();
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'SUPER_ADMIN');
+        })->get();
 
         return view('departments.edit', compact('department', 'users'));
     }
@@ -54,8 +63,12 @@ class DepartmentController extends Controller
             $department->departmentHead->assignRole('EMPLOYEE');
 
             $user = User::find($data['department_head']);
-            $user->roles()->detach();
-            $user->assignRole('DEPARTMENT_HEAD');
+            if ($user->id != User::first()->id) {
+                $user->roles()->detach();
+                $user->assignRole('DEPARTMENT_HEAD');
+            } else {
+                return redirect()->back();
+            }
         }
 
         $department->update($data);
