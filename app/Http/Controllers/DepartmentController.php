@@ -10,12 +10,22 @@ use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    public function index()
-    {
-        $departments = Department::paginate(10);
 
-        return view('departments.index', compact('departments'));
-    }
+    
+    public function index(Request $request)
+    {
+        $query = Department::query();
+    
+        if ($request->filled('department_id')) {
+            $query->where('id', $request->department_id);
+        }
+    
+        $departments = $query->paginate(10); // Paginate with 10 records per page
+        $allDepartments = Department::all(); // For dropdown filter
+    
+        return view('departments.index', compact('departments', 'allDepartments'));
+    }   
+    
 
     public function create()
     {

@@ -32,6 +32,13 @@ class KpiController extends Controller
         return view('kpis.create', compact('task'));
     }
 
+    public function create_target($target)
+    {
+        $target = Target::findOrFail($target);
+
+        return view('kpis.create', compact('target'));
+    }
+
     public function store(KpiStoreRequest $request)
     {
         Kpi::create($request->validated());

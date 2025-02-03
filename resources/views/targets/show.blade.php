@@ -68,7 +68,7 @@
         </div>
         @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
             <div class="col">
-                <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create', ['target' => $target->id]) }}"><i class="fa fa-plus"></i> Add Target Indicators</a>
+                <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_target', ['target' => $target->id]) }}"><i class="fa fa-plus"></i> Add Target Indicators</a>
             </div>
         @endif
 
