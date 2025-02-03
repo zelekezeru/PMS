@@ -17,20 +17,25 @@
             <th>#</th>
             <th class="d-flex align-items-center text-white">
                 <span class="me-2">Department</span>
-                @if(isset($departments) && count($departments) > 0)
+                @if(isset($allDepartments) && count($allDepartments) > 0)
                     <div class="dropdown">
                         <i class="fa fa-chevron-down text-white px-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter text-white"></i>
                         </i>
                         <ul class="dropdown-menu custom-dropdown-menu">
+                            <!-- Show All Option -->
                             <li>
-                                <a class="dropdown-item {{ request('department_id') ? '' : 'active' }}" href="{{ route('departments.index') }}">
+                                <a class="dropdown-item {{ request('department_id') ? '' : 'active' }}" 
+                                    href="{{ route('departments.index', array_merge(request()->query(), ['department_id' => null])) }}">
                                     Show All Options
                                 </a>
                             </li>
-                            @foreach($departments as $department)
+                            
+                            <!-- List all departments -->
+                            @foreach($allDepartments as $department)
                                 <li>
-                                    <a class="dropdown-item {{ request('department_id') == $department->id ? 'active' : '' }}" href="{{ route('departments.index', ['department_id' => $department->id]) }}">
+                                    <a class="dropdown-item {{ request('department_id') == $department->id ? 'active' : '' }}" 
+                                        href="{{ route('departments.index', array_merge(request()->query(), ['department_id' => $department->id])) }}">
                                         {{ $department->department_name }}
                                     </a>
                                 </li>
@@ -39,6 +44,7 @@
                     </div>
                 @endif
             </th>
+
             <th>Description</th>
             <th style="width: 10%; text-align: center;">Actions</th>
         </tr>
