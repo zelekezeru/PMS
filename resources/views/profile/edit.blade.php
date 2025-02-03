@@ -28,13 +28,6 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-8 col-lg-6 mt-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                @include('profile.partials.delete-user-form')
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
