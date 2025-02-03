@@ -61,16 +61,18 @@ class DepartmentController extends Controller
         $users = User::whereHas('roles', function ($query) {
             $query->where('name', '!=', 'SUPER_ADMIN');
         })->get();
-
         return view('departments.edit', compact('department', 'users'));
     }
 
     public function update(DepartmentUpdateRequest $request, Department $department)
     {
         $data = $request->validated();
+        $department = $department->load('departmentHead');
         if ($data['department_head'] !== $department->department_head) {
-            $department->departmentHead->roles()->detach();
-            $department->departmentHead->assignRole('EMPLOYEE');
+            if ($department->department_head !== null ) {
+                $department->departmentHead->roles()->detach();
+                $department->departmentHead->assignRole('EMPLOYEE');
+            }
 
             $user = User::find($data['department_head']);
             if ($user->id != User::first()->id) {
