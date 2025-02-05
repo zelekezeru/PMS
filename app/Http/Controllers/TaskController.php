@@ -73,7 +73,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $task = $task->load('departments', 'users');
+        $task = $task->load('departments', 'users', 'kpi');
 
         $users = $task->users;
         return view('tasks.show', compact('task', 'users'));

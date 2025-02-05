@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th>Department Head:</th>
-                        <td>{{ optional($department->user)->name ?? 'Not Assigned' }}</td>
+                        <td>{{ optional($department->departmentHead->name) ?? 'Not Assigned' }}</td>
                     </tr>
                 </table>
 

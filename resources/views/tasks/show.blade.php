@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th>Target:</th>
-                        <td>{{ $task->target->name }}</td>
+                        <td>{{ $task->target ? $task->target->name : "Not Assigned Yet" }}</td>
                     </tr>
                     <tr>
                         <th>Starting Date:</th>
@@ -44,6 +44,10 @@
                     <tr>
                         <th>Comunication:</th>
                         <td>{{ $task->comunication }}</td>
+                    </tr>
+                    <tr>
+                        <th>KPI:</th>
+                        <td>{{ $task->kpi ? $task->kpi->name : "Not Assigned Yet" }}</td>
                     </tr>
                     <tr>
                         <th>Departments:</th>
@@ -73,11 +77,15 @@
             </div>
         </div>
 
-        <div class="col">
-            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task Indicators</a>
-        </div>
+        @if (!$task->kpi)
+            @can ('create-kpis')
+                <div class="col">
+                    <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_taskx', ['taskx' => $taskx->id]) }}"><i class="fa fa-plus"></i> Add Taskx Indicators</a>
+                </div>
+            @endcan
+        @endif
 
-        @if ($task->kpis)
+        {{-- @if ($task->kpis)
             @php
                 $kpis = $task->name;
             @endphp
@@ -91,7 +99,7 @@
             <div class="alert alert-warning mt-3">
                 <p>No KPIs found for this task.</p>
             </div>
-        @endif
+        @endif --}}
     </div>
 
 @endsection
