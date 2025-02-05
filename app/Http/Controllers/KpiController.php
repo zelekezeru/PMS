@@ -42,7 +42,12 @@ class KpiController extends Controller
     public function store(KpiStoreRequest $request)
     {
         Kpi::create($request->validated());
-
+        if ($request['task_id']) {
+            return redirect()->route('tasks.show', $request['task_id'])->with('success', 'KPI created successfully.');
+        } else if ($request['target_id']) {
+            return redirect()->route('targets.show', $request['target_id'])->with('success', 'KPI created successfully.');
+        }
+        
         return redirect()->route('kpis.index')->with('success', 'KPI created successfully.');
     }
 
