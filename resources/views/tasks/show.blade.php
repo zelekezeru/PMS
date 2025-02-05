@@ -54,7 +54,13 @@
                         <td>
                             @if($task->departments && $task->departments->count() > 0)
                                 @foreach($task->departments as $department)
-                                    {{ $department->department_name }}
+                                    <strong>
+                                        @can('view-departments')
+                                            <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
+                                        @elsecan
+                                            {{ $department->department_name }},
+                                        @endcan
+                                    </strong>
                                 @endforeach
                             @endif
                         </td>

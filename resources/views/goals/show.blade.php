@@ -15,7 +15,18 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Pillar Name:</th>
-                        <td>{{ $goal->strategy->pillar_name }}</td>
+                        <td>
+                            @if ($goal->strategy)
+                                @can('view-strategies')
+                                    <a href="{{route('strategies.show', $goal->strategy->id)}}"> {{ $goal->strategy->pillar_name }} </a>
+                                @elsecan
+                                    {{ $goal->strategy->pillar_name }},
+                                @endcan
+                            @else
+                                Not Assigned To Any
+                            @endif
+
+                        </td>
                     </tr>
                     <tr>
                         <th>Strategic Goal:</th>

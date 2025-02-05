@@ -23,7 +23,18 @@
                     </tr>
                     <tr>
                         <th>Department Head:</th>
-                        <td>{{ optional($department->departmentHead->name) ?? 'Not Assigned' }}</td>
+                        <td>
+                            @if ($department->departmentHead)
+                                @can('view-strategies')
+                                    <a href="{{route('users.show', $department->departmentHead->id)}}"> {{ $department->departmentHead->name }} </a>
+                                @elsecan
+                                    {{ $department->departmentHead->name }},
+                                @endcan
+                            @else
+                                Not Assigned To Any
+                            @endif
+
+                        </td>
                     </tr>
                 </table>
 

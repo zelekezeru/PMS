@@ -4,7 +4,10 @@
 
     <div class="container mt-3">
         <div class="card pt-5">
+            @if ($fortnight->quarter && $fortnight->quarter->year)
             <h2 class="card-header text-center">{{ $fortnight->quarter->quarter }} ({{ $fortnight->quarter->year->year }}) : Fortnight Details</h2>
+                
+            @endif
             <div class="card-body">
                 <div class="d-flex justify-content-end">
                     <a class="btn btn-primary btn-sm mb-3" href="{{ route('fortnights.index') }}">

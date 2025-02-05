@@ -15,7 +15,17 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Pillar Name:</th>
-                        <td>{{ $target->goal ? $target->goal->strategy->pillar_name : 'Not Assigned to any' }}</td>
+                        <td>
+                            @if ($target->goal)
+                                @can('view-strategies')
+                                    <a href="{{route('strategies.show', $target->goal->strategy->id)}}"> {{ $target->goal->strategy->pillar_name }}, </a>
+                                @elsecan
+                                    {{ $target->goal->strategy->pillar_name }},
+                                @endcan
+                            @else
+                                Not Assigned To Any
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <th>Target:</th>
@@ -40,7 +50,11 @@
                                 <td>
                                     @if($target->departments && $target->departments->count() > 0)
                                         @foreach($target->departments as $department)
-                                            <strong>{{ $department->department_name }}</strong>, {{" "}}
+                                            <strong>
+                                                @can('view-departments')
+                                                    <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
+                                                @endcan
+                                            </strong>
                                         @endforeach
                                     @endif
                                 </td>

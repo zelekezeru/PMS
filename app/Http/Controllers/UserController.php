@@ -118,7 +118,10 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id)->load('tasks', 'department');
-
+        if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
+            return abort(403);
+        }
+        
         $tasks = $user->tasks;
         $department = $user->department;
 
@@ -134,6 +137,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
+            return abort(403);
+        }
         $roles = Role::all();
 
         $departments = Department::all();
