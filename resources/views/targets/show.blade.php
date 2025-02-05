@@ -15,7 +15,17 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Pillar Name:</th>
-                        <td>{{ $target->goal->strategy->pillar_name }}</td>
+                        <td>
+                            @if ($target->goal)
+                                @can('view-strategies')
+                                    <a href="{{route('strategies.show', $target->goal->strategy->id)}}"> {{ $target->goal->strategy->pillar_name }}, </a>
+                                @elsecan
+                                    {{ $target->goal->strategy->pillar_name }},
+                                @endcan
+                            @else
+                                Not Assigned To Any
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <th>Target:</th>
@@ -30,13 +40,21 @@
                         <td>{{ $target->value }} {{ $target->unit }}</td>
                     </tr>
                     <tr>
+                        <th>Kpi:</th>
+                        <td>{{ $target->name }} </td>
+                    </tr>
+                    <tr>
                         <th>Departments:</th>
                         <div class="row">
                             <div class="col-md-6">
                                 <td>
                                     @if($target->departments && $target->departments->count() > 0)
                                         @foreach($target->departments as $department)
-                                            <strong>{{ $department->department_name }}</strong>,
+                                            <strong>
+                                                @can('view-departments')
+                                                    <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
+                                                @endcan
+                                            </strong>
                                         @endforeach
                                     @endif
                                 </td>
@@ -66,15 +84,17 @@
                 </div>
             </div>
         </div>
-        @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-            <div class="col">
-                <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_target', ['target' => $target->id]) }}"><i class="fa fa-plus"></i> Add Target Indicators</a>
-            </div>
+        @if (!$target->kpi)
+            @can ('create-kpis')
+                <div class="col">
+                    <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_target', ['target' => $target->id]) }}"><i class="fa fa-plus"></i> Add Target Indicators</a>
+                </div>
+            @endcan
         @endif
 
-        @if ($target->kpis)
+        {{-- @if ($target->kpi)
             @php
-                $kpis = $target->kpis;
+                $kpis = [];
             @endphp
 
             <div class="card-header">
@@ -86,7 +106,7 @@
             <div class="alert alert-warning mt-3">
                 <p>No indicators found for this target.</p>
             </div>
-        @endif
+        @endif --}}
     </div>
 
 @endsection

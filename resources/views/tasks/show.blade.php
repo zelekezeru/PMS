@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th>Target:</th>
-                        <td>{{ $task->target->name }}</td>
+                        <td>{{ $task->target ? $task->target->name : "Not Assigned Yet" }}</td>
                     </tr>
                     <tr>
                         <th>Starting Date:</th>
@@ -50,7 +50,13 @@
                         <td>
                             @if($task->departments && $task->departments->count() > 0)
                                 @foreach($task->departments as $department)
-                                    {{ $department->department_name }}
+                                    <strong>
+                                        @can('view-departments')
+                                            <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
+                                        @elsecan
+                                            {{ $department->department_name }},
+                                        @endcan
+                                    </strong>
                                 @endforeach
                             @endif
                         </td>
@@ -73,13 +79,15 @@
             </div>
         </div>
 
-        <div class="col">
-            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task Indicators</a>
-        </div>
+            @can ('create-kpis')
+                <div class="col">
+                    <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Taskx Indicators</a>
+                </div>
+            @endcan
 
         @if ($task->kpis)
             @php
-                $kpis = $task->name;
+                $kpis = $task->kpis;
             @endphp
 
             <div class="card-header">
