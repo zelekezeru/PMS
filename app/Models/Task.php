@@ -21,9 +21,9 @@ class Task extends Model
         return $this->belongsTo(Day::class);
     }
 
-    public function kpi()
+    public function kpis()
     {
-        return $this->hasOne(Kpi::class);
+        return $this->hasMany(Kpi::class);
     }
 
     public function feedbacks()
