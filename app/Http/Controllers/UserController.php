@@ -57,7 +57,7 @@ class UserController extends Controller
             $user->save();
         };
 
-        return redirect()->route('users.index')->with('status', 'users-approved');
+        return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
 
     public function approved(Request $request, User $user)
@@ -70,7 +70,7 @@ class UserController extends Controller
         $user->is_active =  1;
         $user->save();
 
-        return redirect()->route('users.index')->with('status', 'user-approved');
+        return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
 
     /**
@@ -108,7 +108,7 @@ class UserController extends Controller
             'role_id' => $request->role_id,
         ]);
 
-        return redirect()->route('users.waiting')->with('status', "user-updated");
+        return redirect()->route('users.waiting')->with('status', 'User has been successfully created.');
 
     }
 
@@ -164,7 +164,7 @@ class UserController extends Controller
             $user->assignRole($role);
         }
 
-        return redirect()->route('users.show', $user)->with('status', "user-updated");
+        return redirect()->route('users.show', $user)->with('status', 'User has been successfully Updated.');
     }
 
     /**
@@ -196,7 +196,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('status', 'Item-related.');
+        return redirect()->route('users.index')->with('status', 'User has been successfully Removed.');
 
     }
 }

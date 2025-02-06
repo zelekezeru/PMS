@@ -39,7 +39,7 @@ class DayController extends Controller
 
         Day::create($validated);
 
-        return redirect()->route('days.index')->with('status', 'created');
+        return redirect()->route('days.index')->with('status', 'Day has been successfully Created.');
     }
 
     public function show(Day $day)
@@ -62,12 +62,12 @@ class DayController extends Controller
 
         $day->update($validated);
 
-        return redirect()->route('days.index')->with('status', 'updated');
+        return redirect()->route('days.index')->with('status', 'Day has been successfully Updated.');
     }
 
     public function destroy(Day $day)
     {
         $day->delete();
-        return redirect()->route('days.index')->with('status', 'deleted');
+        return redirect()->route('days.index')->with('status', 'Day has been successfully Deleted.');
     }
 }

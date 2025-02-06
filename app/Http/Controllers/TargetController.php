@@ -51,7 +51,7 @@ class TargetController extends Controller
 
         $target->departments()->attach($departments);
 
-        return redirect()->route('targets.index')->with('success', 'Target created successfully.');
+        return redirect()->route('targets.index')->with('status', 'Target has been successfully Created.');
     }
 
     public function show(Target $target)
@@ -81,7 +81,7 @@ class TargetController extends Controller
             $target->departments()->sync($departments);
         }
 
-        return redirect()->route('targets.index')->with('success', 'Target updated successfully.');
+        return redirect()->route('targets.index')->with('status', 'Target has been successfully Updated.');
     }
 
     public function destroy(Target $target)
@@ -93,6 +93,6 @@ class TargetController extends Controller
         }
         $target->delete();
 
-        return redirect()->route('targets.index')->with('success', 'Target deleted successfully.');
+        return redirect()->route('targets.index')->with('status', 'Target has been successfully Deleted.');
     }
 }

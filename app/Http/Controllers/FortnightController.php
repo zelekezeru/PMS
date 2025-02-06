@@ -42,7 +42,7 @@ class FortnightController extends Controller
 
         Fortnight::create($request->all());
 
-        return redirect()->route('fortnights.index')->with('status', 'created');
+        return redirect()->route('fortnights.index')->with('status', 'Fortnight has been successfully Created.');
     }
 
     // Display the specified fortnight
@@ -69,7 +69,7 @@ class FortnightController extends Controller
 
         $fortnight->update($request->all());
 
-        return redirect()->route('fortnights.index')->with('status', 'updated');
+        return redirect()->route('fortnights.index')->with('status', 'Fortnight has been successfully Updated.');
     }
 
     // Remove the specified fortnight from the database
@@ -83,7 +83,7 @@ class FortnightController extends Controller
         else{
             $fortnight->delete();
 
-            return redirect()->route('fortnights.index')->with('status', 'fortnight-deleted.');
+            return redirect()->route('fortnights.index')->with('status', 'Fortnight has been successfully Deleted.');
         }
     }
 }

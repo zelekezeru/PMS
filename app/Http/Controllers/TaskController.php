@@ -68,7 +68,7 @@ class TaskController extends Controller
         $task->users()->attach($users);
 
 
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
+        return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
     }
 
     public function show(Task $task)
@@ -123,7 +123,7 @@ class TaskController extends Controller
 
 
 
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
+        return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
     }
 
     public function destroy(Task $task)
@@ -136,6 +136,6 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
+        return redirect()->route('tasks.index')->with('status', 'Task has been successfully Deleted.');
     }
 }

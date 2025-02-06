@@ -26,7 +26,7 @@ class YearController extends Controller
 
         Year::create($request->all());
 
-        return redirect()->route('years.index')->with('status', 'created');
+        return redirect()->route('years.index')->with('status', 'Year has been successfully Created.');
     }
 
     public function show(Year $year)
@@ -47,7 +47,7 @@ class YearController extends Controller
 
         $year->update($request->all());
 
-        return redirect()->route('years.index')->with('status', 'updated');
+        return redirect()->route('years.index')->with('status', 'Year has been successfully Updated.');
     }
 
     public function destroy(Year $year)
@@ -60,6 +60,6 @@ class YearController extends Controller
 
         $year->delete();
 
-        return redirect()->route('years.index')->with('status', 'year-deleted.');
+        return redirect()->route('years.index')->with('status', 'Year has been successfully Deleted.');
     }
 }

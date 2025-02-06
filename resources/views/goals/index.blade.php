@@ -2,16 +2,6 @@
 
 @section('contents')
     <div class="container mt-3">
-        @if (session('status') === 'goal-created')
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Goal Created!',
-                    text: 'Your goal has been successfully created.',
-                    confirmButtonText: 'Okay'
-                });
-            </script>
-        @endif
 
         @if (session('status') === 'goal-updated')
             <script>
@@ -36,6 +26,20 @@
                 </div>
 
                 @include('goals.list')
+
+
+                @if (session('status'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '{{ ucfirst(session('status')) }}',
+                                text: 'Your Goal has been successfully {{ session('status') }}.',
+                                confirmButtonText: 'Okay'
+                            });
+                        });
+                    </script>
+                @endif
 
                 <div class="mt-3">
                     @if ($goals->isNotEmpty())

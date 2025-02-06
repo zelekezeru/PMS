@@ -12,14 +12,14 @@
                 <!-- Reports List -->
                 @include('reports.list')
 
-                <!-- SweetAlert Success Notifications -->
-                @if (session('success'))
+                                <!-- SweetAlert Success Notifications -->
+                                @if (session('status'))
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Report {{ ucfirst(session('success')) }}',
-                                text: 'Your report has been successfully {{ session('success') }}.',
+                                title: '{{ ucfirst(session('status')) }}',
+                                text: 'Your Report has been successfully {{ session('status') }}.',
                                 confirmButtonText: 'Okay'
                             });
                         });

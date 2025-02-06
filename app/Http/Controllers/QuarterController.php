@@ -38,7 +38,7 @@ class QuarterController extends Controller
 
         Quarter::create($request->all());
 
-        return redirect()->route('quarters.index')->with('status', 'created');
+        return redirect()->route('quarters.index')->with('status', 'Quarter has been successfully Created.');
     }
 
     public function show(Quarter $quarter)
@@ -61,7 +61,7 @@ class QuarterController extends Controller
 
         $quarter->update($request->all());
 
-        return redirect()->route('quarters.index')->with('status', 'updated');
+        return redirect()->route('quarters.index')->with('status', 'Quarter has been successfully Updated.');
     }
 
     public function destroy(Quarter $quarter)
@@ -74,7 +74,7 @@ class QuarterController extends Controller
         else{
             $quarter->delete();
 
-            return redirect()->route('quarters.index')->with('status', 'quarter-deleted.');
+            return redirect()->route('quarters.index')->with('status', 'Quarter has been successfully Deleted.');
         }
 
     }

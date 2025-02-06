@@ -10,6 +10,19 @@
                 </div>
 
                 @include('tasks.list')
+                                <!-- SweetAlert Success Notifications -->
+                                @if (session('status'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '{{ ucfirst(session('status')) }}',
+                                text: 'Your Task has been successfully {{ session('status') }}.',
+                                confirmButtonText: 'Okay'
+                            });
+                        });
+                    </script>
+                @endif
 
                 <div class="mt-3">
                     {{ $tasks->links() }}

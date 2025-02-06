@@ -19,8 +19,8 @@
                         document.addEventListener('DOMContentLoaded', function() {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Target {{ ucfirst(session('status')) }}',
-                                text: 'Your target has been successfully {{ session('status') }}.',
+                                title: '{{ ucfirst(session('status')) }}',
+                                text: 'Your Target has been successfully {{ session('status') }}.',
                                 confirmButtonText: 'Okay'
                             });
                         });
