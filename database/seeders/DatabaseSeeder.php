@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([
-            PermissionSeeder::class,
             DepartmentSeeder::class,
             GoalSeeder::class,
             QuarterSeeder::class,
@@ -30,6 +29,7 @@ class DatabaseSeeder extends Seeder
             FortnightSeeder::class,
             UserSeeder::class,
             ModelroleSeeder::class,
+            PermissionSeeder::class,
         ]);
     }
 }
