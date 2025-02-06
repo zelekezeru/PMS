@@ -51,7 +51,7 @@ class PermissionSeeder extends Seeder
         $roles = ['SUPER_ADMIN', 'ADMIN', 'DEPARTMENT_HEAD', 'EMPLOYEE'];
 
         foreach ($roles as $role) {
-            $roleRow = Role::create(['name' => $role]);
+            $roleRow = Role::firstOrCreate(['name' => $role]);
 
             if ($role === 'SUPER_ADMIN') {
                 $roleRow->syncPermissions(Permission::all());
