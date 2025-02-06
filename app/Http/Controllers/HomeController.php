@@ -11,6 +11,7 @@ use App\Models\Year;
 use App\Models\Fortnight;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -19,21 +20,32 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $strategies = Strategy::all();
-
-        $tasks = Task::count();
-
-        $reports = Report::get();
-
+        $strategies = Strategy::get();
         $years = Year::get();
-
-        $departments = Department::get();
-
         $fortnights = Fortnight::get();
 
-        $users = User::get();
+        $user = Auth::user();
 
-        return view('index', compact('strategies', 'tasks', 'reports', 'fortnights', 'years', 'departments', 'users'));
+        if($user->roles->first()->name == 'SUPER_ADMIN' || $user->roles->first()->name == 'ADMIN')
+        {
+            $departments = Department::get();
+            $users = User::get();
+            $tasks = Task::get();
+        }
+        elseif($user->roles->first()->name == 'DEPARTMENT_HEAD')
+        {
+            $departments = $user->department;
+            $users = $departments->users;
+            $tasks = $departments->tasks;
+        }
+        elseif($user->roles->first()->name == 'EMPLOYEE')
+        {
+            $departments = $user->departments;
+            $users = $user;
+            $tasks = $users->tasks;
+        }
+
+        return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
     }
 
     /**

@@ -3,14 +3,14 @@
 @section('contents')
 
 {{-- Main Quantities --}}
-<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-    <div>
-        <h3 class="fw-bold mb-3 text-center">SITS Performance Management System</h3>
-        <h6 class="op-7 mb-2">Here is SITS college performance overview</h6>
+<div class="d-flex align-items-center justify-content-center flex-column pt-2 pb-4">
+    <div class="text-center">
+        <h3 class="fw-bold mb-3">SITS Performance Management System</h3>
+        <h6 class="op-7 mb-2">Shiloh International Theological Seminary performance overview</h6>
     </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-6">
         <div class="row">
             <div class="col-sm-6">

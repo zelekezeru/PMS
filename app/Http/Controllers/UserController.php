@@ -20,6 +20,7 @@ class UserController extends Controller
     public function index()
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
+
             $users = request()->user()->headOf->users()->paginate(15);
 
         } else {
@@ -90,27 +91,21 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['pms@SITS'],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'phone_number' => $request->phone_number,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'department_id' => $request->department_id,
-            'role_id' => $request->role_id,
-        ]);
-
+        $data = $request->validated();
+        $data['password'] = Hash::make('pms@SITS');
+    
+        // Handle profile image upload
+        if ($request->hasFile('profile_image')) {
+            $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
+        }
+    
+        $user = User::create($data);
+    
         return redirect()->route('users.waiting')->with('status', 'User has been successfully created.');
-
     }
+    
 
     /**
      * Display the specified resource.
@@ -121,8 +116,9 @@ class UserController extends Controller
         if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
-        
+
         $tasks = $user->tasks;
+
         $department = $user->department;
 
         if (!$user) {
@@ -140,6 +136,7 @@ class UserController extends Controller
         if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
+
         $roles = Role::all();
 
         $departments = Department::all();
@@ -155,18 +152,25 @@ class UserController extends Controller
         $data = $request->validated();
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
-
+    
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image) {
+                \Storage::disk('public')->delete($user->profile_image);
+            }
+            $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
+        }
+    
         $user->update($data);
-
-        if ($data['role_id']) {
+    
+        if (!empty($data['role_id'])) {
             $user->roles()->detach();
             $role = Role::findById($data['role_id']);
             $user->assignRole($role);
         }
-
-        return redirect()->route('users.show', $user)->with('status', 'User has been successfully Updated.');
+    
+        return redirect()->route('users.show', $user)->with('status', 'User has been successfully updated.');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */
