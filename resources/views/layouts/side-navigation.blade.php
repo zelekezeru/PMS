@@ -48,20 +48,20 @@
                                             <i class="fas fa-clipboard-list"></i> Manage Tasks
                                         </a>
                                     </li>
-                                    
+
                                 @endcan
                                 @can('create-tasks')
                                     <li class="{{ request()->routeIs('tasks.create') ? 'active' : '' }}">
                                         <a href="{{ route('tasks.create') }}">
                                             <i class="fas fa-plus-circle"></i> Add Task
                                         </a>
-                                    </li>                                
+                                    </li>
                                 @endcan
 
                             </ul>
                         </div>
                     </li>
-                    
+
                 @endcanany
 
                 {{-- Strategy Navigation --}}
@@ -124,7 +124,7 @@
                                 @endcan
                             </ul>
                         </div>
-                    </li>                    
+                    </li>
                 @endcanany
 
                 @canany(['view-targets', 'create-targets'])
@@ -152,7 +152,7 @@
                                             <i class="fas fa-plus"></i> Add Target
                                         </a>
                                     </li>
-                                    
+
                                 @endcan
                             </ul>
                         </div>
@@ -191,7 +191,7 @@
                 @endcanany
 
                 {{-- Report Navigation --}}
-                
+
                 @canany (['view-reports', 'create-reports'])
                     <li class="nav-item {{ request()->routeIs('reports.index') || request()->routeIs('reports.create') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#Report">
@@ -220,7 +220,7 @@
                         </div>
                     </li>
                 @endcanany
-                
+
                 @canany(['view-years', 'view-quarters', 'view-days', 'view-fortnights', 'view-days'])
                     {{-- Schedule Navigation --}}
                     <li class="nav-item {{ request()->routeIs('years.index') || request()->routeIs('quarters.index') || request()->routeIs('fortnights.index') || request()->routeIs('days.index') ? 'active' : '' }}">
@@ -237,7 +237,7 @@
                                             <i class="fas fa-calendar"></i> Manage Years
                                         </a>
                                     </li>
-                                    
+
                                 @endcan
                                 @can('view-quarters')
                                     <li class="{{ request()->routeIs('quarters.index') ? 'active' : '' }}">
@@ -254,7 +254,7 @@
                                         </a>
                                     </li>
                                 @endcan
-                                
+
                                 @can('view-days')
                                     <li class="{{ request()->routeIs('days.index') ? 'active' : '' }}">
                                         <a href="{{ route('days.index') }}">
@@ -280,7 +280,7 @@
                                 @can('view-users')
                                     <li class="{{ request()->routeIs('users.index') ? 'active' : '' }}">
                                         <a href="{{ route('users.index') }}">
-                                            <i class="fas fa-users"></i> Registered Users
+                                            <i class="fas fa-users"></i> All Registered Users
                                         </a>
                                     </li>
                                 @endcan
@@ -289,6 +289,11 @@
                                     <li class="{{ request()->routeIs('users.waiting') ? 'active' : '' }}">
                                         <a href="{{ route('users.waiting') }}">
                                             <i class="fas fa-user-clock"></i> Waiting Approval
+                                        </a>
+                                    </li>
+                                    <li class="{{ request()->routeIs('users.assign') ? 'active' : '' }}">
+                                        <a href="{{ route('users.assign') }}">
+                                            <i class="fas fa-user-clock"></i> Assign Roles
                                         </a>
                                     </li>
                                 @endcan
