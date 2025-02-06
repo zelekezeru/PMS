@@ -201,7 +201,7 @@
                         </a>
                         <div class="collapse" id="Report">
                             <ul class="nav nav-collapse">
-                                @can('view-report')
+                                @can('view-departments')
                                     <li class="{{ request()->routeIs('reports.index') ? 'active' : '' }}">
                                         <a href="{{ route('reports.index') }}">
                                             <i class="fas fa-file-invoice"></i> Manage Report
@@ -209,7 +209,7 @@
                                     </li>
                                 @endcan
 
-                                @can('create-report')
+                                @can('create-departments')
                                     <li class="{{ request()->routeIs('reports.create') ? 'active' : '' }}">
                                         <a href="{{ route('reports.create') }}">
                                             <i class="fas fa-plus"></i> Add Report
