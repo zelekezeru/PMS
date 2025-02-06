@@ -36,7 +36,7 @@ class ProfileController extends Controller
         $request->user()->save();
     
         // Flash status to session
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('status', 'Profile has been successfully Updated.');
     }
     
 
@@ -58,6 +58,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/')->with('status', 'account-deleted');
+        return Redirect::to('/')->with('status', 'Profile has been successfully Deleted permanitly.');
     }
 }

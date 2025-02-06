@@ -53,7 +53,7 @@ class DepartmentController extends Controller
         Department::create($data);
 
         // Return with success status
-        return redirect()->route('departments.index')->with('status', 'created');
+        return redirect()->route('departments.index')->with('status', 'Department has been successfully created.');
     }
 
     public function edit(Department $department)
@@ -86,7 +86,7 @@ class DepartmentController extends Controller
         $department->update($data);
 
         // Return with success status
-        return redirect()->route('departments.index')->with('status', 'updated');
+        return redirect()->route('departments.index')->with('status', 'Department has been successfully Updated.');
     }
 
     public function destroy(Department $department)
@@ -94,7 +94,7 @@ class DepartmentController extends Controller
         $department->delete();
 
         // Return with success status
-        return redirect()->route('departments.index')->with('status', 'deleted');
+        return redirect()->route('departments.index')->with('status', 'Department has been successfully Deleted.');
     }
 
     public function show(Department $department)

@@ -57,7 +57,8 @@ class StrategyController extends Controller
         $strategy = new Strategy($request->all());
         $strategy->save();
 
-        return redirect()->route('strategies.index')->with('status', 'strategy-created');
+        return redirect()->route('strategies.index')->with('status', 'Strategy has been successfully created.');
+
     }
 
     public function update(Request $request, Strategy $strategy)
@@ -70,7 +71,8 @@ class StrategyController extends Controller
 
         $strategy->update($request->all());
 
-        return redirect()->route('strategies.index')->with('status', 'strategy-updated');
+        return redirect()->route('strategies.index')->with('status', 'Strategy has been successfully updated.');
+
     }
 
     public function destroy(Strategy $strategy)
@@ -78,13 +80,13 @@ class StrategyController extends Controller
         if($strategy->goals()->exists())
         {
             return redirect()->route('strategies.index')
-            ->with('related', 'strategy-deleted');
+            ->with('status', 'Strategy has been successfully deleted.');
         }
 
         $strategy->delete();
 
-        return redirect()->route('strategies.index')
-            ->with('status', 'strategy-deleted');
+        return redirect()->route('strategies.index')->with('status', 'Strategy has been successfully deleted.');
+
     }
 
 }

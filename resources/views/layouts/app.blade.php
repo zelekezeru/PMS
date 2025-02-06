@@ -63,35 +63,20 @@
             });
         }
     </script>
-
-    @if(session('status'))
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                let message = "{{ session('status') }}";
-                let title = "";
-                let text = "";
-
-                if (message === "Item-created") {
-                    title = "Item Created!";
-                    text = "Your Item has been successfully created.";
-                } else if (message === "Item-updated") {
-                    title = "Item Updated!";
-                    text = "Your Item has been successfully updated.";
-                } else if (message === "Item-deleted") {
-                    title = "Item Deleted!";
-                    text = "Your Item has been successfully deleted.";
-                }
-
-                Swal.fire({
-                    icon: 'success',
-                    title: title,
-                    text: text,
-                    confirmButtonText: 'Okay'
-                });
+@if (session('status'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: @json(__(session('status'))), 
+                confirmButtonText: 'Okay'
             });
-        </script>
-    @endif
+        });
+    </script>
+@endif
 
+   
     @if(session('related'))
         <script>
             document.addEventListener("DOMContentLoaded", function() {

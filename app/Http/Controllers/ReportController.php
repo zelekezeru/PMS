@@ -55,37 +55,6 @@ class ReportController extends Controller
         return view('reports.create', compact('departments', 'users', 'targets'));
     }
 
-    // Store a newly created report in the database
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'report_date' => 'required|date',
-            'department_id' => 'required|exists:departments,id',
-            'user_id' => 'required|exists:users,id',
-            'target_id' => 'required|exists:targets,id',
-            'schedule' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->route('reports.create')
-                             ->withErrors($validator)
-                             ->withInput();
-        }
-
-        Report::create([
-            'report_date' => $request->report_date,
-            'department_id' => $request->department_id,
-            'user_id' => $request->user_id,
-            'target_id' => $request->target_id,
-            'schedule' => $request->schedule,
-        ]);
-
-        // SweetAlert success message
-        session()->flash('success', 'created');
-
-        return redirect()->route('reports.index');
-    }
-
     // Show the form for editing an existing report
     public function edit($id)
     {
@@ -97,7 +66,36 @@ class ReportController extends Controller
         return view('reports.edit', compact('report', 'departments', 'users', 'targets'));
     }
 
-    // Update the specified report in the database
+    // Display the specified report
+    public function show($id)
+    {
+        $report = Report::findOrFail($id);
+
+        return view('reports.show', compact('report'));
+    }
+
+        public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'report_date' => 'required|date',
+            'department_id' => 'required|exists:departments,id',
+            'user_id' => 'required|exists:users,id',
+            'target_id' => 'required|exists:targets,id',
+            'schedule' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('reports.create')
+                            ->withErrors($validator)
+                            ->withInput();
+        }
+
+        Report::create($request->all());
+
+        // Set session message
+        return redirect()->route('reports.index')->with('status', 'Report created successfully.');
+    }
+
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -110,42 +108,22 @@ class ReportController extends Controller
 
         if ($validator->fails()) {
             return redirect()->route('reports.edit', $id)
-                             ->withErrors($validator)
-                             ->withInput();
+                            ->withErrors($validator)
+                            ->withInput();
         }
 
         $report = Report::findOrFail($id);
-        $report->update([
-            'report_date' => $request->report_date,
-            'department_id' => $request->department_id,
-            'user_id' => $request->user_id,
-            'target_id' => $request->target_id,
-            'schedule' => $request->schedule,
-        ]);
+        $report->update($request->all());
 
-        // SweetAlert success message
-        session()->flash('success', 'updated');
-
-        return redirect()->route('reports.index');
+        return redirect()->route('reports.index')->with('status', 'Report updated successfully.');
     }
 
-    // Display the specified report
-    public function show($id)
-    {
-        $report = Report::findOrFail($id);
-
-        return view('reports.show', compact('report'));
-    }
-
-    // Remove the specified report from the database
     public function destroy($id)
     {
         $report = Report::findOrFail($id);
         $report->delete();
 
-        // SweetAlert success message
-        session()->flash('success', 'deleted');
-
-        return redirect()->route('reports.index');
+        return redirect()->route('reports.index')->with('status', 'Report deleted successfully.');
     }
+
 }

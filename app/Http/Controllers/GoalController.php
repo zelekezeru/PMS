@@ -46,7 +46,7 @@ class GoalController extends Controller
     {
         Goal::create($request->validated());
 
-        return redirect()->route('goals.index')->with('status', 'goal-created');
+        return redirect()->route('goals.index')->with('status', 'Goal has been successfully Created.');
     }
 
     public function show(Goal $goal)
@@ -67,7 +67,7 @@ class GoalController extends Controller
 
         $goal->update($data);
 
-        return redirect()->route('goals.index')->with('status', 'goal-updated');
+        return redirect()->route('goals.index')->with('status', 'Goal has been successfully Updated.');
     }
 
     public function destroy(Goal $goal)
@@ -75,7 +75,7 @@ class GoalController extends Controller
         if($goal->targets()->exists())
         {
             return redirect()->route('goals.index')
-            ->with('related', 'goal-deleted');
+            ->with('status', 'Goal has been successfully Deleted.');
         }
 
         $goal->delete();
