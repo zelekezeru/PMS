@@ -28,6 +28,8 @@ class KpiStoreRequest extends FormRequest
             'status' => 'nullable|string|max:50',
             'task_id' => 'nullable|exists:tasks,id',
             'target_id' => 'nullable|exists:targets,id',
+            'approved_by' => 'nullable|string|max:50',
+            'confirmed_by' => 'nullable|string|max:50',
         ];
     }
 }

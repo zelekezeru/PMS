@@ -23,9 +23,9 @@ class TargetStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'budget' => 'nullable|string|max:255',
-            'value' => 'nullable|numeric|min:0',
-            'unit' => 'nullable|string|max:50',
+            'budget' => 'sometimes|string|max:255',
+            'value' => 'sometimes|numeric|min:0',
+            'unit' => 'sometimes|string|max:50',
             'goal_id' => 'required|exists:goals,id',
             'departments' => 'sometimes|array|max:255',
         ];

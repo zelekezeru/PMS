@@ -54,7 +54,6 @@
         <div class="col-md-6 mb-3">
             <label for="status" class="form-label"><strong>Status:</strong></label>
             <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
-                <option value="Created" {{ old('status', $kpi->status ?? '') == 'Created' ? 'selected' : '' }}> Created </option>
                 <option value="Pending" {{ old('status', $kpi->status ?? '') == 'Pending' ? 'selected' : '' }}> Pending</option>
                 <option value="Progress'" {{ old('status', $kpi->status ?? '') == 'Progress' ? 'selected' : '' }}>Progress</option>
                 <option value="Completed'" {{ old('status', $kpi->status ?? '') == 'Completed' ? 'selected' : '' }}>Completed</option>

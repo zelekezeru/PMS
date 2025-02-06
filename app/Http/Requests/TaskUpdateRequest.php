@@ -25,7 +25,6 @@ class TaskUpdateRequest extends FormRequest
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|nullable|string',
             'budget' => 'sometimes|nullable|string|max:255',
-            'responsibilities' => 'sometimes|required|string|max:255',
             'barriers' => 'sometimes|nullable|string|max:255',
             'comunication' => 'sometimes|nullable|string|max:255',
             'parent_task_id' => 'sometimes|nullable|exists:tasks,id',

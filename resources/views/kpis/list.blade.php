@@ -9,12 +9,7 @@
                             <th>Title</th>
                             <th>Value</th>
                             <th>Unit</th>
-
-                            @if(isset($kpis) && $kpis->isNotEmpty() && $kpis->first()->task_id !== null)
-                                <th>Task</th>
-                            @elseif(isset($kpis) && $kpis->isNotEmpty() && $kpis->first()->target_id !== null)
-                                <th>Target</th>
-                            @endif
+                            <th>Status</th>
 
                             <th style="width: 10%; text-align: center;">Action</th>
                         </tr>
@@ -26,12 +21,7 @@
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->name }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->value }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->unit }}</td>
-
-                                @if($kpi->task_id !== null)
-                                    <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->task->name }}</td>
-                                @elseif($kpi->target_id !== null)
-                                    <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->target->name }}</td>
-                                @endif
+                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->status }}</td>
 
                                 <td class="text-center">
                                     <div class="form-button-action">
