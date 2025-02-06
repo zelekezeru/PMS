@@ -24,6 +24,7 @@ class PermissionSeeder extends Seeder
             'view-strategies', 'create-strategies', 'edit-strategies', 'delete-strategies',
             'view-targets', 'create-targets', 'edit-targets', 'delete-targets',
             'view-goals', 'create-goals', 'edit-goals', 'delete-goals',
+            'view-reports', 'create-reports', 'edit-reports', 'delete-reports',
 
             'view-years', 'create-years', 'edit-years', 'delete-years',
             'view-quarters', 'create-quarters', 'edit-quarters', 'delete-quarters',
@@ -64,6 +65,7 @@ class PermissionSeeder extends Seeder
                     'create-strategies', 'edit-strategies', 'delete-strategies',
                     'create-targets', 'edit-targets', 'delete-targets',
                     'create-goals', 'edit-goals', 'delete-goals',
+                    'view-reports', 'create-reports', 'edit-reports', 'delete-reports',
                     'create-departments', 'edit-departments', 'delete-departments',
                     'create-years', 'edit-years', 'delete-years',
                     'create-quarters', 'edit-quarters', 'delete-quarters',
@@ -79,6 +81,7 @@ class PermissionSeeder extends Seeder
                     'create-strategies', 'edit-strategies', 'delete-strategies',
                     'create-targets', 'edit-targets', 'delete-targets',
                     'create-goals', 'edit-goals', 'delete-goals',
+                    'view-reports', 'create-reports', 'edit-reports', 'delete-reports',
                     'create-years', 'edit-years', 'delete-years',
                     'create-quarters', 'edit-quarters', 'delete-quarters',
                     'create-days', 'edit-days', 'delete-days',

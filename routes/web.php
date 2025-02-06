@@ -54,16 +54,16 @@ Route::middleware('auth')->group(function () {
         Route::resource('years', YearController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('quarters', QuarterController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('days', DayController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
-        
+
         Route::resource('departments', DepartmentController::class);
     });
 
     // Routes Accessible for SUPER_ADMIN, ADMIN, DEPARTMENT_HEAD
     Route::middleware('role:SUPER_ADMIN|ADMIN|DEPARTMENT_HEAD')->group(function () {
         Route::resource('users', UserController::class)->only('index', 'show');
-        
+
     });
-    
+
     Route::resource('homes', HomeController::class);
     Route::resource('strategies', StrategyController::class)->only(['index', 'show']);
     Route::resource('targets', TargetController::class)->only(['index', 'show']);
@@ -85,5 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::get('kpis/create_target/{target}', [KpiController::class, 'create_target'])->name('kpis.create_target');
     Route::get('kpis/create_task/{task}', [KpiController::class, 'create_task'])->name('kpis.create_task');
 });
+
+Route::get('/users/assign', [UserController::class, 'assign'])->name('users.assign');
 
 require __DIR__.'/auth.php';
