@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             FortnightSeeder::class,
             PermissionSeeder::class,
             UserSeeder::class,
+            ModelHasRolesSeeder::class,
         ]);
     }
 }
