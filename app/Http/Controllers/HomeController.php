@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\Report;
 use App\Models\Year;
 use App\Models\Fortnight;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -30,7 +31,9 @@ class HomeController extends Controller
 
         $fortnights = Fortnight::get();
 
-        return view('index', compact('strategies', 'tasks', 'reports', 'fortnights', 'years'));
+        $users = User::get();
+
+        return view('index', compact('strategies', 'tasks', 'reports', 'fortnights', 'years', 'departments', 'users'));
     }
 
     /**

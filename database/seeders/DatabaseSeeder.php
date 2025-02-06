@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role; // Add this line
+use Spatie\Permission\Models\Permission; // Add this line
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Check if the role already exists before creating it
+        if (!Role::where('name', 'SUPER_ADMIN')->exists()) {
+            Role::create(['name' => 'SUPER_ADMIN']);
+        }
+
         $this->call([
             PermissionSeeder::class,
             DepartmentSeeder::class,
@@ -21,6 +28,8 @@ class DatabaseSeeder extends Seeder
             StrategySeeder::class,
             TargetSeeder::class,
             FortnightSeeder::class,
+            UserSeeder::class,
+            ModelroleSeeder::class,
         ]);
     }
 }
