@@ -20,58 +20,32 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $strategies = Strategy::get();
+        $years = Year::get();
+        $fortnights = Fortnight::get();
 
-        if(Auth::user()->role == 'SUPER_ADMIN' || Auth::user()->role == 'ADMIN')
+        $user = Auth::user();
+
+        if($user->roles->first()->name == 'SUPER_ADMIN' || $user->roles->first()->name == 'ADMIN')
         {
-            $strategies = Strategy::get();
-
-            $tasks = Task::get();
-
-            $years = Year::get();
-
             $departments = Department::get();
-
-            $fortnights = Fortnight::get();
-
             $users = User::get();
-
-            return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
+            $tasks = Task::get();
         }
-        elseif(Auth::user()->role == 'DEPARTMENT_HEAD')
+        elseif($user->roles->first()->name == 'DEPARTMENT_HEAD')
         {
-            $strategies = Strategy::get();
-
-            $years = Year::get();
-
-            $fortnights = Fortnight::get();
-
-            $departments = Auth::user()->department;
-
+            $departments = $user->department;
             $users = $departments->users;
-
             $tasks = $departments->tasks;
-
-            return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
         }
-
-        elseif(Auth::user()->role == 'EMPLOYEE')
+        elseif($user->roles->first()->name == 'EMPLOYEE')
         {
-            $strategies = Strategy::get();
-
-            $years = Year::get();
-
-            $fortnights = Fortnight::get();
-
-            $departments = Auth::user()->departments;
-
-            $users = Auth::user();
-
+            $departments = $user->departments;
+            $users = $user;
             $tasks = $users->tasks;
-
-            return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
-
         }
 
+        return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
     }
 
     /**
