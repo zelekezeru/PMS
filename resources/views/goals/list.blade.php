@@ -22,7 +22,6 @@
                     </div>
                 @endif
             </th>
-            <th>Description</th>
             @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                 <th style="width: 10%; text-align: center;">Actions</th>
                 
@@ -39,7 +38,6 @@
                         {{ $goal->strategy->name }}
                     @endif
                 </td>
-                <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ $goal->description }}</td>
                 @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                     <td class="text-center">
                         <div class="form-button-action">
