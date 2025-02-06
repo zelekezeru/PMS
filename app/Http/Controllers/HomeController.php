@@ -11,6 +11,7 @@ use App\Models\Year;
 use App\Models\Fortnight;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -19,21 +20,58 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $strategies = Strategy::all();
 
-        $tasks = Task::count();
+        if(Auth::user()->role == 'SUPER_ADMIN' || Auth::user()->role == 'ADMIN')
+        {
+            $strategies = Strategy::get();
 
-        $reports = Report::get();
+            $tasks = Task::get();
 
-        $years = Year::get();
+            $years = Year::get();
 
-        $departments = Department::get();
+            $departments = Department::get();
 
-        $fortnights = Fortnight::get();
+            $fortnights = Fortnight::get();
 
-        $users = User::get();
+            $users = User::get();
 
-        return view('index', compact('strategies', 'tasks', 'reports', 'fortnights', 'years', 'departments', 'users'));
+            return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
+        }
+        elseif(Auth::user()->role == 'DEPARTMENT_HEAD')
+        {
+            $strategies = Strategy::get();
+
+            $years = Year::get();
+
+            $fortnights = Fortnight::get();
+
+            $departments = Auth::user()->department;
+
+            $users = $departments->users;
+
+            $tasks = $departments->tasks;
+
+            return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
+        }
+
+        elseif(Auth::user()->role == 'EMPLOYEE')
+        {
+            $strategies = Strategy::get();
+
+            $years = Year::get();
+
+            $fortnights = Fortnight::get();
+
+            $departments = Auth::user()->departments;
+
+            $users = Auth::user();
+
+            $tasks = $users->tasks;
+
+            return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
+
+        }
+
     }
 
     /**

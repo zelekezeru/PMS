@@ -20,6 +20,7 @@ class UserController extends Controller
     public function index()
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
+
             $users = request()->user()->headOf->users()->paginate(15);
 
         } else {
@@ -115,8 +116,9 @@ class UserController extends Controller
         if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
-        
+
         $tasks = $user->tasks;
+
         $department = $user->department;
 
         if (!$user) {
@@ -134,6 +136,7 @@ class UserController extends Controller
         if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
+
         $roles = Role::all();
 
         $departments = Department::all();

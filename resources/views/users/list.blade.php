@@ -18,7 +18,6 @@
 
                     <tbody>
                         @forelse ($users as $user)
-                            @if (!$user->hasRole('SUPER_ADMIN'))
                                 <tr>
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $loop->iteration }}</td>
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $user->name }}</td>
@@ -58,7 +57,6 @@
                                     @endif
                                 </tr>
                                 
-                            @endif
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center">No users found.</td>

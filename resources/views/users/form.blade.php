@@ -32,6 +32,7 @@
     </div>
 
     <div class="col-md-6 mb-3">
+<<<<<<< Updated upstream
         <label for="profile_image" class="form-label"><strong>Profile Image:</strong></label>
         <input type="file" name="profile_image" class="form-control @error('profile_image') is-invalid @enderror" id="profile_image" accept="image/*">
         @error('profile_image')
@@ -53,10 +54,19 @@
         <label for="is_approved" class="form-label"><strong>Approved (if checked):</strong></label>
         <input type="checkbox" name="is_approved" value="1" id="is_approved" 
             {{ old('is_approved', isset($user) ? $user->is_approved : false) ? 'checked' : '' }}>
+=======
+        <label for="is_active" class="form-label"><strong>Active :</strong></label>
+        <input type="checkbox" name="is_active" value="1" id="is_active" {{ old('is_active', isset($user) ? $user->is_active : false) ? 'checked' : '' }}>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="is_approved" class="form-label"><strong>Approved :</strong></label>
+        <input type="checkbox" name="is_approved" value="1" id="is_approved" {{ old('is_approved', isset($user) ? $user->is_approved : false) ? 'checked' : '' }}>
+>>>>>>> Stashed changes
     </div>
 
     <div class="col-md-6 mb-3">
         <label for="role_id" class="form-label"><strong>Role:</strong></label>
+<<<<<<< Updated upstream
         <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
             <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
             @foreach($roles as $role)
@@ -68,6 +78,22 @@
                 @endif
             @endforeach
         </select>
+=======
+
+
+        @if ($user->hasRole('SUPER_ADMIN'))
+        <input type="text" name="role" class="form-control @error('role') is-invalid @enderror" id="role" value="SUPER_ADMIN" placeholder="SUPER_ADMIN" readonly>
+        @else
+            <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
+                <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
+                @foreach($roles as $role)
+                    @if ($role->name !== 'SUPER_ADMIN')
+                        <option value="{{ $role->id }}" {{ old('role_id', isset($user) && $user->roles->contains($role->id) ? $role->id : '') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                    @endif
+                @endforeach
+            </select>
+        @endif
+>>>>>>> Stashed changes
         @error('role_id')
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
