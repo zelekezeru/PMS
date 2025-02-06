@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('value', 10, 2)->nullable();
             $table->string('unit', 50)->nullable();
             $table->string('status', 50)->nullable()->default('Created');
+            $table->boolean('approved_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->boolean('confirmed_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps(0);
         });
     }
