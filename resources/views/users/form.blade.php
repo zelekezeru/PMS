@@ -34,6 +34,7 @@
     <div class="col-md-6 mb-3">
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <label for="profile_image" class="form-label"><strong>Profile Image:</strong></label>
         <input type="file" name="profile_image" class="form-control @error('profile_image') is-invalid @enderror" id="profile_image" accept="image/*">
         @error('profile_image')
@@ -66,6 +67,12 @@
     </div>
     <div class="col-md-6 mb-3">
 >>>>>>> Stashed changes
+=======
+        <label for="is_active" class="form-label"><strong>Active :</strong></label>
+        <input type="checkbox" name="is_active" value="1" id="is_active" {{ old('is_active', isset($user) ? $user->is_active : false) ? 'checked' : '' }}>
+    </div>
+    <div class="col-md-6 mb-3">
+>>>>>>> Stashed changes
         <label for="is_approved" class="form-label"><strong>Approved :</strong></label>
         <input type="checkbox" name="is_approved" value="1" id="is_approved" {{ old('is_approved', isset($user) ? $user->is_approved : false) ? 'checked' : '' }}>
 >>>>>>> Stashed changes
@@ -73,6 +80,7 @@
 
     <div class="col-md-6 mb-3">
         <label for="role_id" class="form-label"><strong>Role:</strong></label>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
         <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
@@ -87,6 +95,8 @@
             @endforeach
         </select>
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -104,6 +114,9 @@
             </select>
         @endif
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
