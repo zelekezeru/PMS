@@ -25,7 +25,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Tasks</p>
-                                    <h4 class="card-title">{{ $tasks }}</h4>
+                                    <h4 class="card-title">{{ count($tasks) }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -62,8 +62,8 @@
                             </div>
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
-                                    <p class="card-category">Tasks Completed</p>
-                                    <h4 class="card-title">3</h4>
+                                    <p class="card-category">Departments</p>
+                                    <h4 class="card-title">{{ count($departments) }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -81,8 +81,8 @@
                             </div>
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
-                                    <p class="card-category">Logged In Users</p>
-                                    <h4 class="card-title">5</h4>
+                                    <p class="card-category">Registered Users</p>
+                                    <h4 class="card-title">{{ count($users) }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -102,9 +102,9 @@
                 <ul class="list-group list-group-flush">
                     @forelse ($strategies as $strategy)
                     <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
-                        
+
                     @empty
-                        
+
                     @endforelse
                 </ul>
             </div>
