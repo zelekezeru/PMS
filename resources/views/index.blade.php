@@ -25,7 +25,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">All Tasks</p>
-                                    <h4 class="card-title">{{ count($tasks) }}</h4>
+                                    <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Pending Tasks</p>
-                                    <h4 class="card-title">{{ $tasks }}</h4>
+                                    <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -63,26 +63,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Completed Tasks</p>
-                                    <h4 class="card-title">{{ $tasks }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                            </div>
-                            <div class="col col-stats ms-3">
-                                <div class="numbers">
-                                    <p class="card-category">Completed Tasks</p>
-                                    <h4 class="card-title">{{ $tasks }}</h4>
+                                    <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +101,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Departments</p>
-                                    <h4 class="card-title">{{ count($departments) }}</h4>
+                                    <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +120,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Registered Users</p>
-                                    <h4 class="card-title">{{ count($users) }}</h4>
+                                    <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +134,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"SITS Pillars</h4>
+                <h4 class="mb-0">SITS Pillars</h4>
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
