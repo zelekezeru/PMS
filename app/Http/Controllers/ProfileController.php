@@ -38,8 +38,27 @@ class ProfileController extends Controller
         // Flash status to session
         return Redirect::route('profile.edit')->with('status', 'Profile has been successfully Updated.');
     }
+    /**
+     * Upload the user's profile image.
+     */
+    public function uploadProfileImage(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'profile_image' => ['nullable', 'image', 'max:2048'],
+        ]);
     
-
+        $user = $request->user();
+    
+        // Check if file is present in the request
+        if ($request->hasFile('profile_image')) {
+            $path = $request->file('profile_image')->store('profile_images', 'public');
+            $user->profile_image = $path;
+            $user->save();
+        }
+    
+        return Redirect::route('profile.edit')->with('status', 'Profile image has been successfully uploaded.');
+    }
+    
     /**
      * Delete the user's account.
      */
