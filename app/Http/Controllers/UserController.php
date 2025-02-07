@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
@@ -63,13 +64,11 @@ class UserController extends Controller
 
     public function approved(Request $request, User $user)
     {
-        // $request->validate([
-        //     'approve' => 'required|boolean'
-        // ]);
+            $user->is_approved = true;
 
-        $user->is_approved =  1;
-        $user->is_active =  1;
-        $user->save();
+            $user->is_active = true;
+
+            $user->save();
 
         return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
@@ -95,17 +94,23 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = Hash::make('pms@SITS');
-    
+
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }
-    
+
+        $data['is_approved'] = $request->is_approved ? 1 : 0;
+        $data['is_active'] = $request->is_active ? 1 : 0;
         $user = User::create($data);
-    
+
+        if ($data['is_approved']) {
+            return redirect()->route('users.index')->with('status', 'User has been successfully created.');
+        }
+
         return redirect()->route('users.waiting')->with('status', 'User has been successfully created.');
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -152,25 +157,25 @@ class UserController extends Controller
         $data = $request->validated();
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
-    
+
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
-                \Storage::disk('public')->delete($user->profile_image);
+                Storage::disk('public')->delete($user->profile_image);
             }
             $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }
-    
+
         $user->update($data);
-    
+
         if (!empty($data['role_id'])) {
             $user->roles()->detach();
             $role = Role::findById($data['role_id']);
             $user->assignRole($role);
         }
-    
+
         return redirect()->route('users.show', $user)->with('status', 'User has been successfully updated.');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */

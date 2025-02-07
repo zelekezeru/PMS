@@ -28,6 +28,7 @@ class TaskStoreRequest extends FormRequest
             'budget' => 'nullable|string|max:255',
             'barriers' => 'nullable|string|max:255',
             'comunication' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
             'parent_task_id' => 'nullable|exists:tasks,id',
             'starting_date' => 'nullable|date',
             'due_date' => 'nullable|date',

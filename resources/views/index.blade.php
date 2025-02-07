@@ -44,7 +44,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Pending Tasks</p>
-                                    <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
+                                    <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Pending')->count() : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Completed Tasks</p>
-                                    <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
+                                    <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Completed')->count() : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                             <div class="col col-stats ms-3">
                                 <div class="numbers">
                                     <p class="card-category">Tasks In Progress</p>
-                                    <h4 class="card-title">13</h4>
+                                    <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'In Progress')->count() : 0 }}</h4>
                                 </div>
                             </div>
                         </div>
