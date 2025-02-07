@@ -23,13 +23,14 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartmentSeeder::class,
             GoalSeeder::class,
+            YearSeeder::class,
             QuarterSeeder::class,
             StrategySeeder::class,
             TargetSeeder::class,
             FortnightSeeder::class,
             PermissionSeeder::class,
-            // UserSeeder::class,
             ModelHasRolesSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
