@@ -131,7 +131,7 @@ function loadFeedback(taskId) {
             feedbackList.innerHTML = "";
 
             if (data.length === 0) {
-                feedbackList.innerHTML = "<p class='text-muted'>No feedback yet.</p>";
+                feedbackList.innerHTML = "<p class='text-muted text-center'>No feedback yet. Be the first to comment!</p>";
             } else {
                 data.forEach(feedback => {
                     let feedbackHtml = renderFeedback(feedback);
@@ -166,16 +166,26 @@ function submitFeedback() {
 
 function renderFeedback(feedback) {
     let replies = feedback.replies ? feedback.replies.map(reply => `
-        <div class="ms-4 border-start ps-2">
-            <strong>${reply.user.name}:</strong> ${reply.comment}
+        <div class="feedback-message replies">
+            <div class="feedback-avatar"></div>
+            <div class="feedback-content">
+                <div class="feedback-username">${reply.user.name}</div>
+                <div class="feedback-text">${reply.comment}</div>
+                <div class="feedback-time">${new Date(reply.created_at).toLocaleString()}</div>
+            </div>
         </div>
     `).join("") : "";
 
     return `
-        <div class="mb-3 border p-2">
-            <strong>${feedback.user.name}:</strong> ${feedback.comment}
-            <button class="btn btn-sm btn-link" onclick="setReply(${feedback.id})">Reply</button>
-            ${replies}
+        <div class="feedback-message">
+            <div class="feedback-avatar"></div>
+            <div class="feedback-content">
+                <div class="feedback-username">${feedback.user.name}</div>
+                <div class="feedback-text">${feedback.comment}</div>
+                <div class="feedback-time">${new Date(feedback.created_at).toLocaleString()}</div>
+                <span class="reply-btn" onclick="setReply(${feedback.id})">Reply</span>
+                ${replies}
+            </div>
         </div>
     `;
 }
@@ -184,7 +194,7 @@ function setReply(feedbackId) {
     document.getElementById("feedback_id").value = feedbackId;
     document.getElementById("comment").focus();
 }
-    
+
     </script>
     <!--   Core JS Files   -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

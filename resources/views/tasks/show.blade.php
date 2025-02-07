@@ -141,21 +141,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="feedback-list">
-                    <!-- Feedback will be loaded here dynamically -->
+                <div id="feedback-list" class="feedback-chat-container">
+                    <!-- Feedback messages will be dynamically inserted here -->
                 </div>
-
+            
                 <!-- Add Feedback Form -->
-                <form id="feedbackForm">
+                <form id="feedbackForm" class="d-flex align-items-center mt-3">
                     @csrf
                     <input type="hidden" id="task_id" name="task_id">
                     <input type="hidden" id="feedback_id" name="feedback_id"> <!-- For replies -->
-                    <div class="mb-3">
-                        <textarea id="comment" class="form-control" name="comment" placeholder="Write a comment..." required></textarea>
+                    
+                    <div class="flex-grow-1 me-2">
+                        <textarea id="comment" class="form-control chat-input" name="comment" placeholder="Write a comment..." required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
                 </form>
             </div>
+            
         </div>
     </div>
 </div>

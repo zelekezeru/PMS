@@ -14,13 +14,12 @@ class FeedbackController extends Controller
     {
         $feedback = Feedback::where('task_id', $taskId)
             ->with('user', 'replies.user')
+            ->orderBy('created_at', 'desc')
             ->get();
     
         return response()->json($feedback);
     }
     
-
-    // Store feedback
     public function store(Request $request)
     {
         $request->validate([
@@ -40,9 +39,11 @@ class FeedbackController extends Controller
             'id' => $feedback->id,
             'comment' => $feedback->comment,
             'user' => ['name' => Auth::user()->name],
+            'created_at' => $feedback->created_at,
             'replies' => []
         ], 201);
     }
+    
     
     
     
