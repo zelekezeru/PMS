@@ -102,7 +102,7 @@ class UserController extends Controller
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
         $user = User::create($data);
-
+        $user->assignRole('EMPLOYEE');
 
 
         if ($data['is_approved']) {
