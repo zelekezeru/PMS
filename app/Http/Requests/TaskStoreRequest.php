@@ -34,7 +34,7 @@ class TaskStoreRequest extends FormRequest
             'target_id' => 'required|exists:targets,id',
             'department_id' => 'sometimes|array',
             'fortnight_id' => 'sometimes|array',
-            'user_id' => 'sometimes|string',
+            'user_id' => 'sometimes|array',
         ];
     }
 }
