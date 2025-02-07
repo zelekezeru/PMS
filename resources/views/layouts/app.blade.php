@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>SITS Admin Dashboard</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/x-icon" />
     <!-- Fonts and icons -->
     <script src="{{ asset('js/plugin/webfont/webfont.min.js') }}"></script>
@@ -102,6 +103,89 @@
         </script>
     @endif
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    let feedbackModal = document.getElementById("feedbackModal");
+
+    feedbackModal.addEventListener("show.bs.modal", function (event) {
+        let button = event.relatedTarget;
+        let taskId = button.getAttribute("data-task-id");
+
+        document.getElementById("task_id").value = taskId;
+        document.getElementById("feedback_id").value = ""; // Reset reply field
+
+        loadFeedback(taskId);
+    });
+
+    document.getElementById("feedbackForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        submitFeedback();
+    });
+});
+
+function loadFeedback(taskId) {
+    fetch(`/feedback/${taskId}`)
+        .then(response => response.json())
+        .then(data => {
+            let feedbackList = document.getElementById("feedback-list");
+            feedbackList.innerHTML = "";
+
+            if (data.length === 0) {
+                feedbackList.innerHTML = "<p class='text-muted'>No feedback yet.</p>";
+            } else {
+                data.forEach(feedback => {
+                    let feedbackHtml = renderFeedback(feedback);
+                    feedbackList.innerHTML += feedbackHtml;
+                });
+            }
+        })
+        .catch(error => console.error("Error fetching feedback:", error));
+}
+
+function submitFeedback() {
+    let formData = new FormData(document.getElementById("feedbackForm"));
+
+    fetch("/feedback", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        let feedbackList = document.getElementById("feedback-list");
+        let newFeedbackHtml = renderFeedback(data);
+        feedbackList.insertAdjacentHTML("afterbegin", newFeedbackHtml); // Add new feedback on top
+
+        document.getElementById("comment").value = "";
+        document.getElementById("feedback_id").value = ""; // Reset reply field
+    })
+    .catch(error => console.error("Error submitting feedback:", error));
+}
+
+function renderFeedback(feedback) {
+    let replies = feedback.replies ? feedback.replies.map(reply => `
+        <div class="ms-4 border-start ps-2">
+            <strong>${reply.user.name}:</strong> ${reply.comment}
+        </div>
+    `).join("") : "";
+
+    return `
+        <div class="mb-3 border p-2">
+            <strong>${feedback.user.name}:</strong> ${feedback.comment}
+            <button class="btn btn-sm btn-link" onclick="setReply(${feedback.id})">Reply</button>
+            ${replies}
+        </div>
+    `;
+}
+
+function setReply(feedbackId) {
+    document.getElementById("feedback_id").value = feedbackId;
+    document.getElementById("comment").focus();
+}
+    
+    </script>
     <!--   Core JS Files   -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/core/jquery-3.7.1.min.js') }}"></script>

@@ -13,6 +13,11 @@
                 </div>
 
                 <table class="table table-bordered">
+
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#feedbackModal" data-task-id="{{ $task->id }}">
+                        View Feedback
+                    </button>
+
                     <tr>
                         <th>Task Title:</th>
                         <td>{{ $task->name }}</td>
@@ -127,3 +132,30 @@
     </div>
 
 @endsection
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Task Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="feedback-list">
+                    <!-- Feedback will be loaded here dynamically -->
+                </div>
+
+                <!-- Add Feedback Form -->
+                <form id="feedbackForm">
+                    @csrf
+                    <input type="hidden" id="task_id" name="task_id">
+                    <input type="hidden" id="feedback_id" name="feedback_id"> <!-- For replies -->
+                    <div class="mb-3">
+                        <textarea id="comment" class="form-control" name="comment" placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
