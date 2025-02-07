@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
@@ -99,7 +100,13 @@ class UserController extends Controller
             $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }
 
+        $data['is_approved'] = $request->is_approved ? 1 : 0;
+        $data['is_active'] = $request->is_active ? 1 : 0;
         $user = User::create($data);
+
+        if ($data['is_approved']) {
+            return redirect()->route('users.index')->with('status', 'User has been successfully created.');
+        }
 
         return redirect()->route('users.waiting')->with('status', 'User has been successfully created.');
     }
@@ -153,7 +160,7 @@ class UserController extends Controller
 
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
-                \Storage::disk('public')->delete($user->profile_image);
+                Storage::disk('public')->delete($user->profile_image);
             }
             $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }

@@ -13,7 +13,8 @@
                 @include('users.form', [
                     'action' => route('users.store'),
                     'method' => 'POST',
-                    'buttonText' => 'Create'
+                    'buttonText' => 'Create',
+                    'isCreate' => true,
                 ])
             </div>
         </div>

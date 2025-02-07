@@ -43,6 +43,7 @@
             </div>
         @endif
     </div>
+    <div>
         <label for="is_active" class="form-label"><strong>Active :</strong></label>
         <input type="checkbox" name="is_active" value="1" id="is_active" {{ old('is_active', isset($user) ? $user->is_active : false) ? 'checked' : '' }}>
     </div>
@@ -50,12 +51,13 @@
         <label for="is_approved" class="form-label"><strong>Approved :</strong></label>
         <input type="checkbox" name="is_approved" value="1" id="is_approved" {{ old('is_approved', isset($user) ? $user->is_approved : false) ? 'checked' : '' }}>
     </div>
-
+    
+    @if(!isset($isCreate) && !$user->hasRole('SUPER_ADMIN'))
     <div class="col-md-6 mb-3">
         <label for="role_id" class="form-label"><strong>Role:</strong></label>
 
         @if ($user->hasRole('SUPER_ADMIN'))
-        <input type="text" name="role" class="form-control @error('role') is-invalid @enderror" id="role" value="SUPER_ADMIN" placeholder="SUPER_ADMIN" readonly>
+        <input type="text" name="role_id" class="form-control @error('role') is-invalid @enderror" id="role" value="SUPER_ADMIN" placeholder="SUPER_ADMIN" readonly>
         @else
             <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
                 <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
@@ -70,6 +72,8 @@
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
     </div>
+    @endif
+
 
     <!-- Assign Departments -->
     <div class="col-md-6 mb-3">
