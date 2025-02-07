@@ -31,24 +31,6 @@
                             @enderror
                         </div>
 
-
-                        @if($parent_task_id)
-                            <input type="hidden" name="parent_task_id" value="{{ $parent_task_id }}">
-                        @endif
-                        {{-- <!-- Parent Task -->
-                        <div class="col-md-6 mb-3">
-                            <label for="parent_task_id" class="form-label">Parent Task:</label>
-                            <select name="parent_task_id" class="form-control @error('parent_task_id') is-invalid @enderror" id="parent_task_id">
-                                <option value="">None</option>
-                                @foreach($parent_tasks as $parent_task)
-                                    <option value="{{ $parent_task->id }}" {{ old('parent_task_id', $task->parent_task_id ?? '') == $parent_task->id ? 'selected' : '' }}>{{ $parent_task->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('parent_task_id')
-                                <div class="form-text text-danger">{{ $message }}</div>
-                            @enderror
-                        </div> --}}
-
                         <div class="col-md-6 mb-3">
                             <label for="status" class="form-label"><strong>Status:</strong></label>
                             <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
@@ -230,7 +212,9 @@
                 </div>
             </div>
         </div>
-
+        @if(isset($parent_task_id) && !empty($parent_task_id))
+            <input type="hidden" name="parent_task_id" value="{{ $parent_task_id }}">
+        @endif
         <div class="col-md-12">
             <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> {{ $buttonText }}</button>
         </div>

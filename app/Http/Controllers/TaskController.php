@@ -56,6 +56,13 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
+
+        if (isset($data['parent_task_id'])) {
+            $data['is_subtask'] = true;
+        } else {
+            $data['is_subtask'] = false;
+        }
+
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
         $data['created_by'] = request()->user()->id;
 
