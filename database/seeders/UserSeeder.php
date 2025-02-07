@@ -26,10 +26,38 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => '2025-02-01 08:18:17',
                 'updated_at' => '2025-02-03 08:52:30',
-                'department_id' => 3
+                'department_id' => 1
             ],
             [
                 'id' => 2,
+                'name' => 'Department User',
+                'phone_number' => '01111223344',
+                'is_approved' => 1,
+                'is_active' => 1,
+                'email' => 'department@gmail.com',
+                'email_verified_at' => null,
+                'password' => '$2y$12$XUUnaM2kj8iqpU9ly76gBueWNom9s0B1G7k8F0mtddF.K4K7s5gFG',
+                'remember_token' => null,
+                'created_at' => '2025-02-01 18:08:31',
+                'updated_at' => '2025-02-02 10:14:08',
+                'department_id' => 2
+            ],
+            [
+                'id' => 3,
+                'name' => 'Employee User',
+                'phone_number' => '0921212121',
+                'is_approved' => 0,
+                'is_active' => 0,
+                'email' => 'employee@gmail.com',
+                'email_verified_at' => null,
+                'password' => '$2y$12$QKLpoFl8TgVTqQ3pSbEES.USNOP745ZXr0qMoaASdjuaYeFzMOmZW',
+                'remember_token' => null,
+                'created_at' => '2025-02-04 05:22:34',
+                'updated_at' => '2025-02-04 05:22:34',
+                'department_id' => null,
+            ],
+            [
+                'id' => 4,
                 'name' => 'Abel Shiferaw',
                 'phone_number' => '0906200607',
                 'is_approved' => 1,
@@ -43,7 +71,7 @@ class UserSeeder extends Seeder
                 'department_id' => null
             ],
             [
-                'id' => 3,
+                'id' => 5,
                 'name' => 'Eyasu Mesele',
                 'phone_number' => '0976897892',
                 'is_approved' => 1,
@@ -54,10 +82,10 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => '2025-02-01 08:22:44',
                 'updated_at' => '2025-02-01 18:29:48',
-                'department_id' => 3
+                'department_id' => null,
             ],
             [
-                'id' => 5,
+                'id' => 6,
                 'name' => 'Dr Endale Sebsebe',
                 'phone_number' => '0911914027',
                 'is_approved' => 1,
@@ -68,10 +96,10 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => '2025-02-01 09:28:13',
                 'updated_at' => '2025-02-01 09:29:24',
-                'department_id' => 2
+                'department_id' => null,
             ],
             [
-                'id' => 6,
+                'id' => 7,
                 'name' => 'Misganu Petros',
                 'phone_number' => '0937216471',
                 'is_approved' => 1,
@@ -84,48 +112,6 @@ class UserSeeder extends Seeder
                 'updated_at' => '2025-02-01 09:41:46',
                 'department_id' => null
             ],
-            [
-                'id' => 7,
-                'name' => 'Department User',
-                'phone_number' => '01111223344',
-                'is_approved' => 1,
-                'is_active' => 1,
-                'email' => 'test@gmail.com',
-                'email_verified_at' => null,
-                'password' => '$2y$12$XUUnaM2kj8iqpU9ly76gBueWNom9s0B1G7k8F0mtddF.K4K7s5gFG',
-                'remember_token' => null,
-                'created_at' => '2025-02-01 18:08:31',
-                'updated_at' => '2025-02-02 10:14:08',
-                'department_id' => 2
-            ],
-            [
-                'id' => 8,
-                'name' => 'Abel Shiferaw',
-                'phone_number' => '090909090909',
-                'is_approved' => 1,
-                'is_active' => 1,
-                'email' => 'test2@gmail.com',
-                'email_verified_at' => null,
-                'password' => '$2y$12$4I4ocUo63ksN0MfyOfsINuu9aFQ0RC6ntiRdZB/I/H7poC1ipgZl.',
-                'remember_token' => null,
-                'created_at' => '2025-02-01 18:35:31',
-                'updated_at' => '2025-02-01 18:35:55',
-                'department_id' => null
-            ],
-            [
-                'id' => 9,
-                'name' => 'Editor User',
-                'phone_number' => '0921212121',
-                'is_approved' => 0,
-                'is_active' => 0,
-                'email' => 'editor@gmail.com',
-                'email_verified_at' => null,
-                'password' => '$2y$12$QKLpoFl8TgVTqQ3pSbEES.USNOP745ZXr0qMoaASdjuaYeFzMOmZW',
-                'remember_token' => null,
-                'created_at' => '2025-02-04 05:22:34',
-                'updated_at' => '2025-02-04 05:22:34',
-                'department_id' => null
-            ]
         ]);
 
 
