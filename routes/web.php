@@ -43,10 +43,16 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:SUPER_ADMIN|ADMIN')->group(function () {
         Route::get('users/waiting-approval', [UserController::class, 'waitingApproval'])->name('users.waiting');
 
-        //Approval
+        //User Approval
         Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
         Route::get('users/{user}/approve', [UserController::class, 'approved'])->name('users.approved');
 
+        //KPI Approval & Confirmation
+        Route::get('kpis/{kpi}/approve', [KpiController::class, 'approve'])->name('kpis.approve');
+        Route::get('kpis/{kpi}/confirm', [KpiController::class, 'confirm'])->name('kpis.confirm');
+
+
+        //Resource Routes
         Route::resource('users', UserController::class)->only('create', 'store', 'edit', 'update', 'destroy');
 
         Route::resource('strategies', StrategyController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);

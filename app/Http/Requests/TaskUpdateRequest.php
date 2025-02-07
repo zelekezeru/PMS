@@ -28,6 +28,7 @@ class TaskUpdateRequest extends FormRequest
             'barriers' => 'sometimes|nullable|string|max:255',
             'comunication' => 'sometimes|nullable|string|max:255',
             'parent_task_id' => 'sometimes|nullable|exists:tasks,id',
+            'status' => 'sometimes|string|max:255',
             'starting_date' => 'sometimes|nullable|date',
             'due_date' => 'sometimes|nullable|date',
             'target_id' => 'sometimes|required|exists:targets,id',

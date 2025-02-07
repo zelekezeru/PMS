@@ -8,6 +8,7 @@ use App\Models\Kpi;
 use App\Models\Task;
 use App\Models\Target;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KpiController extends Controller
 {
@@ -47,7 +48,7 @@ class KpiController extends Controller
         } else if ($request['target_id']) {
             return redirect()->route('targets.show', $request['target_id'])->with('success', 'KPI created successfully.');
         }
-        
+
         return redirect()->route('kpis.index')->with('success', 'KPI created successfully.');
     }
 
@@ -78,7 +79,11 @@ class KpiController extends Controller
     {
         $kpi->update($request->validated());
 
-        return redirect()->route('kpis.index')->with('success', 'KPI updated successfully.');
+        if ($request['task_id']) {
+            return redirect()->route('tasks.show', $request['task_id'])->with('success', 'KPI created successfully.');
+        } else if ($request['target_id']) {
+            return redirect()->route('targets.show', $request['target_id'])->with('success', 'KPI created successfully.');
+        }
     }
 
     public function destroy(Kpi $kpi)
@@ -86,5 +91,38 @@ class KpiController extends Controller
         $kpi->delete();
 
         return redirect()->route('kpis.index')->with('success', 'KPI deleted successfully.');
+    }
+
+    /**
+     * Approve the specified KPI.
+     */
+    public function approve($id)
+    {
+        $kpi = Kpi::findOrFail($id);
+        $kpi->approved_by = Auth::user()->id;
+        $kpi->save();
+
+        if ($kpi->task_id != null) {
+            return redirect()->route('tasks.show', $kpi->task_id)->with('success', 'KPI Approved successfully.');
+        } else if ($kpi->target_id != null) {
+            return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Approved successfully.');
+        }
+    }
+
+    /**
+     * Confirm the specified KPI.
+     */
+    public function confirm($id)
+    {
+        $kpi = Kpi::findOrFail($id);
+        $kpi->confirmed_by = Auth::user()->id;
+        $kpi->save();
+
+
+        if ($kpi->task_id != null) {
+            return redirect()->route('tasks.show', $kpi->task_id)->with('success', 'KPI Confirmed successfully.');
+        } else if ($kpi->target_id != null) {
+            return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Confirmed successfully.');
+        }
     }
 }
