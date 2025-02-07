@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('status', 255)->nullable();
             $table->boolean('is_subtask')->default(false);
             $table->foreignId('parent_task_id')->nullable()->constrained('tasks')->onDelete('set null');
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->date('starting_date')->nullable();
             $table->date('due_date')->nullable();
             $table->timestamps(0);
