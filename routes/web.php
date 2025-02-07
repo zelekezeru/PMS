@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
     //KPI
     Route::get('kpis/create_target/{target}', [KpiController::class, 'create_target'])->name('kpis.create_target');
     Route::get('kpis/create_task/{task}', [KpiController::class, 'create_task'])->name('kpis.create_task');
+    Route::put('/kpis/{kpi}/status', [KpiController::class, 'updateStatus'])->name('kpis.status');
 });
 
 Route::get('/users/assign', [UserController::class, 'assign'])->name('users.assign');

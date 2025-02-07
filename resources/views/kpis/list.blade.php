@@ -34,6 +34,7 @@
                                             @endif
 
                                         @endif
+
                                         @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
 
                                             @if ($kpi->confirmed_by)
