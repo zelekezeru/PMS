@@ -16,6 +16,16 @@ class FeedbackController extends Controller
             ->with('user', 'replies.user')
             ->orderBy('created_at', 'desc')
             ->get();
+        
+        return response()->json($feedback);
+    }
+
+    public function taskFeedbacks($taskId)
+    {
+        $feedback = Feedback::where('task_id', $taskId)
+                        ->with('user', 'replies.user')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
     
         return response()->json($feedback);
     }

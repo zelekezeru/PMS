@@ -21,6 +21,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Middleware\IsApprovedMiddleware;
+use App\Models\Feedback;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Dashboard Route
@@ -89,6 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('templates', TemplateController::class);
     Route::resource('kpis', KpiController::class);
 
+    Route::get('feedbacks/{taskId}', [FeedbackController::class, 'taskFeedbacks'])->name('taskFeedbacks');
     //KPI
     Route::get('kpis/create_target/{target}', [KpiController::class, 'create_target'])->name('kpis.create_target');
     Route::get('kpis/create_task/{task}', [KpiController::class, 'create_task'])->name('kpis.create_task');
