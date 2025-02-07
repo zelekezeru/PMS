@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -12,7 +14,8 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        //
+        $feedbacks = Feedback::with(['task', 'user', 'parentFeedback', 'replies'])->get();
+        return view('feedback.index', compact('feedbacks'));
     }
 
     /**
@@ -20,7 +23,10 @@ class FeedbackController extends Controller
      */
     public function create()
     {
-        //
+        $tasks = Task::all();
+        $users = User::all();
+        $parentFeedbacks = Feedback::all();
+        return view('feedback.create', compact('tasks', 'users', 'parentFeedbacks'));
     }
 
     /**
@@ -28,7 +34,16 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'task_id' => 'required|exists:tasks,id',
+            'user_id' => 'required|exists:users,id',
+            'feedback_id' => 'nullable|exists:feedback,id',
+            'comment' => 'required|string',
+        ]);
+
+        Feedback::create($request->all());
+
+        return redirect()->route('feedback.index')->with('success', 'Feedback created successfully.');
     }
 
     /**
@@ -36,7 +51,7 @@ class FeedbackController extends Controller
      */
     public function show(Feedback $feedback)
     {
-        //
+        return view('feedback.show', compact('feedback'));
     }
 
     /**
@@ -44,7 +59,10 @@ class FeedbackController extends Controller
      */
     public function edit(Feedback $feedback)
     {
-        //
+        $tasks = Task::all();
+        $users = User::all();
+        $parentFeedbacks = Feedback::all();
+        return view('feedback.edit', compact('feedback', 'tasks', 'users', 'parentFeedbacks'));
     }
 
     /**
@@ -52,7 +70,16 @@ class FeedbackController extends Controller
      */
     public function update(Request $request, Feedback $feedback)
     {
-        //
+        $request->validate([
+            'task_id' => 'required|exists:tasks,id',
+            'user_id' => 'required|exists:users,id',
+            'feedback_id' => 'nullable|exists:feedback,id',
+            'comment' => 'required|string',
+        ]);
+
+        $feedback->update($request->all());
+
+        return redirect()->route('feedback.index')->with('success', 'Feedback updated successfully.');
     }
 
     /**
@@ -60,6 +87,7 @@ class FeedbackController extends Controller
      */
     public function destroy(Feedback $feedback)
     {
-        //
+        $feedback->delete();
+        return redirect()->route('feedback.index')->with('success', 'Feedback deleted successfully.');
     }
 }

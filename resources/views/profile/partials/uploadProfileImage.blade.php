@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            {{ __('Profile Information') }}
+            
         </h2>
 
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update your account's profile Image") }}
         </p>
     </header>
 
@@ -21,12 +21,12 @@
         @if($user->profile_image)
             <div class="mt-3">
                 <p class="text-sm text-gray-500">{{ __('Current Profile Picture:') }}</p>
-                <img id="profilePreview" src="{{ asset('storage/' . $user->profile_image) }}" class="img-thumbnail" width="150">
+                <img id="profilePreview" src="{{ asset('storage/' . $user->profile_image) }}" class="img-thumbnail" style="width: 35%; border-radius: 50%; margin: 0 auto;">
             </div>
             @else
                 <div class="mt-3">
                     <p class="text-sm text-gray-500">{{ __('No profile picture uploaded.') }}</p>
-                    <img id="profilePreview" src="" class="img-thumbnail d-none" width="150">
+                    <img id="profilePreview" src="" class="img-thumbnail d-none" style="width: 35%; border-radius: 50%; margin: 0 auto;">
                 </div>
             @endif
         </div>

@@ -39,7 +39,7 @@
         @enderror
         @if(isset($user) && $user->profile_image)
             <div class="mt-2">
-                <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile Image" class="img-thumbnail" width="150">
+                <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile Image"style="width: 20%; border-radius: 100%;">
             </div>
         @endif
     </div>

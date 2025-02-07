@@ -4,7 +4,11 @@
 
     <div class="container mt-3">
         <div class="card pt-5">
-            <h2 class="card-header text-center">User Details</h2>
+            <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/user.png') }}" 
+                alt="Profile Image" style="width: 15%; border-radius: 50%; margin: 0 auto;">
+            <h2 class="card-header text-center">
+                User Details
+            </h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end">
                     <a class="btn btn-primary btn-sm mb-3" href="{{ route('users.index') }}">

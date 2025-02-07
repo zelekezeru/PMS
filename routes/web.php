@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('deliverables', DeliverableController::class);
     Route::resource('fortnights', FortnightController::class);
     Route::resource('weeks', WeekController::class);
-    Route::resource('feedbacks', FeedbackController::class);
+    Route::resource('feedback', FeedbackController::class);
     Route::resource('reports', ReportController::class);
     Route::resource('templates', TemplateController::class);
     Route::resource('kpis', KpiController::class);
