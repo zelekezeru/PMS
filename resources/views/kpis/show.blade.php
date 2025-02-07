@@ -7,8 +7,8 @@
             <h2 class="card-header text-center">Key Indicator Details</h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end">
-                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('kpis.index') }}">
-                        <i class="fa fa-arrow-left"></i> Back
+                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('tasks.show', $kpi->task_id) }}">
+                        <i class="fa fa-arrow-left"></i> Back to Task
                     </a>
                 </div>
 
@@ -26,8 +26,30 @@
                         <td>{{ $kpi->value }}</td>
                     </tr>
                     <tr>
-                        <th>status:</th>
-                        <td>{{ $kpi->status }}</td>
+                        <th>Status:</th>
+                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']) || Auth::user()->tasks->contains($kpi->id))
+                            @if ($kpi->status != 'Completed')
+                                <td>
+                                    <div class="col-6">
+                                        <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <select name="status" id="status" class="form-control col-6 @error('status') is-invalid @enderror" optional>
+                                                <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                                <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
+                                                <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                @error('status')
+                                    <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
+                            @else
+                                <td class="badge badge-success me-4">Completed !</td>
+                            @endif
+                        @endif
                     </tr>
                     <tr>
                         @if($kpi->task_id != null)

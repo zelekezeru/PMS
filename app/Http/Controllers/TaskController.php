@@ -38,7 +38,7 @@ class TaskController extends Controller
 
         $parent_tasks = Task::get();
 
-        $users = User::get();
+        $users = (request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users :  request()->user()->hasROle('EMPLOYEE')) ? null : User::get();
 
         $fortnights = Fortnight::get();
 
@@ -52,6 +52,7 @@ class TaskController extends Controller
         $data = $request->validated();
 
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
+        $data['created_by'] = request()->user()->id;
 
         $departments = $request['department_id'];
         $fortnights = $request['fortnight_id'];
@@ -81,6 +82,10 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
+        if (request()->user()->id !== $task->created_by) {
+            abort(403);
+        }
+        
         $assignedUsers = $task->users()->pluck('users.id')->toArray();
 
         $targets = Target::get();

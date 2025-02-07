@@ -125,4 +125,16 @@ class KpiController extends Controller
             return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Confirmed successfully.');
         }
     }
+
+    public function updateStatus(Request $request, Kpi $kpi)
+    {
+        $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        $kpi->status = $request->status;
+        $kpi->save();
+
+        return redirect()->route('kpis.show', $kpi->id)->with('success', 'KPI status updated successfully.');
+    }
 }

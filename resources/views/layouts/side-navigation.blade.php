@@ -65,7 +65,7 @@
                 @endcanany
 
                 {{-- Strategy Navigation --}}
-                @canany(['view-tasks', 'create-tasks', 'edit-tasks', 'delete-tasks'])
+                @canany(['view-strategies', 'create-strategies', 'edit-strategies', 'delete-strategies'])
                     <li class="nav-item {{ request()->routeIs('strategies.index') || request()->routeIs('strategies.create') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#Strategy">
                             <i class="fas fa-lightbulb"></i>

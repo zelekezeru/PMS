@@ -48,7 +48,7 @@
                             <label for="status" class="form-label"><strong>Status:</strong></label>
                             <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
                                 <option value="Pending" {{ old('status', $kpi->status ?? '') == 'Pending' ? 'selected' : '' }}> Pending</option>
-                                <option value="Progress'" {{ old('status', $kpi->status ?? '') == 'Progress' ? 'selected' : '' }}>In Progress</option>
+                                <option value="Progress" {{ old('status', $kpi->status ?? '') == 'Progress' ? 'selected' : '' }}>In Progress</option>
                                 <option value="Completed" {{ old('status', $kpi->status ?? '') == 'Completed' ? 'selected' : '' }}>Completed</option>
                                 {{-- <option value="Approved'" {{ old('status', $kpi->status ?? '') == 'Approved' ? 'selected' : '' }}>Approved</option>
                                 <option value="Confirmed'" {{ old('status', $kpi->status ?? '') == 'Confirmed' ? 'selected' : '' }}>Confirmed</option> --}}
@@ -71,6 +71,7 @@
                 <div class="card-body">
                     <div class="row">
                         <!-- Assign Users in Two Columns -->
+                        @if (request()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
                         <div class="col-md-6">
                             <label for="users" class="form-label">Select Users:</label>
                             <div class="row">
@@ -89,22 +90,25 @@
                                 <div class="form-text text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+                        @endif
 
                         <!-- Assign Departments -->
-                        <div class="col-md-6">
-                            <label for="department_id" class="form-label">Responsible Departments:</label>
-                            <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
-                                @php
-                                    $selectedDepartments = old('department_id', isset($task) && $task->departments()->count() !== 0 ? $task->departments->pluck('id')->toArray() : []);
-                                @endphp
-                                @foreach($departments as $department)
-                                    <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
-                                @endforeach
-                            </select>
-                            @error('department_id')
-                                <div class="form-text text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        @if (request()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                            <div class="col-md-6">
+                                <label for="department_id" class="form-label">Responsible Departments:</label>
+                                <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
+                                    @php
+                                        $selectedDepartments = old('department_id', isset($task) && $task->departments()->count() !== 0 ? $task->departments->pluck('id')->toArray() : []);
+                                    @endphp
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('department_id')
+                                    <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        @endif
                         <div class="row">
 
 
