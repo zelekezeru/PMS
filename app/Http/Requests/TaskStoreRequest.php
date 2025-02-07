@@ -21,7 +21,6 @@ class TaskStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd(request());
         return [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -35,7 +34,7 @@ class TaskStoreRequest extends FormRequest
             'target_id' => 'required|exists:targets,id',
             'department_id' => 'sometimes|array',
             'fortnight_id' => 'sometimes|array',
-            'user_id' => 'sometimes|array',
+            'user_id' => 'sometimes|string',
         ];
     }
 }

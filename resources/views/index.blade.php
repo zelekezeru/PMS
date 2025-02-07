@@ -35,61 +35,67 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                    <i class="fas fa-users"></i>
+                <a href="{{ route('tasks.list', 'Pending') }}">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                        <i class="fas fa-users"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col col-stats ms-3">
-                                <div class="numbers">
-                                    <p class="card-category">Pending Tasks</p>
-                                    <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Pending')->count() : 0 }}</h4>
+                                <div class="col col-stats ms-3">
+                                    <div class="numbers">
+                                        <p class="card-category">Pending Tasks</p>
+                                        <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Pending')->count() : 0 }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-sm-6">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                    <i class="fas fa-users"></i>
+                <a href="{{ route('tasks.list', 'Progress') }}">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-info bubble-shadow-small">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col col-stats ms-3">
-                                <div class="numbers">
-                                    <p class="card-category">Completed Tasks</p>
-                                    <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Completed')->count() : 0 }}</h4>
+                                <div class="col col-stats ms-3">
+                                    <div class="numbers">
+                                        <p class="card-category">Tasks In Progress</p>
+                                        <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Progress')->count() : 0 }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-sm-6">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-info bubble-shadow-small">
-                                    <i class="fas fa-user-check"></i>
+                <a href="{{ route('tasks.list', 'Completed') }}">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                        <i class="fas fa-users"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col col-stats ms-3">
-                                <div class="numbers">
-                                    <p class="card-category">Tasks In Progress</p>
-                                    <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'In Progress')->count() : 0 }}</h4>
+                                <div class="col col-stats ms-3">
+                                    <div class="numbers">
+                                        <p class="card-category">Completed Tasks</p>
+                                        <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Completed')->count() : 0 }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-sm-6">
                 <div class="card card-stats card-round">

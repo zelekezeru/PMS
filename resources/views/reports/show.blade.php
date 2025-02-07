@@ -68,22 +68,6 @@
                 </div>
             </div>
         </div>
-
-        @if ($report->goals)
-            @php
-                $goals = $report->goals;
-            @endphp
-
-            <div class="card-header">
-                <h3 class="card-title mb-5">Goals of this Report</h3>
-            </div>
-
-            @include('goals.list')
-        @else
-            <div class="alert alert-warning mt-3">
-                <p>No goals found for this report.</p>
-            </div>
-        @endif
     </div>
 
 @endsection
