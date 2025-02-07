@@ -30,7 +30,7 @@ class TaskController extends Controller
         return view('tasks.index', compact('tasks'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $targets = Target::get();
 
@@ -40,6 +40,10 @@ class TaskController extends Controller
 
         $users = (request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users :  request()->user()->hasROle('EMPLOYEE')) ? null : User::get();
 
+        if (isset($request['day'])) {
+            dd($request['day']);
+        }
+        
         $fortnights = Fortnight::get();
 
         $assignedUsers = [];
