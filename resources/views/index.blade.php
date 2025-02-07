@@ -13,24 +13,26 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="row">
-            <div class="col-sm-6">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                    <i class="fas fa-users"></i>
+            <a href="{{ route('tasks.index') }}">
+                <div class="col-sm-6">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                        <i class="fas fa-users"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col col-stats ms-3">
-                                <div class="numbers">
-                                    <p class="card-category">All Tasks</p>
-                                    <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
+                                <div class="col col-stats ms-3">
+                                    <div class="numbers">
+                                        <p class="card-category">All Tasks</p>
+                                        <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-sm-6">
                 <div class="card card-stats card-round">
