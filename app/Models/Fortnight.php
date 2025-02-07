@@ -35,4 +35,8 @@ class Fortnight extends Model
     {
         return $this->hasMany(Deliverable::class);
     }
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class);
+    }
 }

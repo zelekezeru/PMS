@@ -48,7 +48,9 @@ class TaskController extends Controller
 
         $assignedUsers = [];
 
-        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers'));
+        $parent_task_id = $request->input('parent_task_id', null);
+
+        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'parent_task_id'));
     }
 
     public function store(TaskStoreRequest $request)
@@ -79,7 +81,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $task = $task->load('departments', 'users', 'kpis');
+        $task = $task->load('departments', 'users', 'kpis', 'subtasks');
 
         $users = $task->users;
         return view('tasks.show', compact('task', 'users'));

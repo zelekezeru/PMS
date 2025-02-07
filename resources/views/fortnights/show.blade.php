@@ -21,7 +21,7 @@
                         <td>{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
                     </tr>
                     <tr>
-                        <th>Start Date:</th>
+                        <th>Due Date:</th>
                         <td>{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
                     </tr>
                 </table>
@@ -40,6 +40,20 @@
                 </div>
             </div>
         </div>
-    </div>
+        @if ($fortnight->tasks)
+        @php
+            $tasks = $fortnight->tasks;
+        @endphp
 
+        <div class="card-header">
+            <h3 class="card-title mb-5">Tasks of this fortnight</h3>
+        </div>
+
+        @include('tasks.list')
+    @else
+        <div class="alert alert-warning mt-3">
+            <p>No Tasks found for this fortnight.</p>
+        </div>
+    @endif
+    </div>
 @endsection

@@ -31,7 +31,11 @@
                             @enderror
                         </div>
 
-                        <!-- Parent Task -->
+
+                        @if($parent_task_id)
+                            <input type="hidden" name="parent_task_id" value="{{ $parent_task_id }}">
+                        @endif
+                        {{-- <!-- Parent Task -->
                         <div class="col-md-6 mb-3">
                             <label for="parent_task_id" class="form-label">Parent Task:</label>
                             <select name="parent_task_id" class="form-control @error('parent_task_id') is-invalid @enderror" id="parent_task_id">
@@ -43,7 +47,7 @@
                             @error('parent_task_id')
                                 <div class="form-text text-danger">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-6 mb-3">
                             <label for="status" class="form-label"><strong>Status:</strong></label>
