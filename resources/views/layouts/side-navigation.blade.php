@@ -291,11 +291,11 @@
                                             <i class="fas fa-user-clock"></i> Waiting Approval
                                         </a>
                                     </li>
-                                    <li class="{{ request()->routeIs('users.assign') ? 'active' : '' }}">
+                                    {{-- <li class="{{ request()->routeIs('users.assign') ? 'active' : '' }}">
                                         <a href="{{ route('users.assign') }}">
                                             <i class="fas fa-user-clock"></i> Assign Roles
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 @endcan
 
                                 @can('create-users')
