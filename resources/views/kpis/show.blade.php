@@ -39,7 +39,7 @@
                                                 <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
                                                 <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
                                             </select>
-                                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
+                                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-arrows-spin"></i> Change</button>
                                         </form>
                                     </div>
                                 </td>

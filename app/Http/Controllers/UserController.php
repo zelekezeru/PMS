@@ -94,7 +94,6 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = Hash::make('pms@SITS');
-
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
@@ -103,6 +102,8 @@ class UserController extends Controller
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
         $user = User::create($data);
+        $user->assignRole('EMPLOYEE');
+
 
         if ($data['is_approved']) {
             return redirect()->route('users.index')->with('status', 'User has been successfully created.');

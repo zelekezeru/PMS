@@ -135,6 +135,10 @@ class KpiController extends Controller
         $kpi->status = $request->status;
         $kpi->save();
 
-        return redirect()->route('kpis.show', $kpi->id)->with('success', 'KPI status updated successfully.');
+        if ($kpi->task_id != null) {
+            return redirect()->route('tasks.show', $kpi->task_id)->with('success', 'KPI Confirmed successfully.');
+        } else if ($kpi->target_id != null) {
+            return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Confirmed successfully.');
+        }
     }
 }

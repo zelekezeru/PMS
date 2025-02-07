@@ -55,19 +55,14 @@
     @if(!isset($isCreate) && !$user->hasRole('SUPER_ADMIN'))
     <div class="col-md-6 mb-3">
         <label for="role_id" class="form-label"><strong>Role:</strong></label>
-
-        @if ($user->hasRole('SUPER_ADMIN'))
-            <input type="text" name="role_id" class="form-control @error('role') is-invalid @enderror" id="role" value="SUPER_ADMIN" placeholder="SUPER_ADMIN" readonly>
-        @else
-            <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
-                <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
-                @foreach($roles as $role)
-                    @if ($role->name !== 'SUPER_ADMIN')
-                        <option value="{{ $role->id }}" {{ old('role_id', isset($user) && $user->roles->contains($role->id) ? $role->id : '') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
-                    @endif
-                @endforeach
-            </select>
-        @endif
+        <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
+            <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
+            @foreach($roles as $role)
+                @if ($role->name !== 'SUPER_ADMIN' && $role->name !== 'DEPARTMENT_HEAD')
+                    <option value="{{ $role->id }}" {{ old('role_id', isset($user) && $user->roles->contains($role->id) ? $role->id : '') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                @endif
+            @endforeach
+        </select>
         @error('role_id')
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror

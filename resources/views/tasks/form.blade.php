@@ -11,6 +11,8 @@
                 <div class="card-header">
                     <strong>Task Information</strong>
                 </div>
+                <input type="text" name="user_id" class="form-control @error('user_id') is-invalid @enderror" id="name" value="{{ Auth::user()->id }}" readonly hidden>
+
                 <div class="card-body">
                     <div class="row">
                         <!-- Task Title and Description -->
@@ -43,15 +45,12 @@
                             @enderror
                         </div>
 
-
                         <div class="col-md-6 mb-3">
                             <label for="status" class="form-label"><strong>Status:</strong></label>
                             <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
                                 <option value="Pending" {{ old('status', $kpi->status ?? '') == 'Pending' ? 'selected' : '' }}> Pending</option>
                                 <option value="Progress" {{ old('status', $kpi->status ?? '') == 'Progress' ? 'selected' : '' }}>In Progress</option>
                                 <option value="Completed" {{ old('status', $kpi->status ?? '') == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                {{-- <option value="Approved'" {{ old('status', $kpi->status ?? '') == 'Approved' ? 'selected' : '' }}>Approved</option>
-                                <option value="Confirmed'" {{ old('status', $kpi->status ?? '') == 'Confirmed' ? 'selected' : '' }}>Confirmed</option> --}}
                             </select>
                             @error('status')
                                 <div class="form-text text-danger">{{ $message }}</div>
@@ -62,55 +61,66 @@
             </div>
         </div>
 
-        <!-- Assign Users and Assign Departments Card -->
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <strong>Assign Users & Departments</strong>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Assign Users in Two Columns -->
-                        @if (request()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
-                        <div class="col-md-6">
-                            <label for="users" class="form-label">Select Users:</label>
-                            <div class="row">
-                                @foreach($users as $index => $user)
-                                    @if ($index % 2 == 0 && $index > 0)
-                                        </div><div class="row"> <!-- New Row -->
-                                    @endif
-                                    <div class="col-md-6">
-                                        {{-- <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" > --}}
-                                        <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            @error('user_id')
-                                <div class="form-text text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        @endif
-
-                        <!-- Assign Departments -->
-                        @if (request()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+        <!-- Assign Users in Two Columns -->
+        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
+            <!-- Assign Users and Assign Departments Card -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Assign Users & Departments</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col-md-6">
-                                <label for="department_id" class="form-label">Responsible Departments:</label>
-                                <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
-                                    @php
-                                        $selectedDepartments = old('department_id', isset($task) && $task->departments()->count() !== 0 ? $task->departments->pluck('id')->toArray() : []);
-                                    @endphp
-                                    @foreach($departments as $department)
-                                        <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                                <label for="users" class="form-label">Select Users:</label>
+                                <div class="row">
+                                    @foreach($users as $index => $user)
+                                        @if ($index % 2 == 0 && $index > 0)
+                                            </div><div class="row"> <!-- New Row -->
+                                        @endif
+                                        <div class="col-md-6">
+                                            <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                        </div>
                                     @endforeach
-                                </select>
-                                @error('department_id')
+                                </div>
+                                @error('user_id')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                        @endif
-                        <div class="row">
 
+                            <!-- Assign Departments -->
+                            @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                                <div class="col-md-6">
+                                    <label for="department_id" class="form-label">Responsible Departments:</label>
+                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
+                                        @php
+                                            $selectedDepartments = old('department_id', isset($task) && $task->departments()->count() !== 0 ? $task->departments->pluck('id')->toArray() : []);
+                                        @endphp
+                                        @foreach($departments as $department)
+                                            <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('department_id')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Target & Fortnight Selection</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="row">
 
                         <div class="col card mt-3">
                             <div class="card-header">
@@ -123,7 +133,7 @@
                                         <option value="">Select Target</option>
                                         @foreach($targets as $target)
                                             <option value="{{ $target->id }}" {{ old('target_id', $task->target_id ?? '') == $target->id ? 'selected' : '' }}>
-                                                {{ $target->name }} <!-- Assuming the target has a 'name' property -->
+                                                {{ $target->name }}
                                             </option>
                                         @endforeach
                                     </select>

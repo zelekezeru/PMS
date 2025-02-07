@@ -7,7 +7,7 @@
                         <tr>
                             <th>#</th>
                             <th>Title</th>
-                            <th>Budget</th>
+                            <th>Status</th>
                             <th>Due Date</th>
                             <th style="width: 10%; text-align: center;">Action</th>
                         </tr>
@@ -17,7 +17,7 @@
                             <tr>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->name }}</td>
-                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->budget }}</td>
+                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->status }}</td>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->due_date }}</td>
                                 <td class="text-center">
                                     <div class="form-button-action">

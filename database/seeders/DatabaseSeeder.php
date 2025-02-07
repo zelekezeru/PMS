@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             TargetSeeder::class,
             FortnightSeeder::class,
             PermissionSeeder::class,
-            UserSeeder::class,
+            // UserSeeder::class,
             ModelHasRolesSeeder::class,
         ]);
     }

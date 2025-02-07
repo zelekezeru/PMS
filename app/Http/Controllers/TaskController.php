@@ -30,7 +30,7 @@ class TaskController extends Controller
         return view('tasks.index', compact('tasks'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $targets = Target::get();
 
@@ -39,6 +39,10 @@ class TaskController extends Controller
         $parent_tasks = Task::get();
 
         $users = (request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users :  request()->user()->hasROle('EMPLOYEE')) ? null : User::get();
+
+        if (isset($request['day'])) {
+            dd($request['day']);
+        }
 
         $fortnights = Fortnight::get();
 
@@ -50,7 +54,6 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
-
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
         $data['created_by'] = request()->user()->id;
 
@@ -65,7 +68,9 @@ class TaskController extends Controller
         $task = Task::create($data);
 
         $task->departments()->attach($departments);
+
         $task->fortnights()->attach($fortnights);
+
         $task->users()->attach($users);
 
 
@@ -82,10 +87,7 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        if (request()->user()->id !== $task->created_by) {
-            abort(403);
-        }
-        
+
         $assignedUsers = $task->users()->pluck('users.id')->toArray();
 
         $targets = Target::get();
@@ -142,5 +144,35 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully Deleted.');
+    }
+
+    public function listByStatus($status)
+    {
+        $tasks = Task::where('status', $status)->paginate(10);
+
+        if(request()->user()->hasAnyRole(['DEPARTMENT_HEAD']))
+        {
+            $tasks = request()->user()->headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+
+        } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+
+            $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
+
+        } else {
+            $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+        }
+        return view('tasks.index', compact('tasks'));
+    }
+
+    public function updateStatus(Request $request, Task $task)
+    {
+        $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        $task->status = $request->status;
+        $task->save();
+
+        return redirect()->route('tasks.show', $task->id)->with('success', 'Task status updated successfully.');
     }
 }
