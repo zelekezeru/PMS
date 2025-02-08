@@ -13,6 +13,11 @@
                 </div>
 
                 <table class="table table-bordered">
+
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#feedbackModal" data-task-id="{{ $task->id }}">
+                        View Feedback
+                    </button>
+
                     <tr>
                         <th>Task Title:</th>
                         <td>{{ $task->name }}</td>
@@ -90,6 +95,9 @@
                 </table>
 
                 <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('tasks.create', ['parent_task_id' => $task->id]) }}" class="btn btn-primary btn-sm me-2">
+                        <i class="fas fa-add"></i> Add Sub Task
+                    </a>
                     <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm me-2">
                         <i class="fas fa-edit"></i> Edit
                     </a>
@@ -104,6 +112,12 @@
                 </div>
             </div>
         </div>
+
+        <div class="card-header">
+            <h3 class="card-title mb-5">Sub Task of this task</h3>
+        </div>
+
+        @include('tasks.subtask')
 
         <div class="col">
             <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Taskx Indicators</a>
@@ -127,3 +141,32 @@
     </div>
 
 @endsection
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Task Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="feedback-list" class="feedback-chat-container">
+                    <!-- Feedback messages will be dynamically inserted here -->
+                </div>
+            
+                <!-- Add Feedback Form -->
+                <form id="feedbackForm" class="d-flex align-items-center mt-3">
+                    @csrf
+                    <input type="hidden" id="task_id" name="task_id">
+                    <input type="hidden" id="feedback_id" name="feedback_id"> <!-- For replies -->
+                    
+                    <div class="flex-grow-1 me-2">
+                        <textarea id="comment" class="form-control chat-input" name="comment" placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>

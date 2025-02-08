@@ -11,7 +11,7 @@
                 <div class="card-header">
                     <strong>Task Information</strong>
                 </div>
-                <input type="text" name="user_id" class="form-control @error('user_id') is-invalid @enderror" id="name" value="{{ Auth::user()->id }}" readonly hidden>
+                <input type="text" name="created_by" class="form-control @error('created_by') is-invalid @enderror" id="name" value="{{ Auth::user()->id }}" readonly hidden>
 
                 <div class="card-body">
                     <div class="row">
@@ -27,20 +27,6 @@
                             <label for="description" class="form-label">Description:</label>
                             <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="3" placeholder="Description">{{ old('description', $task->description ?? '') }}</textarea>
                             @error('description')
-                                <div class="form-text text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Parent Task -->
-                        <div class="col-md-6 mb-3">
-                            <label for="parent_task_id" class="form-label">Parent Task:</label>
-                            <select name="parent_task_id" class="form-control @error('parent_task_id') is-invalid @enderror" id="parent_task_id">
-                                <option value="">None</option>
-                                @foreach($parent_tasks as $parent_task)
-                                    <option value="{{ $parent_task->id }}" {{ old('parent_task_id', $task->parent_task_id ?? '') == $parent_task->id ? 'selected' : '' }}>{{ $parent_task->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('parent_task_id')
                                 <div class="form-text text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -110,6 +96,9 @@
                     </div>
                 </div>
             </div>
+        @else
+            <input type="hidden" name="user_id[]" value="{{ Auth::user()->id }}">
+            <input type="hidden" name="department_id[]" value="{{ Auth::user()->department_id }}">
         @endif
 
         <div class="col-md-12">
@@ -226,7 +215,11 @@
                 </div>
             </div>
         </div>
-
+        @if(isset($parent_task_id) && !empty($parent_task_id))
+            <input type="hidden" name="parent_task_id" value="{{ $parent_task_id }}">
+        @else
+            <input type="hidden" name="parent_task_id" value="">
+        @endif
         <div class="col-md-12">
             <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> {{ $buttonText }}</button>
         </div>
