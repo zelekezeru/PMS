@@ -98,42 +98,46 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-success bubble-shadow-small">
-                                    <i class="fas fa-luggage-cart"></i>
+                <a href="{{ route('departments.index') }}">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-success bubble-shadow-small">
+                                        <i class="fas fa-luggage-cart"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col col-stats ms-3">
-                                <div class="numbers">
-                                    <p class="card-category">Departments</p>
-                                    <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
+                                <div class="col col-stats ms-3">
+                                    <div class="numbers">
+                                        <p class="card-category">Departments</p>
+                                        <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-sm-6">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
-                                    <i class="far fa-check-circle"></i>
+                <a href="{{ route('users.index') }}">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                        <i class="far fa-check-circle"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col col-stats ms-3">
-                                <div class="numbers">
-                                    <p class="card-category">Registered Users</p>
-                                    <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
+                                <div class="col col-stats ms-3">
+                                    <div class="numbers">
+                                        <p class="card-category">Registered Users</p>
+                                        <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -148,6 +152,8 @@
                 <ul class="list-group list-group-flush">
                     @forelse ($strategies as $strategy)
                     <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
+
+                    <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->name}}</li>
 
                     @empty
 
