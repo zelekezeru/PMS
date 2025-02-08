@@ -27,14 +27,14 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
-    
+
         // If the email is updated, nullify the verified_at field
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-    
+
         $request->user()->save();
-    
+
         // Flash status to session
         return Redirect::route('profile.edit')->with('status', 'Profile has been successfully Updated.');
     }
@@ -44,21 +44,21 @@ class ProfileController extends Controller
     public function uploadProfileImage(Request $request): RedirectResponse
     {
         $request->validate([
-            'profile_image' => ['nullable', 'image', 'max:2048'],
+            'profile_image' => ['nullable', 'image'],
         ]);
-    
+
         $user = $request->user();
-    
+
         // Check if file is present in the request
         if ($request->hasFile('profile_image')) {
             $path = $request->file('profile_image')->store('profile_images', 'public');
             $user->profile_image = $path;
             $user->save();
         }
-    
+
         return Redirect::route('profile.edit')->with('status', 'Profile image has been successfully uploaded.');
     }
-    
+
     /**
      * Delete the user's account.
      */
