@@ -35,6 +35,7 @@ class TaskUpdateRequest extends FormRequest
             'department_id' => 'sometimes|array',
             'fortnight_id' => 'sometimes|array',
             'user_id' => 'sometimes|array',
+            'created_by' => 'sometimes',
         ];
     }
 }

@@ -11,7 +11,7 @@
                 <div class="card-header">
                     <strong>Task Information</strong>
                 </div>
-                <input type="text" name="user_id" class="form-control @error('user_id') is-invalid @enderror" id="name" value="{{ Auth::user()->id }}" readonly hidden>
+                <input type="text" name="created_by" class="form-control @error('created_by') is-invalid @enderror" id="name" value="{{ Auth::user()->id }}" readonly hidden>
 
                 <div class="card-body">
                     <div class="row">
@@ -96,6 +96,9 @@
                     </div>
                 </div>
             </div>
+        @else
+            <input type="hidden" name="user_id[]" value="{{ Auth::user()->id }}">
+            <input type="hidden" name="department_id[]" value="{{ Auth::user()->department_id }}">
         @endif
 
         <div class="col-md-12">
@@ -214,6 +217,8 @@
         </div>
         @if(isset($parent_task_id) && !empty($parent_task_id))
             <input type="hidden" name="parent_task_id" value="{{ $parent_task_id }}">
+        @else
+            <input type="hidden" name="parent_task_id" value="">
         @endif
         <div class="col-md-12">
             <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> {{ $buttonText }}</button>
