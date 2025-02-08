@@ -118,7 +118,7 @@
                             <div class="card-body">
                                 <div class="col-md-12 mb-3">
                                     <label for="target_id" class="form-label"><strong>Target:</strong></label>
-                                    <select name="target_id" class="form-control @error('target_id') is-invalid @enderror" id="target_id" required>
+                                    <select name="target_id" class="form-control @error('target_id') is-invalid @enderror" id="target_id">
                                         <option value="">Select Target</option>
                                         @foreach($targets as $target)
                                             <option value="{{ $target->id }}" {{ old('target_id', $task->target_id ?? '') == $target->id ? 'selected' : '' }}>
