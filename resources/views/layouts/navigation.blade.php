@@ -91,22 +91,19 @@
                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-list"></i>
-                    <span class="notification">4</span>
+                    <span class="notification">{{ count(Auth::user()->tasks)}}</span>
                 </a>
                 <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                     <li>
                         <div class="dropdown-title">
-                            You have 4 new notification
+                            You have {{ count(Auth::user()->tasks)}} Tasks in Progress
                         </div>
                     </li>
                     <li>
                         <div class="notif-scroll scrollbar-outer">
-                            <div class="notif-center">
+                            <div class="notif-center mr-2">
                                 @foreach(Auth::user()->tasks as $task)
                                     <a href="{{ route('tasks.show', $task->id) }}">
-                                        <div class="notif-img">
-                                            <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/user.png') }}" alt="Img Profile">
-                                        </div>
                                         <div class="notif-content">
                                             <span class="subject">{{ $task->name }}</span>
                                             <span class="block">{{ $task->status }}</span>
