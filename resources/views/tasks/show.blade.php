@@ -77,6 +77,14 @@
                         <td>{{ $task->comunication }}</td>
                     </tr>
                     <tr>
+                        <th>Created By:</th>
+                        @foreach($task->users as $user)
+                            @if($task->created_by == $user->id)
+                                <td>{{ $user->name }}</td>
+                            @endif
+                        @endforeach
+                    </tr>
+                    <tr>
                         <th>Departments:</th>
                         <td>
                             @if($task->departments && $task->departments->count() > 0)
@@ -153,20 +161,20 @@
                 <div id="feedback-list" class="feedback-chat-container">
                     <!-- Feedback messages will be dynamically inserted here -->
                 </div>
-            
+
                 <!-- Add Feedback Form -->
                 <form id="feedbackForm" class="d-flex align-items-center mt-3">
                     @csrf
                     <input type="hidden" id="task_id" name="task_id">
                     <input type="hidden" id="feedback_id" name="feedback_id"> <!-- For replies -->
-                    
+
                     <div class="flex-grow-1 me-2">
                         <textarea id="comment" class="form-control chat-input" name="comment" placeholder="Write a comment..." required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
             </div>
-            
+
         </div>
     </div>
 </div>

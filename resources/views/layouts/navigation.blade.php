@@ -54,6 +54,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-envelope"></i>
+                    <span class="notification">{{ count(Auth::user()->feedbacks)}}</span>
                 </a>
                 <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
                     <li>
@@ -72,7 +73,7 @@
                                         <div class="notif-content">
                                             <span class="subject">{{ $feedback->user->name }}</span>
                                             <span class="block">{{ $feedback->comment }}</span>
-                                            <span class="time">{{ $feedback->timestamp }}</span>
+                                            <span class="time">{{ \Carbon\Carbon::parse($feedback->created_at)->format('M - d - Y') }}</span>
                                         </div>
                                     </a>
                                 @endforeach
@@ -89,7 +90,7 @@
             <li class="nav-item topbar-icon dropdown hidden-caret">
                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-bell"></i>
+                    <i class="fa fa-list"></i>
                     <span class="notification">4</span>
                 </a>
                 <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
@@ -101,46 +102,19 @@
                     <li>
                         <div class="notif-scroll scrollbar-outer">
                             <div class="notif-center">
-                                <a href="#">
-                                    <div class="notif-icon notif-primary">
-                                        <i class="fa fa-user-plus"></i>
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="block"> New user registered </span>
-                                        <span class="time">5 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-icon notif-success">
-                                        <i class="fa fa-comment"></i>
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="block">
-                                            Rahmad commented on Admin
-                                        </span>
-                                        <span class="time">12 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-img">
-                                        <img src="{{ asset('img/profile2.jpg') }}" alt="Img Profile" />
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="block">
-                                            Reza send messages to you
-                                        </span>
-                                        <span class="time">12 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-icon notif-danger">
-                                        <i class="fa fa-heart"></i>
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="block"> Farrah liked Admin </span>
-                                        <span class="time">17 minutes ago</span>
-                                    </div>
-                                </a>
+                                @foreach(Auth::user()->tasks as $task)
+                                    <a href="{{ route('tasks.show', $task->id) }}">
+                                        <div class="notif-img">
+                                            <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/user.png') }}" alt="Img Profile">
+                                        </div>
+                                        <div class="notif-content">
+                                            <span class="subject">{{ $task->name }}</span>
+                                            <span class="block">{{ $task->status }}</span>
+                                            <span class="time">{{ \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') }}</span>
+                                        </div>
+                                    </a>
+                                @endforeach
+
                             </div>
                         </div>
                     </li>

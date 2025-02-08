@@ -25,12 +25,12 @@ class Task extends Model
     {
         return $this->hasMany(Kpi::class);
     }
-    
+
     public function subtasks()
     {
         return $this->hasMany(Task::class, 'parent_task_id');
     }
-    
+
     public function feedbacks()
     {
         return $this->hasMany(Feedback::class);
