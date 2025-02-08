@@ -58,55 +58,24 @@
                 <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
                     <li>
                         <div class="dropdown-title d-flex justify-content-between align-items-center">
-                            Messages
-                            <a href="#" class="small">Mark all as read</a>
+                            Feedbacks
                         </div>
                     </li>
                     <li>
                         <div class="message-notif-scroll scrollbar-outer">
                             <div class="notif-center">
-                                <a href="#">
-                                    <div class="notif-img">
-                                        <img src="{{ asset('img/jm_denis.jpg') }}" alt="Img Profile" />
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="subject">Jimmy Denis</span>
-                                        <span class="block"> How are you ? </span>
-                                        <span class="time">5 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-img">
-                                        <img src="{{ asset('img/chadengle.jpg') }}" alt="Img Profile" />
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="subject">Chad</span>
-                                        <span class="block"> Ok, Thanks ! </span>
-                                        <span class="time">12 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-img">
-                                        <img src="{{ asset('img/mlane.jpg') }}" alt="Img Profile" />
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="subject">Jhon Doe</span>
-                                        <span class="block">
-                                            Ready for the meeting today...
-                                        </span>
-                                        <span class="time">12 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-img">
-                                        <img src="{{ asset('img/talha.jpg') }}" alt="Img Profile" />
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="subject">Talha</span>
-                                        <span class="block"> Hi, Apa Kabar ? </span>
-                                        <span class="time">17 minutes ago</span>
-                                    </div>
-                                </a>
+                                @foreach(Auth::user()->feedbacks as $feedback)
+                                    <a href="{{ route('tasks.show', $feedback->task->id) }}">
+                                        <div class="notif-img">
+                                            <img class="avatar-img rounded" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : asset('img/user.png') }}" alt="Img Profile">
+                                        </div>
+                                        <div class="notif-content">
+                                            <span class="subject">{{ $feedback->user->name }}</span>
+                                            <span class="block">{{ $feedback->comment }}</span>
+                                            <span class="time">{{ $feedback->timestamp }}</span>
+                                        </div>
+                                    </a>
+                                @endforeach
                             </div>
                         </div>
                     </li>
@@ -294,9 +263,9 @@
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                     @if(Auth::user())
                         <div class="avatar-sm">
-                            <img class="avatar-img rounded" 
-                            src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('img/user.png') }}" 
-                            alt="Profile Image">                       
+                            <img class="avatar-img rounded"
+                            src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('img/user.png') }}"
+                            alt="Profile Image">
                         </div>
                         <span class="profile-username">
                             <span class="fw-bold">{{ Auth::user()->name }}</span>
@@ -309,8 +278,8 @@
                             <div class="user-box">
                                 @if(Auth::user())
                                     <div class="avatar-lg">
-                                        <<img class="avatar-img rounded" 
-                                        src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('img/user.png') }}" 
+                                        <<img class="avatar-img rounded"
+                                        src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('img/user.png') }}"
                                         alt="Profile Image">
                                     </div>
                                     <div class="u-text text-white">
