@@ -153,7 +153,7 @@
                     @forelse ($strategies as $strategy)
                     <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
 
-                    <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->name}}</li>
+
 
                     @empty
 
