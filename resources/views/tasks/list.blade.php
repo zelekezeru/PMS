@@ -21,22 +21,30 @@
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->due_date }}</td>
                                 <td class="text-center">
                                     <div class="form-button-action">
+
                                         <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $task->id }})">
-                                            <i class="fa fa-times"></i>
-                                        </button>
 
-                                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']) || Auth::user()->tasks->contains($task->id))
+                                        @can('manageTask', $task)
+                                            <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            @if ($task->status == 'Pending')
+                                                <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $task->id }})">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            @endif
+                                            
+                                        @endcan
+
+                                        @can('manageTask', $task)
                                             <form id="delete-form-{{ $task->id }}" action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
-                                        @endif
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
