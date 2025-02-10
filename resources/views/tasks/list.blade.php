@@ -30,10 +30,13 @@
                                         <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $task->id }})">
                                             <i class="fa fa-times"></i>
                                         </button>
-                                        <form id="delete-form-{{ $task->id }}" action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+
+                                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']) || Auth::user()->tasks->contains($task->id))
+                                            <form id="delete-form-{{ $task->id }}" action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

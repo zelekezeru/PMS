@@ -31,12 +31,13 @@ class Fortnight extends Model
         return $this->hasMany(Day::class);
     }
 
-    public function deliverables()
-    {
-        return $this->hasMany(Deliverable::class);
-    }
     public function tasks()
     {
         return $this->belongsToMany(Task::class);
+    }
+
+    public function deliverables()
+    {
+        return $this->hasMany(Deliverable::class);
     }
 }

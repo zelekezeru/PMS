@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
 
     });
 
+    // Resource routes
     Route::resource('homes', HomeController::class);
     Route::resource('strategies', StrategyController::class)->only(['index', 'show']);
     Route::resource('targets', TargetController::class)->only(['index', 'show']);

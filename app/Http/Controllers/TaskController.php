@@ -144,6 +144,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        dd($task);
         if($task->kpi()->exists() || $task->deliverables()->exists())
         {
             return redirect()->route('tasks.index')

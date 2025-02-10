@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasMany(Feedback::class);
     }
 
+    public function deliverables()
+    {
+        return $this->hasMany(Deliverable::class);
+    }
+
     public function department()
     {
         return $this->belongsTo(Department::class);

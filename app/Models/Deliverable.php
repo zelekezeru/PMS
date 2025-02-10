@@ -11,8 +11,13 @@ class Deliverable extends Model
 
     protected $guarded = [];
 
-    public function task()
+    public function user()
     {
-        return $this->belongsTo(Task::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function fortnight()
+    {
+        return $this->belongsTo(Fortnight::class);
     }
 }
