@@ -8,10 +8,9 @@
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
                     <a class="btn btn-success btn-sm" href="{{ route('tasks.create') }}"><i class="fa fa-plus"></i> Add New Task</a>
                 </div>
-
                 @include('tasks.list')
-                                <!-- SweetAlert Success Notifications -->
-                                @if (session('status'))
+                    <!-- SweetAlert Success Notifications -->
+                    @if (session('status'))
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             Swal.fire({
