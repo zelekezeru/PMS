@@ -10,6 +10,15 @@
     </div>
 </div>
 
+<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+    <div>
+    </div>
+    <div class="ms-md-auto py-2 py-md-0">
+        <a href="{{ route('tasks.index') }}" class="btn btn-label-info btn-round me-2">Manage Tasks</a>
+        <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round">Add New Task</a>
+    </div>
+</div>
+
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="row">
