@@ -76,4 +76,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Department::class, 'department_head');
     }
+
+    public function createdTasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
