@@ -79,7 +79,7 @@
                             @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                                 <div class="col-md-6">
                                     <label for="department_id" class="form-label">Responsible Departments:</label>
-                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple required>
+                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple>
                                         @php
                                             $selectedDepartments = old('department_id', isset($task) && $task->departments()->count() !== 0 ? $task->departments->pluck('id')->toArray() : []);
                                         @endphp

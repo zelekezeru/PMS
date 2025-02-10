@@ -96,7 +96,9 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-
+        if (request()->user()->cannot('manageTask', $task)) {
+            abort(403);
+        }
         $assignedUsers = $task->users()->pluck('users.id')->toArray();
 
         $targets = Target::get();
@@ -114,14 +116,18 @@ class TaskController extends Controller
 
     public function update(TaskUpdateRequest $request, Task $task)
     {
+        if (request()->user()->cannot('manageTask', $task)) {
+            abort(403);
+        }
+
         $data = $request->validated();
 
 
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
 
-        $departments = $data['department_id'];
-        $fortnights = $data['fortnight_id'];
-        $users = $data['user_id'];
+        $departments = $request['department_id'];
+        $fortnights = $request['fortnight_id'];
+        $users = $request['user_id'];
 
         $task->departments()->detach();
         $task->fortnights()->detach();
@@ -132,18 +138,21 @@ class TaskController extends Controller
         unset($data['user_id']);
 
         $task->update($data);
-
-        $task->departments()->attach($departments);
-        $task->fortnights()->attach($fortnights);
-        $task->users()->attach($users);
-
-
+        if (!request()->user()->hasRole('EMPLOYEE')) {
+            $task->departments()->attach($departments);
+            $task->users()->attach($users);
+            # code...
+        }
 
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
     }
 
     public function destroy(Task $task)
     {
+        if (request()->user()->cannot('manageTask', $task)) {
+            abort(403);
+        }
+
         if($task->kpis()->exists() || $task->deliverables()->exists())
         {
             return redirect()->route('tasks.index')
