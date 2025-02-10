@@ -62,27 +62,27 @@ class TaskController extends Controller
         } else {
             $data['is_subtask'] = false;
         }
-
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
         $data['created_by'] = request()->user()->id;
-
+        
         $departments = $request['department_id'];
         $fortnights = $request['fortnight_id'];
-        $users = $request['user_id'];
-
+        $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
+        
+        // dd($departments);
         unset($data['department_id']);
         unset($data['fortnight_id']);
         unset($data['user_id']);
 
         $task = Task::create($data);
 
-        $task->departments()->attach($departments);
+        if (!request()->user()->hasRole('EMPLOYEE')) {
+            $task->departments()->attach($departments);
+        }
 
         $task->fortnights()->attach($fortnights);
-
+        
         $task->users()->attach($users);
-
-
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
     }
 
@@ -144,11 +144,14 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        dd($task);
-        if($task->kpi()->exists() || $task->deliverables()->exists())
+        if($task->kpis()->exists() || $task->deliverables()->exists())
         {
             return redirect()->route('tasks.index')
             ->with('related', 'task-deleted');
+        }
+
+        if ($task->created_by !== request()->user()->id) {
+            abort(403);
         }
 
         $task->delete();
