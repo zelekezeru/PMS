@@ -49,7 +49,7 @@ class KpiController extends Controller
             return redirect()->route('targets.show', $request['target_id'])->with('success', 'KPI created successfully.');
         }
 
-        return redirect()->route('kpis.index')->with('success', 'KPI created successfully.');
+        return redirect()->route('tasks.show', $request['task_id'])->with('success', 'KPI created successfully.');
     }
 
     public function show(Kpi $kpi)
@@ -84,13 +84,22 @@ class KpiController extends Controller
         } else if ($request['target_id']) {
             return redirect()->route('targets.show', $request['target_id'])->with('success', 'KPI created successfully.');
         }
+        return redirect()->route('tasks.show', $request['task_id'])->with('success', 'KPI created successfully.');
     }
 
     public function destroy(Kpi $kpi)
     {
+        $task_kpi = $kpi->task_id;
+
         $kpi->delete();
 
-        return redirect()->route('kpis.index')->with('success', 'KPI deleted successfully.');
+        if ($kpi->task_id != null) {
+            return redirect()->route('tasks.show', $task_kpi)->with('success', 'KPI created successfully.');
+        } else if ($kpi->target_id != null) {
+            return redirect()->route('targets.show', $task_kpi)->with('success', 'KPI created successfully.');
+        }
+
+        return redirect()->route('tasks.show', $task_kpi)->with('success', 'KPI created successfully.');
     }
 
     /**

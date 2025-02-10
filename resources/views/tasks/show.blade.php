@@ -128,7 +128,7 @@
         @include('tasks.subtask')
 
         <div class="col">
-            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Taskx Indicators</a>
+            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task Indicators</a>
         </div>
 
         @if ($task->kpis)
