@@ -64,11 +64,11 @@ class TaskController extends Controller
         }
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
         $data['created_by'] = request()->user()->id;
-        
+
         $departments = $request['department_id'];
         $fortnights = $request['fortnight_id'];
         $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
-        
+
         // dd($departments);
         unset($data['department_id']);
         unset($data['fortnight_id']);
@@ -81,7 +81,7 @@ class TaskController extends Controller
         }
 
         $task->fortnights()->attach($fortnights);
-        
+
         $task->users()->attach($users);
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
     }
@@ -148,10 +148,6 @@ class TaskController extends Controller
         {
             return redirect()->route('tasks.index')
             ->with('related', 'task-deleted');
-        }
-
-        if ($task->created_by !== request()->user()->id) {
-            abort(403);
         }
 
         $task->delete();
