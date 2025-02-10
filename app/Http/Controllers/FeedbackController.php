@@ -23,10 +23,11 @@ class FeedbackController extends Controller
     public function taskFeedbacks($taskId)
     {
         $feedback = Feedback::where('task_id', $taskId)
-                        ->with('user', 'replies.user')
+                        ->with('user', 'replies.user', 'parent')
+                        ->where('feedback_id', null)
                         ->orderBy('created_at', 'desc')
                         ->get();
-    
+        
         return response()->json($feedback);
     }
     
@@ -41,7 +42,7 @@ class FeedbackController extends Controller
         $feedback = Feedback::create([
             'task_id' => $request->task_id,
             'user_id' => Auth::id(),
-            'feedback_id' => $request->feedback_id,
+            'feedback_id' => $request->feedback_id, 
             'comment' => $request->comment,
         ]);
     
@@ -49,8 +50,9 @@ class FeedbackController extends Controller
             'id' => $feedback->id,
             'comment' => $feedback->comment,
             'user' => ['name' => Auth::user()->name],
+            'feedback_id' => $feedback->feedback_id,
             'created_at' => $feedback->created_at,
-            'replies' => []
+            'replies'=> []
         ], 201);
     }
     

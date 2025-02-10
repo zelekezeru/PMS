@@ -155,8 +155,10 @@
         .then(response => response.json())
         .then(data => {
             let feedbackList = document.getElementById("feedback-list");
-            let newFeedbackHtml = renderFeedback(data);
-            feedbackList.insertAdjacentHTML("afterbegin", newFeedbackHtml); // Add new feedback on top
+            // let newFeedbackHtml = renderFeedback(data);
+            // feedbackList.insertAdjacentHTML("afterbegin", newFeedbackHtml); // Add new feedback on top
+            feedbackList.innerHTML = "";
+            loadFeedback({{$task->id}});
 
             document.getElementById("comment").value = "";
             document.getElementById("feedback_id").value = ""; // Reset reply field
