@@ -9,7 +9,21 @@
             @endif
             <div class="card-body">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-                    <a class="btn btn-success btn-sm" href="{{ route('tasks.create') }}"><i class="fa fa-plus"></i> Add New Task</a>
+                    <div class="btn-group dropdown">
+                        <button
+                          class="btn btn-primary dropdown-toggle"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                        >
+                          Create A Task
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                          <li>
+                            <a class="dropdown-item" href="{{ route('tasks.create') }}"><i class="fa fa-plus"></i> Add Fortnight Task</a>
+                            <a class="dropdown-item" href="{{ route('tasks.create', ['dailyTask' => true]) }}"><i class="fa fa-plus"></i> Add Daily Task</a>
+                          </li>
+                        </ul>
+                    </div>
                 </div>
                 <ul class="nav nav-tabs nav-line nav-color-secondary" id="line-tab" role="tablist">
                     <li class="nav-item">

@@ -15,14 +15,7 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <!-- Task Title and Description -->
-                        <div class="col-md-6 mb-3">
-                            <label for="name" class="form-label">Task Title:</label>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $task->name ?? '') }}" placeholder="Title" required>
-                            @error('name')
-                                <div class="form-text text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
+   .
                         <div class="col-md-6 mb-3">
                             <label for="description" class="form-label">Description:</label>
                             <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="3" placeholder="Description">{{ old('description', $task->description ?? '') }}</textarea>
