@@ -62,13 +62,13 @@ class UserSeeder extends Seeder
                 'phone_number' => '0906200607',
                 'is_approved' => 1,
                 'is_active' => 1,
-                'email' => 'abelshiferaw69@gmail.com',
+                'email' => 'abel@gmail.com',
                 'email_verified_at' => null,
                 'password' => '$2y$12$qCX1z1mIRpxkq170UPhXaeOolCKKqfoTL8x8WF4I05uzXOUjq4NRi',
                 'remember_token' => null,
                 'created_at' => '2025-02-01 08:15:25',
                 'updated_at' => '2025-02-01 08:15:25',
-                'department_id' => null
+                'department_id' => 4
             ],
             [
                 'id' => 5,
