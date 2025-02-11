@@ -6,10 +6,71 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Title</th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    Title
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div>
+                                            {{-- @dd(url()->current()) --}}
+                                            <a href="{{ route('tasks.index', array_merge(request()->query(), ['order' =>'asc'])) }}">
+                                                <i class="fa fa-sort-up"></i>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a href="{{ route('tasks.index', array_merge(request()->query(), ['order' =>'desc'])) }}">
+                                                <i class="fa fa-sort-down"></i>
+                                            </a>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </th>
                             <th>Status</th>
                             <th>Due Date</th>
+                            <th>Created By</th>
                             <th style="width: 10%; text-align: center;">Action</th>
+                        </tr>
+                        
+                    </thead>
+                    <thead class="thead">
+                        <tr>
+                            <th></th>
+                            <th>
+                                <form action="{{route('tasks.index')}}" id="searchNamesForm" method="get">
+                                    <div class="input-icon">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="searchNames"
+                                        name="search"
+                                        value="{{ request('search') ?? null }}"
+                                        placeholder="Search for..."
+                                      />
+                                      <span class="input-icon-addon">
+                                        <i class="fa fa-search"></i>
+                                      </span>
+                                    </div>
+                                </form>
+                            </th>
+                            <th>
+                                <form action="{{route('tasks.index')}}" id="filterByStatus" method="get">
+                                    <select
+                                      class="form-select form-control"
+                                      id="selectStatus"
+                                      onchange="document.getElementById('filterByStatus').submit();"
+                                      name="status"
+                                    >
+                                      <option value="">Filter Status</option>  
+                                      <option {{ request('status') == 'pending' ? 'selected' : '' }} value="pending">Pending</option>
+                                      <option {{ request('status') == 'progress' ? 'selected' : '' }} value="progress">In Progress</option>
+                                      <option {{ request('status') == 'completed' ? 'selected' : '' }} value="completed">Completed</option>
+                                    </select>
+                                </form>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th style="width: 10%; text-align: center;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -19,6 +80,7 @@
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->name }}</td>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->status }}</td>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->due_date }}</td>
+                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->createdBy->name }}</td>
                                 <td class="text-center">
                                     <div class="form-button-action">
 
@@ -60,20 +122,28 @@
     </div>
 </div>
 
-<script>
-function confirmDelete(id) {
-    Swal.fire({
-        title: "Are you sure?",
-        text: "This action cannot be undone!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('delete-form-' + id).submit();
+@section('script')
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
         }
-    });
-}
-</script>
+
+        document.getElementById('searchNames').addEventListener('keydown', function (e) {
+            if (e.key == 'Enter' ) {
+                document.getElementById('searchNamesForm').submit();
+            }
+        })
+    </script>
+@endsection

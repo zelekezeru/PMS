@@ -13,21 +13,53 @@ use App\Models\Target;
 use App\Models\Department;
 use App\Models\Fortnight;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\View\View;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Fetch tasks based on roles
         if(request()->user()->hasAnyRole(['DEPARTMENT_HEAD']))
         {
-            $tasks = request()->user()->headOf->tasks()->with(['target', 'departments'])->paginate(10);
+            $tasks = request()->user()->headOf->tasks();
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
-            $tasks = Task::with(['target', 'departments'])->paginate(10);
+            $tasks = Task::with(['target', 'departments']);
         } else {
-            $tasks = request()->user()->tasks()->with(['target', 'departments'])->paginate(10);
+            $tasks = request()->user()->tasks();
         }
-        return view('tasks.index', compact('tasks'));
+
+        // Fetch tasks only related to the currently active fortnight if currentFortnight is true
+        $currentFortnight = null;
+        if ($request->query('currentFortnight')) {
+
+            $today = Carbon::now()->format('Y-m-d');
+
+            $currentFortnight = Fortnight::whereDate('start_date', '<', $today)
+            ->whereDate('end_date', '>', $today)->first();
+
+            $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
+                $query->where('fortnights.id' , $currentFortnight->id);
+            });
+        }
+
+        // Filtering and sorting
+        $search = $request->query('search') ?? null;
+        $status = $request->query('status') ?? null;
+        $order = $request->query('order') ?? null;
+        if ($search) {
+            $tasks = $tasks->where('name', 'LIKE', '%'. $search . '%');
+        } elseif ($status) {
+            $tasks = $tasks->where('status', $status);
+        } elseif ($order){
+            $tasks = $tasks->orderBy('name', $order);
+            
+        }
+        
+        $tasks = $tasks->with(['target', 'departments', 'createdBy'])->paginate(10);
+
+        return view('tasks.index', compact('tasks', 'currentFortnight'));
     }
 
     public function create(Request $request)
