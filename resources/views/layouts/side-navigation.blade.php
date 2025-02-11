@@ -311,7 +311,7 @@
                 @endcanany
 
                 {{-- Department Head Navigation --}}
-                @if (request()->user()->hasRole('DEPARTMENT_HEAD'))
+                {{-- @if (request()->user()->hasRole('DEPARTMENT_HEAD'))
                     @can('view-department-users')
                         <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : ''}}">
                             <a href="{{ route('users.index') }}">
@@ -320,7 +320,7 @@
                             </a>
                         </li>
                     @endcan
-                @endif
+                @endif --}}
             </ul>
         </div>
     </div>
