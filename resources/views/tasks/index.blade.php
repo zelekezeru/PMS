@@ -13,15 +13,14 @@
                         <button
                           class="btn btn-primary dropdown-toggle"
                           type="button"
-                          data-bs-toggle="dropdown"
-                        >
-                          Create A Task
+                          data-bs-toggle="dropdown">
+                          Create Task
                         </button>
                         <ul class="dropdown-menu" role="menu">
                           <li>
-                            <a class="dropdown-item" href="{{ route('tasks.create') }}"><i class="fa fa-plus"></i> Add Fortnight Task</a>
-                            <a class="dropdown-item" href="{{ route('tasks.create', ['dailyTask' => true]) }}"><i class="fa fa-plus"></i> Add Daily Task</a>
-                          </li>
+                            <a class="dropdown-item" href="{{ route('tasks.create', ['dailyTask' => true]) }}"><i class="fa fa-plus"></i> Create Daily Task</a>
+                            <a class="dropdown-item" href="{{ route('tasks.create') }}"><i class="fa fa-plus"></i> Create Fortnight Task</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

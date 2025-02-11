@@ -14,7 +14,9 @@
             @include('users.list')
 
             <div class="mt-3">
-                {{ $users->links() }}
+                @if ($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    {{ $users->links() }}
+                @endif
             </div>
         </div>
     </div>
@@ -27,7 +29,7 @@
             let text = "";
 
             if (message === "users-approved") {
-                title = "Successfuly Approved!";
+                title = "Successfully Approved!";
                 text = "Your User can now login to the system.";
             } else if (message === "user-deleted") {
                 title = "User!";

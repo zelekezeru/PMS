@@ -21,9 +21,9 @@ class UserController extends Controller
     public function index()
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
-
-            $users = request()->user()->headOf->users()->paginate(15);
-
+            $department = request()->user()->department;
+            $users = $department ? $department->users()->paginate(15) : collect();
+            
         } else {
             $users = User::paginate(15);
         }

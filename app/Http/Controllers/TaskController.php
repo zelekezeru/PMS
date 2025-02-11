@@ -22,7 +22,8 @@ class TaskController extends Controller
     {
         // Fetch tasks based on roles
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
-            $tasks = request()->user()->headOf->tasks();
+            $headOf = request()->user()->load('headOf')->headOf;
+            $tasks = $headOf ? $headOf->tasks() : Task::query();
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
             $tasks = Task::with(['target', 'departments']);
         } else {
@@ -95,7 +96,7 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
-
+        dd($data);
         if (isset($data['parent_task_id'])) {
             $data['is_subtask'] = true;
         } else {
