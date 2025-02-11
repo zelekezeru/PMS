@@ -194,7 +194,7 @@ class TaskController extends Controller
 
         if ($task->kpis()->exists() || $task->deliverables()->exists() || $task->feedbacks()->exists()) {
             return redirect()->route('tasks.index')
-                ->with('related', 'task-deleted');
+            ->with('status', 'You can\'t Delete This pending Task it have feedback on it.');
         }
 
         $task->delete();
