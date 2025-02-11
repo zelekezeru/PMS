@@ -104,7 +104,7 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
-        dd($data);
+
         if (isset($data['parent_task_id'])) {
             $data['is_subtask'] = true;
         } else {
@@ -161,6 +161,12 @@ class TaskController extends Controller
         if (request()->user()->cannot('manageTask', $task)) {
             abort(403);
         }
+
+        $task = $task->load('days');
+
+        $isDaily = $task->days()->exists();
+        $today = $isDaily ? $task->days()->first() : null;
+
         $assignedUsers = $task->users()->pluck('users.id')->toArray();
 
         $targets = Target::get();
@@ -173,7 +179,7 @@ class TaskController extends Controller
 
         $fortnights = Fortnight::get();
 
-        return view('tasks.edit', compact('task', 'targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers'));
+        return view('tasks.edit', compact('task', 'targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'today'));
     }
 
     public function update(TaskUpdateRequest $request, Task $task)

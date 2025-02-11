@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        
                         @if (!$today)
                             <div class="col card mt-3">
                                 <div class="card-header">
