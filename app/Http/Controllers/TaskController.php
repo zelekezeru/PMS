@@ -35,8 +35,8 @@ class TaskController extends Controller
 
             $today = Carbon::now()->format('Y-m-d');
 
-            $currentFortnight = Fortnight::whereDate('start_date', '<', $today)
-                ->whereDate('end_date', '>', $today)->first();
+            $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
+                ->whereDate('end_date', '>=', $today)->first();
 
             $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
                 $query->where('fortnights.id', $currentFortnight->id);
@@ -58,7 +58,7 @@ class TaskController extends Controller
         } elseif ($dueDays) {
             $dueDate = Carbon::now()->addDays($dueDays);
 
-            $tasks = $tasks->whereNotNull('due_date')->whereDate('due_date', '<', $dueDate);
+            $tasks = $tasks->whereNotNull('due_date')->whereDate('due_date', '<=', $dueDate);
 
         } elseif ($order) {
             $tasks = $tasks->orderBy('name', $order);
