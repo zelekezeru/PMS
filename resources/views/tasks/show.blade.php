@@ -32,11 +32,11 @@
                     </tr>
                     <tr>
                         <th>Starting Date:</th>
-                        <td>{{ \Carbon\Carbon::parse($task->starting_date)->format('M - d - Y') }}</td>
+                        <td>{{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Due Date:</th>
-                        <td>{{ \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') }}</td>
+                        <td>{{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Budget:</th>

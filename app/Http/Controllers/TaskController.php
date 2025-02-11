@@ -21,8 +21,7 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         // Fetch tasks based on roles
-        if(request()->user()->hasAnyRole(['DEPARTMENT_HEAD']))
-        {
+        if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
             $tasks = request()->user()->headOf->tasks();
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
             $tasks = Task::with(['target', 'departments']);
@@ -37,26 +36,34 @@ class TaskController extends Controller
             $today = Carbon::now()->format('Y-m-d');
 
             $currentFortnight = Fortnight::whereDate('start_date', '<', $today)
-            ->whereDate('end_date', '>', $today)->first();
+                ->whereDate('end_date', '>', $today)->first();
 
             $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
-                $query->where('fortnights.id' , $currentFortnight->id);
+                $query->where('fortnights.id', $currentFortnight->id);
             });
         }
 
         // Filtering and sorting
         $search = $request->query('search') ?? null;
         $status = $request->query('status') ?? null;
+        $dueDays = intval($request->query('due_days')) ?? null;
         $order = $request->query('order') ?? null;
         if ($search) {
-            $tasks = $tasks->where('name', 'LIKE', '%'. $search . '%');
+            $tasks = $tasks->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('createdBy', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                });
         } elseif ($status) {
             $tasks = $tasks->where('status', $status);
-        } elseif ($order){
+        } elseif ($dueDays) {
+            $dueDate = Carbon::now()->addDays($dueDays);
+
+            $tasks = $tasks->whereNotNull('due_date')->whereDate('due_date', '<', $dueDate);
+
+        } elseif ($order) {
             $tasks = $tasks->orderBy('name', $order);
-            
         }
-        
+
         $tasks = $tasks->with(['target', 'departments', 'createdBy'])->paginate(10);
 
         return view('tasks.index', compact('tasks', 'currentFortnight'));
@@ -185,10 +192,9 @@ class TaskController extends Controller
             abort(403);
         }
 
-        if($task->kpis()->exists() || $task->deliverables()->exists() || $task->feedbacks()->exists())
-        {
+        if ($task->kpis()->exists() || $task->deliverables()->exists() || $task->feedbacks()->exists()) {
             return redirect()->route('tasks.index')
-            ->with('related', 'task-deleted');
+                ->with('related', 'task-deleted');
         }
 
         $task->delete();
@@ -200,14 +206,11 @@ class TaskController extends Controller
     {
         $tasks = Task::where('status', $status)->paginate(10);
 
-        if(request()->user()->hasAnyRole(['DEPARTMENT_HEAD']))
-        {
+        if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
             $tasks = request()->user()->headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
-
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
             $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
-
         } else {
             $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
         }
