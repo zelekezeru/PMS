@@ -152,11 +152,15 @@ class TaskController extends Controller
 
         // If Daily Task
         if ($request->query('today')) {
+
             $today = Carbon::now()->format('Y-m-d');
+
             $currentFortnightId = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first()->id;
+
             if (Day::where('date', $today)->exists()) {
                 $day = Day::where('date', $today)->first();
+
             } else {
                 $day = Day::create([
                     'fortnight_id' => $currentFortnightId,
@@ -166,8 +170,10 @@ class TaskController extends Controller
 
             $day->tasks()->attach($task);
         }
-
         if (!request()->user()->hasRole('EMPLOYEE')) {
+            $task->departments()->attach($departments);
+        }
+        else {
             $task->departments()->attach($departments);
         }
 
@@ -265,21 +271,37 @@ class TaskController extends Controller
     }
 
     public function listByStatus($status)
-    {
+    {        
         $tasks = Task::where('status', $status)->get();
 
-        if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
-            $tasks = request()->user()->headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
-        } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+        if(count($tasks) > 0)
+        {
 
-            $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
-        } else {
-            $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+            if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
+
+                $headOf = request()->user()->load('headOf')->headOf;
+
+                if ($headOf) {
+                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+                } else {
+                    $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
+                }
+            
+            } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+                
+                $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
+            
+            } else {
+                
+                $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+            }
+
+            $currentFortnight = null;
+
+            return view('tasks.index', compact('tasks', 'currentFortnight'));
+        }else{
+            return redirect()->route('index');
         }
-        $currentFortnight = null;
-
-        // dd($tasks);
-        return view('tasks.index', compact('tasks', 'currentFortnight'));
     }
 
     public function updateStatus(Request $request, Task $task)

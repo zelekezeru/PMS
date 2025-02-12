@@ -21,7 +21,9 @@ class HomeController extends Controller
     public function index()
     {
         $strategies = Strategy::get();
+
         $years = Year::get();
+
         $fortnights = Fortnight::get();
 
         $user = Auth::user();
@@ -29,19 +31,28 @@ class HomeController extends Controller
         if($user->roles->first()->name == 'SUPER_ADMIN' || $user->roles->first()->name == 'ADMIN')
         {
             $departments = Department::get();
+
             $users = User::get();
+
             $tasks = Task::get();
         }
-        elseif($user->roles->first()->name == 'DEPARTMENT_HEAD')
-        {
+        elseif(request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
+
+            $headOf = request()->user()->load('headOf')->headOf;
+
+            $tasks = $headOf ? $headOf->tasks() : Task::query()->get();
+
             $departments = $user->department;
+
             $users = $departments->users;
-            $tasks = $departments->tasks;
+            
         }
         elseif($user->roles->first()->name == 'EMPLOYEE')
         {
             $departments = $user->departments;
+
             $users = $user;
+
             $tasks = $users->tasks;
         }
 
