@@ -238,7 +238,6 @@ class TaskController extends Controller
             $task->users()->attach($users);
         }
 
-        dd($data);
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
     }
 
