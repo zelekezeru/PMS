@@ -86,8 +86,8 @@
                             @if($task->departments && $task->departments->count() > 0)
                                 @foreach($task->departments as $department)
                                     <strong>
-                                        @if(!request()->user()->hasRole('EMPLOYEE'))
-                                            <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
+                                        @if(!request()->user()->hasAnyRole('EMPLOYEE', 'DEPARTMENT_HEAD'))
+                                            <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }} </a>,
                                         @else
                                             {{ $department->department_name }},
                                         @endif
