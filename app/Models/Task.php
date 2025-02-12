@@ -16,9 +16,9 @@ class Task extends Model
         return $this->belongsTo(Target::class);
     }
 
-    public function day()
+    public function days()
     {
-        return $this->belongsTo(Day::class);
+        return $this->belongsToMany(Day::class);
     }
 
     public function kpis()

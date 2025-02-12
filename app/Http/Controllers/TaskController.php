@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Models\Day;
 use App\Models\Goal;
 use App\Models\Kpi;
 use App\Models\Target;
@@ -22,24 +23,45 @@ class TaskController extends Controller
     {
         // Fetch tasks based on roles
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
-            $tasks = request()->user()->headOf->tasks();
-        } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+            $headOf = request()->user()->load('headOf')->headOf;
+
+            $tasks = $headOf ? $headOf->tasks() : Task::query();
+        } 
+        else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+
             $tasks = Task::with(['target', 'departments']);
-        } else {
+        } 
+        else {
             $tasks = request()->user()->tasks();
         }
 
         // Fetch tasks only related to the currently active fortnight if currentFortnight is true
         $currentFortnight = null;
+
+        $today = Carbon::now()->format('Y-m-d');
         if ($request->query('currentFortnight')) {
 
-            $today = Carbon::now()->format('Y-m-d');
+
+            $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
+                ->whereDate('end_date', '>=', $today)->first();
+                
+                $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
+                    $query->where('fortnights.id', $currentFortnight->id);
+                });
+        } elseif ($request->query('todays')) {
 
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
 
-            $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
-                $query->where('fortnights.id', $currentFortnight->id);
+            $date = Day::firstOrCreate([
+                'date' => $request->query('today')], 
+                [
+                    'fortnight_id' => $currentFortnight->id, 
+                    'date' => $today
+                ]);
+
+            $tasks = $tasks->whereHas('days', function ($query) use ($date) {
+                $query->where('days.id', $date);
             });
         }
 
@@ -59,7 +81,6 @@ class TaskController extends Controller
             $dueDate = Carbon::now()->addDays($dueDays);
 
             $tasks = $tasks->whereNotNull('due_date')->whereDate('due_date', '<=', $dueDate);
-
         } elseif ($order) {
             $tasks = $tasks->orderBy('name', $order);
         }
@@ -79,9 +100,7 @@ class TaskController extends Controller
 
         $users = (request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users :  request()->user()->hasROle('EMPLOYEE')) ? null : User::get();
 
-        if (isset($request['day'])) {
-            dd($request['day']);
-        }
+        $today = (bool) request()->query('dailyTask') === true ? Carbon::now()->format('Y-m-d') : null;
 
         $fortnights = Fortnight::get();
 
@@ -89,7 +108,7 @@ class TaskController extends Controller
 
         $parent_task_id = $request->input('parent_task_id', null);
 
-        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'parent_task_id'));
+        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'parent_task_id', 'today'));
     }
 
     public function store(TaskStoreRequest $request)
@@ -98,22 +117,44 @@ class TaskController extends Controller
 
         if (isset($data['parent_task_id'])) {
             $data['is_subtask'] = true;
-        } else {
+        } 
+        else {
             $data['is_subtask'] = false;
         }
+
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
+
         $data['created_by'] = request()->user()->id;
 
         $departments = $request['department_id'];
+
         $fortnights = $request['fortnight_id'];
+
         $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
 
-        // dd($departments);
         unset($data['department_id']);
+
         unset($data['fortnight_id']);
+
         unset($data['user_id']);
 
         $task = Task::create($data);
+
+        // If Daily Task
+        if ($request->query('today')) {
+            $today = Carbon::now()->format('Y-m-d');
+            $currentFortnightId = Fortnight::whereDate('start_date', '<=', $today)
+                ->whereDate('end_date', '>=', $today)->first()->id;
+    
+            $day = Day::firstOrCreate([
+                'date' => $request->query('today')], 
+                [
+                    'fortnight_id' => $currentFortnightId, 
+                    'date' => $today
+                ]);
+
+            $day->tasks()->attach($task);
+        }
 
         if (!request()->user()->hasRole('EMPLOYEE')) {
             $task->departments()->attach($departments);
@@ -138,6 +179,12 @@ class TaskController extends Controller
         if (request()->user()->cannot('manageTask', $task)) {
             abort(403);
         }
+
+        $task = $task->load('days');
+
+        $isDaily = $task->days()->exists();
+        $today = $isDaily ? $task->days()->first() : null;
+
         $assignedUsers = $task->users()->pluck('users.id')->toArray();
 
         $targets = Target::get();
@@ -150,7 +197,7 @@ class TaskController extends Controller
 
         $fortnights = Fortnight::get();
 
-        return view('tasks.edit', compact('task', 'targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers'));
+        return view('tasks.edit', compact('task', 'targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'today'));
     }
 
     public function update(TaskUpdateRequest $request, Task $task)
@@ -204,7 +251,7 @@ class TaskController extends Controller
 
     public function listByStatus($status)
     {
-        $tasks = Task::where('status', $status)->paginate(10);
+        $tasks = Task::where('status', $status)->get();
 
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
             $tasks = request()->user()->headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
@@ -214,7 +261,10 @@ class TaskController extends Controller
         } else {
             $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
         }
-        return view('tasks.index', compact('tasks'));
+        $currentFortnight = null;
+
+        // dd($tasks);
+        return view('tasks.index', compact('tasks', 'currentFortnight'));
     }
 
     public function updateStatus(Request $request, Task $task)
@@ -224,6 +274,7 @@ class TaskController extends Controller
         ]);
 
         $task->status = $request->status;
+
         $task->save();
 
         return redirect()->route('tasks.show', $task->id)->with('success', 'Task status updated successfully.');

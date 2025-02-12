@@ -132,30 +132,32 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col card mt-3">
-                            <div class="card-header">
-                                <strong>Fortnight Task</strong>
-                            </div>
-                            <div class="card-body">
-                                <!-- Fortnight Task Selection -->
-                                <div class="col-md-12 mb-3">
-                                    <label for="fortnight" class="form-label">Is this a Fortnight Task? if so, please select the fornights the task belongs to.</label>
-                                    <select name="fortnight_id[]" class="form-control @error('fortnight_id') is-invalid @enderror" id="fortnight" multiple>
-                                        @php
-                                            $taskFortnights = $task ? $task->fortnights()->pluck('fortnights.id')->toArray() : [];
-                                        @endphp
-                                        <option value=""> Select Fortnights</option>
-                                        @foreach($fortnights as $fortnight)
-                                            <option value="{{ $fortnight->id }}" {{ (in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : in_array($fortnight->id, $taskFortnights)) ? 'selected' : '' }}> From: {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span  class="text-info"> - To - </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }} </option>
-                                        @endforeach
-                                    </select>
-                                    @error('fortnight')
-                                        <div class="form-text text-danger">{{ $message }}</div>
-                                    @enderror
+                        
+                        @if (!$today)
+                            <div class="col card mt-3">
+                                <div class="card-header">
+                                    <strong>Fortnight Task</strong>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Fortnight Task Selection -->
+                                    <div class="col-md-12 mb-3">
+                                        <label for="fortnight" class="form-label">Is this a Fortnight Task? if so, please select the fornights the task belongs to.</label>
+                                        <select name="fortnight_id[]" class="form-control @error('fortnight_id') is-invalid @enderror" id="fortnight" multiple>
+                                            @php
+                                                $taskFortnights = $task ? $task->fortnights()->pluck('fortnights.id')->toArray() : [];
+                                            @endphp
+                                            <option value=""> Select Fortnights</option>
+                                            @foreach($fortnights as $fortnight)
+                                                <option value="{{ $fortnight->id }}" {{ (in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : in_array($fortnight->id, $taskFortnights)) ? 'selected' : '' }}> From: {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span  class="text-info"> - To - </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }} </option>
+                                            @endforeach
+                                        </select>
+                                        @error('fortnight')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
 
                         </div>
                     </div>
@@ -190,20 +192,39 @@
                         </div>
 
                         <!-- Starting and Due Date -->
-                        <div class="col-md-6 mb-3">
-                            <label for="starting_date" class="form-label">Starting Date:</label>
-                            <input type="date" name="starting_date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" value="{{ old('starting_date', $task->starting_date ?? '') }}">
-                            @error('starting_date')
-                                <div class="form-text text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="due_date" class="form-label">Due (End) Date:</label>
-                            <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" value="{{ old('due_date', $task->due_date ?? '') }}">
-                            @error('due_date')
-                                <div class="form-text text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        @if ($today)
+                            <div class="col-md-6 mb-3">
+                                <label for="starting_date" class="form-label">Starting Date:</label>
+                                <input type="date" name="starting_date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" value="{{ $today }}" readonly hidden>
+                                @error('starting_date')
+                                    <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="due_date" class="form-label">Due (End) Date:</label>
+                                <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" value="{{ $today }}" readonly hidden>
+                                @error('due_date')
+                                    <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        
+                        @else
+                            <div class="col-md-6 mb-3">
+                                <label for="starting_date" class="form-label">Starting Date:</label>
+                                <input type="date" name="starting_date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" value="{{ old('starting_date', $task->starting_date ?? '') }}">
+                                @error('starting_date')
+                                    <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="due_date" class="form-label">Due (End) Date:</label>
+                                <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" value="{{ old('due_date', $task->due_date ?? '') }}">
+                                @error('due_date')
+                                    <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                        @endif
                         <div class="col-md-6 mb-3">
                             <label for="comunication" class="form-label">Communication Plan:</label>
                             <input type="text" name="comunication" class="form-control @error('comunication') is-invalid @enderror" id="comunication" value="{{ old('comunication', $task->comunication ?? '') }}" placeholder="Communication">
