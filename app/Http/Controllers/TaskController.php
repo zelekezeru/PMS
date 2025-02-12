@@ -27,13 +27,10 @@ class TaskController extends Controller
             $headOf = request()->user()->load('headOf')->headOf;
 
             $tasks = $headOf ? $headOf->tasks() : Task::query();
-            
-        } 
-        else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+        } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
             $tasks = Task::with(['target', 'departments']);
-        } 
-        else {
+        } else {
             $tasks = request()->user()->tasks();
         }
 
@@ -46,25 +43,23 @@ class TaskController extends Controller
 
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
-                
-                $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
-                    $query->where('fortnights.id', $currentFortnight->id);
-                });
-        } 
-        elseif ($request->query('todays')) {
 
+            $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
+                $query->where('fortnights.id', $currentFortnight->id);
+            });
+        } elseif ($request->query('todays')) {
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
 
             if (Day::where('date', $today)->exists()) {
-                $date = Day::where('date', $today)->first();
+                $date = Day::where('date', $today)->first()->id;
             } else {
                 $date = Day::create([
-                        'fortnight_id' => $currentFortnight->id, 
-                        'date' => $today
-                    ]);
+                    'fortnight_id' => $currentFortnight->id,
+                    'date' => $today
+                ])->id;
             }
-    
+
             $tasks = $tasks->whereHas('days', function ($query) use ($date) {
                 $query->where('days.id', $date);
             });
@@ -73,22 +68,31 @@ class TaskController extends Controller
         // Filtering and sorting
         $search = $request->query('search') ?? null;
         $status = $request->query('status') ?? null;
-        $dueDays = intval($request->query('due_days')) ?? null;
-        $order = $request->query('order') ?? null;
-        if ($search) {
-            $tasks = $tasks->where('name', 'LIKE', '%' . $search . '%')
-                ->orWhereHas('createdBy', function ($query) use ($search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%');
-                });
-        } elseif ($status) {
-            $tasks = $tasks->where('status', $status);
-        } elseif ($dueDays) {
-            $dueDate = Carbon::now()->addDays($dueDays);
+        $dueDays = is_numeric($request->query('due_days')) ? intval($request->query('due_days')) : null;
+        $order = strtolower($request->query('order'));
 
+        if ($search) {
+            $tasks = $tasks->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('createdBy', function ($q) use ($search) {
+                        $q->where('name', 'LIKE', '%' . $search . '%');
+                    });
+            });
+        }
+
+        if ($status) {
+            $tasks = $tasks->where('status', $status);
+        }
+
+        if ($dueDays) {
+            $dueDate = Carbon::now()->addDays($dueDays);
             $tasks = $tasks->whereNotNull('due_date')->whereDate('due_date', '<=', $dueDate);
-        } elseif ($order) {
+        }
+
+        if (in_array($order, ['asc', 'desc'])) {
             $tasks = $tasks->orderBy('name', $order);
         }
+
 
         $tasks = $tasks->with(['target', 'departments', 'createdBy'])->paginate(10);
 
@@ -99,11 +103,12 @@ class TaskController extends Controller
     {
         $targets = Target::get();
 
-        $departments = Department::get();
+        $departments = (request()->user()->hasROle('DEPARTMENT_HEAD') ? [request()->user()->headOf] :  request()->user()->hasROle('EMPLOYEE')) ? [] : Department::get();
 
         $parent_tasks = Task::get();
 
-        $users = (request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users :  request()->user()->hasROle('EMPLOYEE')) ? null : User::get();
+
+        $users = request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users :  (request()->user()->hasRole('EMPLOYEE') ? [] : User::get());
 
         $today = (bool) request()->query('dailyTask') === true ? Carbon::now()->format('Y-m-d') : null;
 
@@ -122,8 +127,7 @@ class TaskController extends Controller
 
         if (isset($data['parent_task_id'])) {
             $data['is_subtask'] = true;
-        } 
-        else {
+        } else {
             $data['is_subtask'] = false;
         }
 
@@ -154,9 +158,9 @@ class TaskController extends Controller
                 $day = Day::where('date', $today)->first();
             } else {
                 $day = Day::create([
-                        'fortnight_id' => $currentFortnightId, 
-                        'date' => $today
-                    ]);
+                    'fortnight_id' => $currentFortnightId,
+                    'date' => $today
+                ]);
             }
 
             $day->tasks()->attach($task);
@@ -251,7 +255,7 @@ class TaskController extends Controller
 
         if ($task->kpis()->exists() || $task->deliverables()->exists() || $task->feedbacks()->exists()) {
             return redirect()->route('tasks.index')
-            ->with('status', 'You can\'t Delete This pending Task it have feedback on it.');
+                ->with('status', 'You can\'t Delete This pending Task it have feedback on it.');
         }
 
         $task->delete();
