@@ -213,26 +213,29 @@ class TaskController extends Controller
 
         $data = $request->validated();
 
-
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
 
         $departments = $request['department_id'];
         $fortnights = $request['fortnight_id'];
         $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
 
-        $task->departments()->detach();
+        if (!request()->user()->hasRole('EMPLOYEE')) {
+            $task->departments()->detach();
+            $task->users()->detach();
+        }
+
         $task->fortnights()->detach();
-        $task->users()->detach();
 
         unset($data['department_id']);
         unset($data['fortnight_id']);
         unset($data['user_id']);
 
         $task->update($data);
+
         if (!request()->user()->hasRole('EMPLOYEE')) {
             $task->departments()->attach($departments);
+            $task->users()->attach($users);
         }
-        $task->users()->attach($users);
 
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
     }

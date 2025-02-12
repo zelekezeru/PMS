@@ -11,7 +11,6 @@
                 <div class="card-header">
                     <strong>Task Information</strong>
                 </div>
-                <input type="text" name="created_by" class="form-control @error('created_by') is-invalid @enderror" id="name" value="{{ Auth::user()->id }}" readonly hidden>
 
                 <div class="card-body">
                     <div class="row">
