@@ -38,21 +38,27 @@ class TaskController extends Controller
         // Fetch tasks only related to the currently active fortnight if currentFortnight is true
         $currentFortnight = null;
 
+        $today = Carbon::now()->format('Y-m-d');
         if ($request->query('currentFortnight')) {
 
-            $today = Carbon::now()->format('Y-m-d');
+
+            $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
+                ->whereDate('end_date', '>=', $today)->first();
+                
+                $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
+                    $query->where('fortnights.id', $currentFortnight->id);
+                });
+        } elseif ($request->query('todays')) {
 
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
 
-            $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
-                $query->where('fortnights.id', $currentFortnight->id);
-            });
-        } elseif ($request->query('todays')) {
-            
-            $today = Carbon::now()->format('Y-m-d');
-
-            $date = Day::where('date', $today)->first()->id;
+            $date = Day::firstOrCreate([
+                'date' => $request->query('today')], 
+                [
+                    'fortnight_id' => $currentFortnight->id, 
+                    'date' => $today
+                ]);
 
             $tasks = $tasks->whereHas('days', function ($query) use ($date) {
                 $query->where('days.id', $date);
