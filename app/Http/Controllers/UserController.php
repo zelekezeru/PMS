@@ -169,8 +169,11 @@ class UserController extends Controller
         $user->update($data);
 
         if (!empty($data['role_id'])) {
+
             $user->roles()->detach();
+
             $role = Role::findById($data['role_id']);
+            
             $user->assignRole($role);
         }
 

@@ -22,7 +22,7 @@
                                         <a href="{{ route('quarters.show', $quarter->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        @if(!request()->user()->hasRole('EMPLOYEE'))
+                                        @if(!request()->user()->hasRole('DEPARTMENT_HEAD'))
                                             <a href="{{ route('quarters.edit', $quarter->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </a>
