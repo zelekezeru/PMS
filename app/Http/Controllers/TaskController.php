@@ -23,9 +23,11 @@ class TaskController extends Controller
     {
         // Fetch tasks based on roles
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
+
             $headOf = request()->user()->load('headOf')->headOf;
 
             $tasks = $headOf ? $headOf->tasks() : Task::query();
+            
         } 
         else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
@@ -48,7 +50,8 @@ class TaskController extends Controller
                 $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
                     $query->where('fortnights.id', $currentFortnight->id);
                 });
-        } elseif ($request->query('todays')) {
+        } 
+        elseif ($request->query('todays')) {
 
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
@@ -62,7 +65,6 @@ class TaskController extends Controller
                     ]);
             }
     
-
             $tasks = $tasks->whereHas('days', function ($query) use ($date) {
                 $query->where('days.id', $date);
             });
