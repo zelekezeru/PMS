@@ -161,33 +161,35 @@
 
                 {{-- ONLY FOR ADMIN USERS --}}
                 @canany (['create-departments'])
-                    {{-- Department Navigation --}}
-                    <li class="nav-item {{ request()->routeIs('departments.index') || request()->routeIs('departments.create') ? 'active' : '' }}">
-                        <a data-bs-toggle="collapse" href="#Department">
-                            <i class="fas fa-building"></i>
-                            <p>Department</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="Department">
-                            <ul class="nav nav-collapse">
-                                @can ('view-departments')
-                                <li class="{{ request()->routeIs('departments.index') ? 'active' : '' }}">
-                                    <a href="{{ route('departments.index') }}">
-                                        <i class="fas fa-users-cog"></i> Manage Department
-                                    </a>
-                                </li>
-                                @endcan
+                    @if(!request()->user()->hasRole('EMPLOYEE'))
+                        {{-- Department Navigation --}}
+                        <li class="nav-item {{ request()->routeIs('departments.index') || request()->routeIs('departments.create') ? 'active' : '' }}">
+                            <a data-bs-toggle="collapse" href="#Department">
+                                <i class="fas fa-building"></i>
+                                <p>Department</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="Department">
+                                <ul class="nav nav-collapse">
+                                    @can ('view-departments')
+                                    <li class="{{ request()->routeIs('departments.index') ? 'active' : '' }}">
+                                        <a href="{{ route('departments.index') }}">
+                                            <i class="fas fa-users-cog"></i> Manage Department
+                                        </a>
+                                    </li>
+                                    @endcan
 
-                                @can ('create-departments')
-                                <li class="{{ request()->routeIs('departments.create') ? 'active' : '' }}">
-                                    <a href="{{ route('departments.create') }}">
-                                        <i class="fas fa-plus"></i> Add Department
-                                    </a>
-                                </li>
-                                @endcan
-                            </ul>
-                        </div>
-                    </li>
+                                    @can ('create-departments')
+                                    <li class="{{ request()->routeIs('departments.create') ? 'active' : '' }}">
+                                        <a href="{{ route('departments.create') }}">
+                                            <i class="fas fa-plus"></i> Add Department
+                                        </a>
+                                    </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+                        @endif
                 @endcanany
 
                 {{-- Report Navigation --}}
@@ -222,6 +224,8 @@
                 @endcanany
 
                 @canany(['view-years', 'view-quarters', 'view-days', 'view-fortnights', 'view-days'])
+
+                @if(!request()->user()->hasRole('EMPLOYEE'))
                     {{-- Schedule Navigation --}}
                     <li class="nav-item {{ request()->routeIs('years.index') || request()->routeIs('quarters.index') || request()->routeIs('fortnights.index') || request()->routeIs('days.index') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#Schedule">
@@ -265,6 +269,9 @@
                             </ul>
                         </div>
                     </li>
+                    
+                @endif
+
                 @endcanany
 
                 @canany(['view-users', 'create-users' , 'approve-users'])

@@ -6,12 +6,15 @@
         <div class="card pt-5">
             <h2 class="card-header text-center">Fortnights List</h2>
             <div class="card-body">
-                <div class="d-flex justify-content-end mb-3">
-                    <a class="btn btn-success btn-sm" href="{{ route('fortnights.create') }}">
-                        <i class="fa fa-plus"></i> Add New Fortnight
-                    </a>
-                </div>
-
+                
+                @if(!request()->user()->hasRole('EMPLOYEE'))
+                    <div class="d-flex justify-content-end mb-3">
+                        <a class="btn btn-success btn-sm" href="{{ route('fortnights.create') }}">
+                            <i class="fa fa-plus"></i> Add New Fortnight
+                        </a>
+                    </div>
+                @endif
+                
                 @include('fortnights.list')
 
                 <!-- SweetAlert Success Notifications -->

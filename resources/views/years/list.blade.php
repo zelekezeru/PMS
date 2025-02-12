@@ -7,7 +7,7 @@
                         <tr>
                             <th>#</th>
                             <th>Year</th>
-                            <th class="text-center" style="width: 40%;">Actions</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -20,16 +20,18 @@
                                         <a href="{{ route('years.show', $year->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('years.edit', $year->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $year->id }})">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                        <form id="delete-form-{{ $year->id }}" action="{{ route('years.destroy', $year->id) }}" method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+                                        @if(!request()->user()->hasRole('EMPLOYEE'))
+                                            <a href="{{ route('years.edit', $year->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $year->id }})">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <form id="delete-form-{{ $year->id }}" action="{{ route('years.destroy', $year->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

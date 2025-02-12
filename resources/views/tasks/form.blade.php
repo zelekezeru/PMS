@@ -47,7 +47,7 @@
         </div>
 
         <!-- Assign Users in Two Columns -->
-        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
+        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']) && ($users || $departments))
             <!-- Assign Users and Assign Departments Card -->
             <div class="col-md-12">
                 <div class="card">
@@ -56,23 +56,25 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <label for="users" class="form-label">Select Users:</label>
-                                <div class="row">
-                                    @foreach($users as $index => $user)
-                                        @if ($index % 2 == 0 && $index > 0)
-                                            </div><div class="row"> <!-- New Row -->
-                                        @endif
-                                        <div class="col-md-6">
-                                            <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                @error('user_id')
-                                    <div class="form-text text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @if ($users)
+                                <div class="col-md-6">
+                                    <label for="users" class="form-label">Select Users:</label>
+                                    <div class="row">
+                                        @foreach($users as $index => $user)
+                                            @if ($index % 2 == 0 && $index > 0)
+                                                </div><div class="row"> <!-- New Row -->
+                                            @endif
+                                            <div class="col-md-6">
+                                                <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @error('user_id')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>                                
+                            @endif
 
                             <!-- Assign Departments -->
                             @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))

@@ -29,16 +29,20 @@
                                         <a href="{{ route('days.show', $day->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('days.edit', $day->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $day->id }})">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                        <form id="delete-form-{{ $day->id }}" action="{{ route('days.destroy', $day->id) }}" method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+
+                                        @if(!request()->user()->hasRole('EMPLOYEE'))
+                                            <a href="{{ route('days.edit', $day->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $day->id }})">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <form id="delete-form-{{ $day->id }}" action="{{ route('days.destroy', $day->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        @endif
+                                        
                                     </div>
                                 </td>
                             </tr>
