@@ -53,12 +53,15 @@ class TaskController extends Controller
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
 
-            $date = Day::firstOrCreate([
-                'date' => $request->query('today')], 
-                [
-                    'fortnight_id' => $currentFortnight->id, 
-                    'date' => $today
-                ]);
+            if (Day::where('date', $today)->exists()) {
+                $date = Day::where('date', $today)->first();
+            } else {
+                $date = Day::create([
+                        'fortnight_id' => $currentFortnight->id, 
+                        'date' => $today
+                    ]);
+            }
+    
 
             $tasks = $tasks->whereHas('days', function ($query) use ($date) {
                 $query->where('days.id', $date);
@@ -145,13 +148,14 @@ class TaskController extends Controller
             $today = Carbon::now()->format('Y-m-d');
             $currentFortnightId = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first()->id;
-    
-            $day = Day::firstOrCreate([
-                'date' => $request->query('today')], 
-                [
-                    'fortnight_id' => $currentFortnightId, 
-                    'date' => $today
-                ]);
+            if (Day::where('date', $today)->exists()) {
+                $day = Day::where('date', $today)->first();
+            } else {
+                $day = Day::create([
+                        'fortnight_id' => $currentFortnightId, 
+                        'date' => $today
+                    ]);
+            }
 
             $day->tasks()->attach($task);
         }
@@ -183,6 +187,7 @@ class TaskController extends Controller
         $task = $task->load('days');
 
         $isDaily = $task->days()->exists();
+
         $today = $isDaily ? $task->days()->first() : null;
 
         $assignedUsers = $task->users()->pluck('users.id')->toArray();
@@ -213,7 +218,7 @@ class TaskController extends Controller
 
         $departments = $request['department_id'];
         $fortnights = $request['fortnight_id'];
-        $users = $request['user_id'];
+        $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
 
         $task->departments()->detach();
         $task->fortnights()->detach();
@@ -226,9 +231,8 @@ class TaskController extends Controller
         $task->update($data);
         if (!request()->user()->hasRole('EMPLOYEE')) {
             $task->departments()->attach($departments);
-            $task->users()->attach($users);
-            # code...
         }
+        $task->users()->attach($users);
 
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
     }
