@@ -86,7 +86,7 @@
                             @if($task->departments && $task->departments->count() > 0)
                                 @foreach($task->departments as $department)
                                     <strong>
-                                        @can('view-departments')
+                                        @if(!request()->user()->hasRole('EMPLOYEE'))
                                             <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
                                         @elsecan
                                             {{ $department->department_name }},
