@@ -88,9 +88,9 @@
                                     <strong>
                                         @if(!request()->user()->hasRole('EMPLOYEE'))
                                             <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
-                                        @elsecan
+                                        @else
                                             {{ $department->department_name }},
-                                        @endcan
+                                        @endif
                                     </strong>
                                 @endforeach
                             @endif
