@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
             $department = request()->user()->department;
-            $users = $department ? $department->users()->paginate(15) : collect();
+            $users = $department->users()->paginate(15);
             
         } else {
             $users = User::paginate(15);
