@@ -224,6 +224,8 @@
                 @endcanany
 
                 @canany(['view-years', 'view-quarters', 'view-days', 'view-fortnights', 'view-days'])
+
+                @if(!request()->user()->hasRole('EMPLOYEE'))
                     {{-- Schedule Navigation --}}
                     <li class="nav-item {{ request()->routeIs('years.index') || request()->routeIs('quarters.index') || request()->routeIs('fortnights.index') || request()->routeIs('days.index') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#Schedule">
@@ -267,6 +269,9 @@
                             </ul>
                         </div>
                     </li>
+                    
+                @endif
+
                 @endcanany
 
                 @canany(['view-users', 'create-users' , 'approve-users'])
