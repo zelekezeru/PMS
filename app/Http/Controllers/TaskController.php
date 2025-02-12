@@ -63,6 +63,8 @@ class TaskController extends Controller
             $tasks = $tasks->whereHas('days', function ($query) use ($date) {
                 $query->where('days.id', $date);
             });
+
+            $currentFortnight = null;
         }
 
         // Filtering and sorting
@@ -135,7 +137,7 @@ class TaskController extends Controller
 
         $data['created_by'] = request()->user()->id;
 
-        $departments = $request['department_id'];
+        $departments = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->department->id] : $request['department_id'];
 
         $fortnights = $request['fortnight_id'];
 
@@ -227,10 +229,10 @@ class TaskController extends Controller
 
         if (!request()->user()->hasRole('EMPLOYEE')) {
             $task->departments()->detach();
+            $task->fortnights()->detach();
             $task->users()->detach();
         }
 
-        $task->fortnights()->detach();
 
         unset($data['department_id']);
         unset($data['fortnight_id']);
