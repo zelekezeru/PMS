@@ -44,7 +44,7 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ route('tasks.list', 'Pending') }}">
+                <a href="{{ route('tasks.index', ['status' => 'pending']) }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -65,7 +65,7 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ route('tasks.list', 'Progress') }}">
+                <a href="{{ route('tasks.index', ['status' => 'progress']) }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -86,7 +86,7 @@
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ route('tasks.list', 'Completed') }}">
+                <a href="{{ route('tasks.index', ['status' => 'completed']) }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
