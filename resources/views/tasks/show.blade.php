@@ -78,11 +78,7 @@
                     </tr>
                     <tr>
                         <th>Created By:</th>
-                        @foreach($task->users as $user)
-                            @if($task->created_by == $user->id)
-                                <td>{{ $user->name }}</td>
-                            @endif
-                        @endforeach
+                        {{<td>$task->createdBy</td>}}
                     </tr>
                     <tr>
                         <th>Departments:</th>
