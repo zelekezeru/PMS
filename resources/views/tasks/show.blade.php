@@ -78,11 +78,7 @@
                     </tr>
                     <tr>
                         <th>Created By:</th>
-                        @foreach($task->users as $user)
-                            @if($task->created_by == $user->id)
-                                <td>{{ $user->name }}</td>
-                            @endif
-                        @endforeach
+                        <td>{{$task->createdBy->name}}</td>
                     </tr>
                     <tr>
                         <th>Departments:</th>
@@ -90,11 +86,11 @@
                             @if($task->departments && $task->departments->count() > 0)
                                 @foreach($task->departments as $department)
                                     <strong>
-                                        @can('view-departments')
+                                        @if(!request()->user()->hasRole('EMPLOYEE'))
                                             <a href="{{route('departments.show', $department)}}"> {{ $department->department_name }}, </a>
-                                        @elsecan
+                                        @else
                                             {{ $department->department_name }},
-                                        @endcan
+                                        @endif
                                     </strong>
                                 @endforeach
                             @endif
@@ -106,12 +102,14 @@
                     <a href="{{ route('tasks.create', ['parent_task_id' => $task->id]) }}" class="btn btn-primary btn-sm me-2">
                         <i class="fas fa-add"></i> Add Sub Task
                     </a>
-                    <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $task->id }})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                    @can('manageTask', $task)
+                        <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $task->id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    @endcan
 
                     <form id="delete-form-{{ $task->id }}" action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: none;">
                         @csrf
