@@ -121,11 +121,15 @@
             </div>
         </div>
 
-        <div class="card-header">
-            <h3 class="card-title mb-5">Sub Task of this task</h3>
-        </div>
+        @if($task->subtasks->isNotEmpty())
+            
+            <div class="card-header">
+                <h3 class="card-title mb-5">Sub Task of this task</h3>
+            </div>
 
-        @include('tasks.subtask')
+            @include('tasks.subtask')
+            
+        @endif
 
         <div class="col">
             <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task Indicators</a>

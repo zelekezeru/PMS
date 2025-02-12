@@ -96,8 +96,12 @@
                 </div>
             </div>
         @else
-            <input type="hidden" name="user_id[]" value="{{ Auth::user()->id }}">
-            <input type="hidden" name="department_id[]" value="{{ Auth::user()->department_id }}">
+            @php
+                $departmentId = Auth::user()->department_id ?? (isset($task) ? $task->departments->first()->id : null);
+                $userId = Auth::user()->id ?? (isset($task) ? $task->users->first()->id : null);
+            @endphp
+            <input type="hidden" name="user_id[]" value="{{ $userId }}">
+            <input type="hidden" name="department_id[]" value="{{ $departmentId }}">
         @endif
 
         <div class="col-md-12">

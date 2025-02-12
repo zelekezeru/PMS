@@ -66,12 +66,12 @@ class PermissionSeeder extends Seeder
                     'create-targets', 'edit-targets', 'delete-targets',
                     'create-goals', 'edit-goals', 'delete-goals',
                     'view-reports', 'create-reports', 'edit-reports', 'delete-reports',
-                    'create-departments', 'edit-departments', 'delete-departments',
-                    'create-years', 'edit-years', 'delete-years',
-                    'create-quarters', 'edit-quarters', 'delete-quarters',
-                    'create-days', 'edit-days', 'delete-days',
-                    'create-fortnights', 'edit-fortnights', 'delete-fortnights',
-                    'create-weeks', 'edit-weeks', 'delete-weeks',
+                    // 'create-departments', 'edit-departments', 'delete-departments',
+                    // 'create-years', 'edit-years', 'delete-years',
+                    // 'create-quarters', 'edit-quarters', 'delete-quarters',
+                    // 'create-days', 'edit-days', 'delete-days',
+                    // 'create-fortnights', 'edit-fortnights', 'delete-fortnights',
+                    // 'create-weeks', 'edit-weeks', 'delete-weeks',
                 ]));
                 $roleRow->syncPermissions($headPermissions);
             } else {

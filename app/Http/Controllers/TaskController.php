@@ -234,9 +234,11 @@ class TaskController extends Controller
 
         if (!request()->user()->hasRole('EMPLOYEE')) {
             $task->departments()->attach($departments);
+            $task->fortnights()->attach($fortnights);
             $task->users()->attach($users);
         }
 
+        dd($data);
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
     }
 
