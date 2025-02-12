@@ -20,19 +20,22 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-end mt-4">
-                <a href="{{ route('years.edit', $year->id) }}" class="btn btn-warning btn-sm me-2">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $year->id }})">
-                    <i class="fas fa-trash"></i> Delete
-                </button>
+            @if(!request()->user()->hasRole('EMPLOYEE'))
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('years.edit', $year->id) }}" class="btn btn-warning btn-sm me-2">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $year->id }})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
 
-                <form id="delete-form-{{ $year->id }}" action="{{ route('years.destroy', $year->id) }}" method="POST" style="display: none;">
-                    @csrf
-                    @method('DELETE')
-                </form>
-            </div>
+                    <form id="delete-form-{{ $year->id }}" action="{{ route('years.destroy', $year->id) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+            @endif
+        
         </div>
 
 

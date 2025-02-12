@@ -9,7 +9,7 @@
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Quarter</th>
-                            <th class="text-center" style="width: 40%;">Actions</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,16 +24,20 @@
                                         <a href="{{ route('fortnights.show', $fortnight->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('fortnights.edit', $fortnight->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $fortnight->id }})">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                        <form id="delete-form-{{ $fortnight->id }}" action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+
+                                        @if(!request()->user()->hasRole('EMPLOYEE'))
+                                            <a href="{{ route('fortnights.edit', $fortnight->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $fortnight->id }})">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <form id="delete-form-{{ $fortnight->id }}" action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        @endif
+
                                     </div>
                                 </td>
                             </tr>

@@ -26,18 +26,21 @@
                     </tr>
                 </table>
 
-                <div class="d-flex justify-content-end mt-4">
-                    <a href="{{ route('fortnights.edit', $fortnight->id) }}" class="btn btn-warning btn-sm me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <form action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this fortnight?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </form>
-                </div>
+                @if(!request()->user()->hasRole('EMPLOYEE'))
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="{{ route('fortnights.edit', $fortnight->id) }}" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this fortnight?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                @endif
+                
             </div>
         </div>
         @if ($fortnight->tasks)
