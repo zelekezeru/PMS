@@ -24,16 +24,20 @@ class TaskController extends Controller
         // Fetch tasks based on roles
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
             $headOf = request()->user()->load('headOf')->headOf;
+
             $tasks = $headOf ? $headOf->tasks() : Task::query();
-        } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+        } 
+        else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+
             $tasks = Task::with(['target', 'departments']);
-        } else {
+        } 
+        else {
             $tasks = request()->user()->tasks();
         }
 
         // Fetch tasks only related to the currently active fortnight if currentFortnight is true
         $currentFortnight = null;
-        $currentFortnight = null;
+
         if ($request->query('currentFortnight')) {
 
             $today = Carbon::now()->format('Y-m-d');
@@ -107,21 +111,29 @@ class TaskController extends Controller
 
         if (isset($data['parent_task_id'])) {
             $data['is_subtask'] = true;
-        } else {
+        } 
+        else {
             $data['is_subtask'] = false;
         }
 
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
+
         $data['created_by'] = request()->user()->id;
 
         $departments = $request['department_id'];
+
         $fortnights = $request['fortnight_id'];
+
         $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
 
         unset($data['department_id']);
+
         unset($data['fortnight_id']);
+
         unset($data['user_id']);
+
         $task = Task::create($data);
+
         // If Daily Task
         if ($request->query('today')) {
             $today = Carbon::now()->format('Y-m-d');
@@ -233,7 +245,7 @@ class TaskController extends Controller
 
     public function listByStatus($status)
     {
-        $tasks = Task::where('status', $status)->paginate(10);
+        $tasks = Task::where('status', $status)->get();
 
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
             $tasks = request()->user()->headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
@@ -243,7 +255,10 @@ class TaskController extends Controller
         } else {
             $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
         }
-        return view('tasks.index', compact('tasks'));
+        $currentFortnight = null;
+
+        // dd($tasks);
+        return view('tasks.index', compact('tasks', 'currentFortnight'));
     }
 
     public function updateStatus(Request $request, Task $task)
@@ -253,6 +268,7 @@ class TaskController extends Controller
         ]);
 
         $task->status = $request->status;
+
         $task->save();
 
         return redirect()->route('tasks.show', $task->id)->with('success', 'Task status updated successfully.');
