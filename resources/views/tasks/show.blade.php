@@ -102,12 +102,14 @@
                     <a href="{{ route('tasks.create', ['parent_task_id' => $task->id]) }}" class="btn btn-primary btn-sm me-2">
                         <i class="fas fa-add"></i> Add Sub Task
                     </a>
-                    <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $task->id }})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                    @can('manageTask', $task)
+                        <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $task->id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    @endcan
 
                     <form id="delete-form-{{ $task->id }}" action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: none;">
                         @csrf
