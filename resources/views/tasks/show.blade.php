@@ -78,7 +78,7 @@
                     </tr>
                     <tr>
                         <th>Created By:</th>
-                        {{<td>$task->createdBy</td>}}
+                        <td>{{$task->createdBy}}</td>
                     </tr>
                     <tr>
                         <th>Departments:</th>
