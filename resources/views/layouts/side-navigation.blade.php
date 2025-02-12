@@ -160,7 +160,7 @@
                 @endcanany
 
                 {{-- ONLY FOR ADMIN USERS --}}
-                @canany (['view-departments', 'create-departments'])
+                @canany (['create-departments'])
                     {{-- Department Navigation --}}
                     <li class="nav-item {{ request()->routeIs('departments.index') || request()->routeIs('departments.create') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#Department">
