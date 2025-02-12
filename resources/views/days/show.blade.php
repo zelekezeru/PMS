@@ -39,7 +39,7 @@
                     </tr>
                 </table>
 
-                @if(!request()->user()->hasRole('EMPLOYEE'))
+                @if(!request()->user()->hasRole('DEPARTMENT_HEAD'))
                     <div class="d-flex justify-content-end mt-4">
                         <a href="{{ route('days.edit', $day->id) }}" class="btn btn-warning btn-sm me-2">
                             <i class="fas fa-edit"></i> Edit
