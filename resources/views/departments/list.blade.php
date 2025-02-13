@@ -56,7 +56,7 @@
                 <tr>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $loop->iteration }}</td>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->department_name }}</td>
-                    <td onclick="window.location='{{ route('users.show', $department->departmentHead->id) }}'">
+                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">
                         
                         @if ($department->departmentHead)
                             {{ $department->departmentHead->name }}
