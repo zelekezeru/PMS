@@ -101,7 +101,7 @@
                     </li>
                     <li>
                         <div class="notif-scroll scrollbar-outer">
-                            <div class="notif-center mr-2">
+                            <div class="notif-center m-3">
                                 @foreach(Auth::user()->tasks as $task)
                                     <a href="{{ route('tasks.show', $task->id) }}">
                                         <div class="notif-content">
