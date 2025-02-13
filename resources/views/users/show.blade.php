@@ -4,8 +4,9 @@
 
     <div class="container mt-3">
         <div class="card pt-5">
-            <img src="{{ auth()->user()->profile_image ? Storage::url($user->profile_image) : asset('img/user.png') }}"
-                alt="Profile Image" style="width: 15%; border-radius: 50%; margin: 0 auto;">
+            
+            <img src="{{ $user->profile_image ? Storage::url($user->profile_image) : asset('img/user.png') }}" alt="Profile Image" style="width: 15%; border-radius: 50%; margin: 0 auto;">
+
             <h2 class="card-header text-center">
                 User Details
             </h2>
