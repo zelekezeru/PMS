@@ -162,18 +162,58 @@
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
+
                     @forelse ($strategies as $strategy)
-                    <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
 
-
+                        <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
 
                     @empty
 
                     @endforelse
+
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
+    
+    
+{{-- Task Status Overview with chart--}}
+<div class="card col-md-6">
+    <div class="card-header">
+        <h4 class="card-title">Task Status Overview</h4>
+    </div>
+    <div class="card-body">
+        <canvas id="taskChart"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById("taskChart").getContext("2d");
+
+        var taskChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: ["Pending", "Progress", "Completed"],
+                datasets: [{
+                    data: [{{ $pendingTasks }}, {{ $inProgressTasks }}, {{ $completedTasks }}],
+                    backgroundColor: ["#dc3545", "#fd7e14", "#0d6efd"]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 @endsection
