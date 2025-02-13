@@ -32,7 +32,7 @@
                     </tr>
                     <tr>
                         <th>Starting Date:</th>
-                        <td>{{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') : 'N/A' }}</td>
+                        <td>{{ $task->start_date ? \Carbon\Carbon::parse($task->start_date)->format('M - d - Y') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Due Date:</th>

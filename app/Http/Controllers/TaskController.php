@@ -27,6 +27,7 @@ class TaskController extends Controller
             $headOf = request()->user()->load('headOf')->headOf;
 
             $tasks = $headOf ? $headOf->tasks() : Task::query();
+            
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
             $tasks = Task::with(['target', 'departments']);
@@ -44,6 +45,7 @@ class TaskController extends Controller
          * 
          * */
         $today = Carbon::now()->format('Y-m-d');
+
         $currentFortnight = $request->query('currentFortnight') || $request->query('onlyToday') ? Fortnight::whereDate('start_date', '<=', $today)
             ->whereDate('end_date', '>=', $today)->first() : null;
 
@@ -62,7 +64,7 @@ class TaskController extends Controller
         // This Filters the tasks as the user requested
         $tasks = $this->filterByColumns($tasks, $request);
 
-        $tasks = $tasks->with(['target', 'departments', 'createdBy'])->paginate(10);
+        $tasks = $tasks->with(['target', 'departments', 'createdBy'])->where('is_subtask', false)->paginate(10);
 
         return view('tasks.index', compact('tasks', 'currentFortnight'));
     }
@@ -229,7 +231,7 @@ class TaskController extends Controller
 
         if ($task->kpis()->exists() || $task->deliverables()->exists() || $task->feedbacks()->exists()) {
             return redirect()->route('tasks.index')
-                ->with('status', 'You can\'t Delete This pending Task it have feedback on it.');
+                ->with('related', 'You can\'t Delete This pending Task it have feedback on it.');
         }
 
         $task->delete();
