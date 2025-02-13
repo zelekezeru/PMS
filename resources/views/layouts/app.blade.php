@@ -77,27 +77,29 @@
     </script>
 @endif   
     @if(session('related'))
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                let message = "{{ session('related') }}";
-                let title = "";
-                let text = "";
-
-                if (message === "Item-related") {
-                    title = "This Item can't be Deleted!";
-                    text = "This Item has related to other  Items, First remove the relations.";
-                }else if (message === "Item-parent") {
-                    title = "This Item can't be Created!";
-                    text = "This Item needa a Parent Item.";
-                }
-
-                Swal.fire({
-                    icon: 'danger',
-                    title: title,
-                    text: text,
-                    confirmButtonText: 'Okay'
-                });
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let message = "{{ session('related') }}";
+            let title = "This Item can't be Deleted!";
+            let text = "This item is related to other items. You must delete the related items first.";
+    
+            if (message === "Item-related") {
+                title = "This Item can't be Deleted!";
+                text = "This item is related to other items. You must delete the related items first.";
+            } else if (message === "Item-parent") {
+                title = "This Item can't be Created!";
+                text = "This item needs a parent item.";
+            }
+    
+            Swal.fire({
+                icon: 'warning',  // Use 'warning' for the warning icon
+                title: title,
+                text: text,
+                confirmButtonText: 'Okay'
             });
+        });
+    </script>
+    
         </script>
     @endif
 
