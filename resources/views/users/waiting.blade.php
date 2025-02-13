@@ -22,47 +22,42 @@
                     <i class="fa fa-clock"></i> Waiting Users
                 </a>
             </div>
-
-            <form action="{{ route('users.approve') }}" method="POST">
-                @method('PATCH')
-                @csrf
-                <table class="table table-bordered table-striped">
-                    <thead class="thead-dark">
+            
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>View</th>
+                        <th>Approve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($users as $user)
                         <tr>
-                            <th>#</th>
-                            <th>Approve</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($users as $user)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    <input type="checkbox" name="approve[]" value="{{ $user->id }}">
-                                </td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>
+                                <a href="{{ route('users.show', $user->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                            <td>
 
-                                    <a href="{{ route('users.approved', $user->id) }}" class="btn btn-success btn-sm me-2">
-                                        <i class="fa-solid fa-user-check"> </i> Approve
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center">No users found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </form>
+                                <a href="{{ route('users.approved', $user->id) }}" class="btn btn-success btn-sm me-2">
+                                    <i class="fa-solid fa-user-check"> </i> Approve
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center">No users found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

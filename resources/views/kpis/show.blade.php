@@ -27,7 +27,6 @@
                     </tr>
                     <tr>
                         <th>Status:</th>
-                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']) || Auth::user()->tasks->contains($kpi->id))
                             @if ($kpi->status != 'Completed')
                                 <td>
                                     <div class="col-6">
@@ -49,7 +48,6 @@
                             @else
                                 <td class="badge badge-success me-4">Completed !</td>
                             @endif
-                        @endif
                     </tr>
                     <tr>
                         @if($kpi->task_id != null)

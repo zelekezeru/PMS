@@ -75,9 +75,7 @@
             });
         });
     </script>
-@endif
-
-   
+@endif   
     @if(session('related'))
         <script>
             document.addEventListener("DOMContentLoaded", function() {
