@@ -9,7 +9,7 @@ class YearController extends Controller
 {
     public function index()
     {
-        $years = Year::paginate(10);
+        $years = Year::paginate(15);
         return view('years.index', compact('years'));
     }
 

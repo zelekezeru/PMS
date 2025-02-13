@@ -89,7 +89,7 @@
                     <tbody>
                         @forelse ($tasks as $task)
                             <tr>
-                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ ($tasks->currentPage() - 1) * $tasks->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->name }}</td>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->status }}</td>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('M - d - Y').' ('.\Carbon\Carbon::parse($task->due_date)->format('D').')' : 'N/A' }}</td>

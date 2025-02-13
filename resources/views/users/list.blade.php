@@ -19,7 +19,7 @@
                     <tbody>
                         @forelse ($users as $user)
                                 <tr>
-                                    <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $loop->iteration }}</td>
+                                    <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $user->name }}</td>
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $user->email }}</td>
 

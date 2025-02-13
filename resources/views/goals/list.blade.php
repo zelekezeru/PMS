@@ -32,7 +32,7 @@
         <tbody>
             @forelse ($goals as $goal)
                 <tr>
-                    <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ $loop->iteration }}</td>
+                    <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ ($goals->currentPage() - 1) * $goals->perPage() + $loop->iteration }}</td>
                     <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">{{ $goal->name }}</td>
                     <td onclick="window.location='{{ route('goals.show', $goal->id) }}'">
                         @if($goal->strategy)

@@ -17,7 +17,7 @@
                     <tbody>
                         @forelse ($reports as $report)
                             <tr>
-                                <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ ($reports->currentPage() - 1) * $reports->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->report_date }}</td>
                                 <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->department->department_name }}</td>
                                 <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->user->name }}</td>

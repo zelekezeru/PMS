@@ -40,7 +40,7 @@
                     <tbody>
                         @forelse ($targets as $target)
                             <tr>
-                                <td onclick="window.location='{{ route('targets.show', $target->id) }}'">{{ $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('targets.show', $target->id) }}'">{{ ($targets->currentPage() - 1) * $targets->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('targets.show', $target->id) }}'">{{ $target->name }}</td>
                                 <td onclick="window.location='{{ route('targets.show', $target->id) }}'">{{ $target->budget }}</td>
                                 <td onclick="window.location='{{ route('targets.show', $target->id) }}'">

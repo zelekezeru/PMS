@@ -10,7 +10,7 @@ class DayController extends Controller
 {
     public function index()
     {
-        $days = Day::with('fortnight.quarter.year')->paginate(10); // Added pagination
+        $days = Day::with('fortnight.quarter.year')->paginate(15); // Added pagination
         return view('days.index', compact('days'));
     }
 
