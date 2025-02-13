@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         
-                        @if (!$today)
+                        @if (!$forToday)
                             <div class="col card mt-3">
                                 <div class="card-header">
                                     <strong>Fortnight Task</strong>
@@ -197,17 +197,17 @@
                         </div>
 
                         <!-- Starting and Due Date -->
-                        @if ($today)
+                        @if ($forToday)
                             <div class="col-md-6 mb-3">
                                 <label for="starting_date" class="form-label">Starting Date:</label>
-                                <input type="date" name="starting_date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" value="{{ $today }}" readonly hidden>
+                                <input type="date" name="starting_date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" value="{{ $forToday }}" readonly hidden>
                                 @error('starting_date')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="due_date" class="form-label">Due (End) Date:</label>
-                                <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" value="{{ $today }}" readonly hidden>
+                                <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" value="{{ $forToday }}" readonly hidden>
                                 @error('due_date')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
