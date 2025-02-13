@@ -49,6 +49,7 @@ class FortnightController extends Controller
     public function show(Fortnight $fortnight)
     {
         $fortnight->load('tasks');
+        
         return view('fortnights.show', compact('fortnight'));
     }
 

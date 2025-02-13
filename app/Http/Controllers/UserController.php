@@ -123,7 +123,7 @@ class UserController extends Controller
             return abort(403);
         }
 
-        $tasks = $user->tasks;
+        $tasks = $user->tasks()->paginate(15);
 
         $department = $user->department;
 

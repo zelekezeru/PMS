@@ -154,7 +154,8 @@ class TaskController extends Controller
     {
         $task = $task->load('departments', 'users', 'kpis', 'subtasks');
 
-        $users = $task->users;
+        $users = $task->users()->paginate(15);
+        
         return view('tasks.show', compact('task', 'users'));
     }
 

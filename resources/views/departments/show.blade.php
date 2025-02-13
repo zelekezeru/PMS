@@ -60,7 +60,7 @@
         @if ($department->users)
 
             @php
-                $users = $department->users;
+                $users = $department->users()->paginate(15);
             @endphp
 
             <div class="card-header">

@@ -81,7 +81,7 @@
         @if ($goal->targets)
 
         @php
-            $targets = $goal->targets;
+            $targets = $goal->targets()->paginate(15);
         @endphp
 
             <div class="card-header">
