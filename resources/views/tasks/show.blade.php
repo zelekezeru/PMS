@@ -272,7 +272,9 @@
                     <div class="feedback-username">${reply.user.name}</div>
                     <div class="feedback-text">${reply.comment}</div>
                     <div class="feedback-time">${new Date(reply.created_at).toLocaleString()}</div>
-                    <button class="btn btn-sm btn-danger" onclick="deleteFeedback(${reply.id})">Delete</button>
+                    <button class="btn btn-sm border-0 text-danger" onclick="deleteFeedback(${reply.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
         `).join("") : "";
@@ -285,7 +287,9 @@
                     <div class="feedback-text">${feedback.comment}</div>
                     <div class="feedback-time">${new Date(feedback.created_at).toLocaleString()}</div>
                     <span class="reply-btn" onclick="setReply(${feedback.id})">Reply</span>
-                    <button class="btn btn-sm btn-danger" onclick="deleteFeedback(${feedback.id})">Delete</button>
+                    <button class="btn btn-sm border-0 text-danger" onclick="deleteFeedback(${feedback.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
                     ${replies}
                 </div>
             </div>
@@ -299,4 +303,3 @@
     }
 </script>
 @endsection
-    
