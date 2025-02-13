@@ -37,7 +37,7 @@ class UserController extends Controller
     public function waitingApproval()
     {
 
-        $users = User::where('is_approved', 0)->get();
+        $users = User::where('is_approved', 0)->paginate(15);
 
         return view('users.waiting', compact('users'));
     }
