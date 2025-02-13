@@ -59,8 +59,13 @@ class DepartmentController extends Controller
 
     public function edit(Department $department)
     {
-        $users = $department->users();
-        
+        $dep_id = Department::get('id');
+
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'SUPER_ADMIN');
+            $query->where('department_id', $dep_id);
+        })->get();
+
         return view('departments.edit', compact('department', 'users'));
     }
 
