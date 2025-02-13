@@ -193,6 +193,21 @@
     </div>
 
     <!-- User List -->
+
+    <style>
+        .avatar-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #6c757d;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+    </style>
+    
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
