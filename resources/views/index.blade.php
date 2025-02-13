@@ -180,18 +180,7 @@
     
     
 <div class="row">
-    <!-- Task Status Overview -->
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Task Status Overview</h4>
-            </div>
-            <div class="card-body">
-                <canvas id="taskChart"></canvas>
-            </div>
-        </div>
-    </div>
-
+    
     <!-- User List -->
     
     <div class="col-md-4">
@@ -223,12 +212,23 @@
             </div>
         </div>
     </div>
+    <!-- Task Status Overview -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Task Status Overview</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="taskChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    
 </div>
 
 
 @endsection
-
-
 
 
 <script>
@@ -248,7 +248,8 @@
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: "bottom"
+                        display: true,
+                        position: "bottom" // Move legend below the pie chart
                     }
                 }
             }
