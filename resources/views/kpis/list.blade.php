@@ -16,7 +16,7 @@
                     <tbody>
                         @forelse ($kpis as $kpi)
                             <tr>
-                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ ($kpis->currentPage() - 1) * $kpis->perPage() + $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->name }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->value }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->status }}</td>
