@@ -57,6 +57,29 @@ class FeedbackController extends Controller
     }
     
     
-    
+    public function destroy($id)
+    {
+        // Find the feedback by its ID
+        $feedback = Feedback::find($id);
+
+        // Check if the feedback exists
+        if (!$feedback) {
+            return response()->json(['message' => 'Feedback not found'], 404);
+        }
+
+        // Check if the logged-in user is the owner of the feedback
+        if ($feedback->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Delete any replies associated with this feedback
+        $feedback->replies()->delete();
+
+        // Delete the feedback itself
+        $feedback->delete();
+
+        return response()->json(['message' => 'Feedback deleted successfully'], 200);
+    }
+
     
 }

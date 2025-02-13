@@ -175,18 +175,18 @@
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
 
 @section('script')
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
         let feedbackModal = document.getElementById("feedbackModal");
 
+        // When the modal is about to be shown
         feedbackModal.addEventListener("show.bs.modal", function (event) {
-            let button = event.relatedTarget;
+            let button = event.relatedTarget; // The button that triggered the modal
             let taskId = button.getAttribute("data-task-id");
 
             document.getElementById("task_id").value = taskId;
@@ -195,84 +195,108 @@
             loadFeedback(taskId);
         });
 
+        // Submit feedback form
         document.getElementById("feedbackForm").addEventListener("submit", function (event) {
             event.preventDefault();
             submitFeedback();
         });
-        });
+    });
 
-        function loadFeedback(taskId) {
-            fetch(`/feedbacks/${taskId}`)
-                .then(response => response.json())
-                .then(data => {
-                    let feedbackList = document.getElementById("feedback-list");
-                    feedbackList.innerHTML = "";
-
-                    if (data.length === 0) {
-                        feedbackList.innerHTML = "<p class='text-muted text-center'>No feedback yet. Be the first to comment!</p>";
-                    } else {
-                        data.forEach(feedback => {
-                            let feedbackHtml = renderFeedback(feedback);
-                            feedbackList.innerHTML += feedbackHtml;
-                        });
-                    }
-                })
-                .catch(error => console.error("Error fetching feedback:", error));
-        }
-
-        function submitFeedback(taskId) {
-            let formData = new FormData(document.getElementById("feedbackForm"));
-
-            fetch("/feedback", {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-                }
-            })
+    // Load feedback for the task
+    function loadFeedback(taskId) {
+        fetch(`/feedbacks/${taskId}`)
             .then(response => response.json())
             .then(data => {
                 let feedbackList = document.getElementById("feedback-list");
-                // let newFeedbackHtml = renderFeedback(data);
-                // feedbackList.insertAdjacentHTML("afterbegin", newFeedbackHtml); // Add new feedback on top
-                loadFeedback({{ $task->id }});
+                feedbackList.innerHTML = "";
 
-                document.getElementById("comment").value = "";
-                document.getElementById("feedback_id").value = ""; // Reset reply field
+                if (data.length === 0) {
+                    feedbackList.innerHTML = "<p class='text-muted text-center'>No feedback yet. Be the first to comment!</p>";
+                } else {
+                    data.forEach(feedback => {
+                        let feedbackHtml = renderFeedback(feedback);
+                        feedbackList.innerHTML += feedbackHtml;
+                    });
+                }
             })
-            .catch(error => console.error("Error submitting feedback:", error));
-        }
+            .catch(error => console.error("Error fetching feedback:", error));
+    }
 
-        function renderFeedback(feedback) {
-            let replies = feedback.replies ? feedback.replies.map(reply => `
-                <div class="feedback-message replies">
-                    <div class="feedback-avatar"></div>
-                    <div class="feedback-content">
-                        <div class="feedback-username">${reply.user.name}</div>
-                        <div class="feedback-text">${reply.comment}</div>
-                        <div class="feedback-time">${new Date(reply.created_at).toLocaleString()}</div>
-                    </div>
+    // Submit feedback (for new feedback and replies)
+    function submitFeedback() {
+        let formData = new FormData(document.getElementById("feedbackForm"));
+
+        fetch("/feedback", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadFeedback(document.getElementById("task_id").value);
+            document.getElementById("comment").value = "";
+            document.getElementById("feedback_id").value = ""; // Reset reply field
+        })
+        .catch(error => console.error("Error submitting feedback:", error));
+    }
+
+    // Delete feedback or reply
+    function deleteFeedback(feedbackId) {
+        if (!confirm("Are you sure you want to delete this feedback?")) return;
+
+        fetch(`/feedback/${feedbackId}`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "Feedback deleted successfully") {
+                loadFeedback(document.getElementById("task_id").value);
+            } else {
+                alert(data.message); // Display error if the user is not authorized
+            }
+        })
+        .catch(error => console.error("Error deleting feedback:", error));
+    }
+
+    // Render feedback and replies in HTML
+    function renderFeedback(feedback) {
+        let replies = feedback.replies ? feedback.replies.map(reply => `
+            <div class="feedback-message replies">
+                <div class="feedback-avatar"></div>
+                <div class="feedback-content">
+                    <div class="feedback-username">${reply.user.name}</div>
+                    <div class="feedback-text">${reply.comment}</div>
+                    <div class="feedback-time">${new Date(reply.created_at).toLocaleString()}</div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteFeedback(${reply.id})">Delete</button>
                 </div>
-            `).join("") : "";
+            </div>
+        `).join("") : "";
 
-            return `
-                <div class="feedback-message">
-                    <div class="feedback-avatar"></div>
-                    <div class="feedback-content">
-                        <div class="feedback-username">${feedback.user.name}</div>
-                        <div class="feedback-text">${feedback.comment}</div>
-                        <div class="feedback-time">${new Date(feedback.created_at).toLocaleString()}</div>
-                        <span class="reply-btn" onclick="setReply(${feedback.id})">Reply</span>
-                        ${replies}
-                    </div>
+        return `
+            <div class="feedback-message">
+                <div class="feedback-avatar"></div>
+                <div class="feedback-content">
+                    <div class="feedback-username">${feedback.user.name}</div>
+                    <div class="feedback-text">${feedback.comment}</div>
+                    <div class="feedback-time">${new Date(feedback.created_at).toLocaleString()}</div>
+                    <span class="reply-btn" onclick="setReply(${feedback.id})">Reply</span>
+                    <button class="btn btn-sm btn-danger" onclick="deleteFeedback(${feedback.id})">Delete</button>
+                    ${replies}
                 </div>
-            `;
-        }
+            </div>
+        `;
+    }
 
-        function setReply(feedbackId) {
-            document.getElementById("feedback_id").value = feedbackId;
-            document.getElementById("comment").focus();
-        }
-
-    </script>
+    // Set feedback to reply to
+    function setReply(feedbackId) {
+        document.getElementById("feedback_id").value = feedbackId;
+        document.getElementById("comment").focus();
+    }
+</script>
 @endsection
+    
