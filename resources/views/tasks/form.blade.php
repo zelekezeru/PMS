@@ -116,7 +116,7 @@
 
                         <div class="row">
 
-                        <div class="col card mt-3">
+                        <div class="card mt-3">
                             <div class="card-header">
                                 <strong>Target Selection</strong>
                             </div>
@@ -139,7 +139,7 @@
                         </div>
                         
                         @if (!$forToday)
-                            <div class="col card mt-3">
+                            <div class="card mt-3">
                                 <div class="card-header">
                                     <strong>Fortnight Task</strong>
                                 </div>
