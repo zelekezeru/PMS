@@ -56,7 +56,7 @@
                 <tr>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $loop->iteration }}</td>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->department_name }}</td>
-                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">
+                    <td onclick="window.location='{{ route('users.show', $department->departmentHead->id) }}'">
                         
                         @if ($department->departmentHead)
                             {{ $department->departmentHead->name }}
@@ -64,6 +64,7 @@
                             Not Assigned To Any
                         @endif
                     </td>
+                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->description }}</td>
                     <td class="text-center">
                         <div class="form-button-action">
                             <a href="{{ route('departments.show', $department->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
