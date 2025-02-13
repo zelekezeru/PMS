@@ -46,6 +46,7 @@
                     @endif
                 </th>
     
+                <th>Department Head</th>
                 <th>Description</th>
                 <th style="width: 10%; text-align: center;">Actions</th>
             </tr>
@@ -55,7 +56,14 @@
                 <tr>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $loop->iteration }}</td>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->department_name }}</td>
-                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->description }}</td>
+                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">
+                        
+                        @if ($department->departmentHead)
+                            {{ $department->departmentHead->name }}
+                        @else
+                            Not Assigned To Any
+                        @endif
+                    </td>
                     <td class="text-center">
                         <div class="form-button-action">
                             <a href="{{ route('departments.show', $department->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
