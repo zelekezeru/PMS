@@ -4,6 +4,19 @@
             <form action="{{ route('tasks.index') }}" method="GET">
                 <div class="row mb-3">
                     <div class="col-md-4">
+                        
+                        @if (request()->query('currentFortnight'))
+
+                            <input type="hidden" value="{{request()->query('currentFortnight')}}" name="currentFortnight">
+
+                        @endif
+
+                        @if (request()->query('onlyToday'))
+
+                            <input type="hidden" value="{{request()->query('onlyToday')}}" name="onlyToday">
+
+                        @endif
+
                         <label for="searchNames" class="form-label">Search Task</label>
                         <div class="input-group">
                             <input
