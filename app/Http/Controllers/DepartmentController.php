@@ -29,7 +29,8 @@ class DepartmentController extends Controller
 
     public function create()
     {
-        $users = User::whereHas('roles', function ($query) {
+        $users = User::whereHas('roles', function ($query) 
+        {
             $query->where('name', '!=', 'SUPER_ADMIN');
         })->get();
 
@@ -58,9 +59,8 @@ class DepartmentController extends Controller
 
     public function edit(Department $department)
     {
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('name', '!=', 'SUPER_ADMIN');
-        })->get();
+        $users = $department->users();
+        
         return view('departments.edit', compact('department', 'users'));
     }
 
