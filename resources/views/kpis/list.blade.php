@@ -9,8 +9,8 @@
                             <th>Title</th>
                             <th>Value</th>
                             <th>Status</th>
-
-                            <th style="width: 10%; text-align: center;">Action</th>
+                            <th>Change Status</th>
+                            <th style="text-align: center;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -20,26 +20,26 @@
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->name }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->value }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->status }}</td>
+                                
                                 @if ($kpi->status != 'Completed')
+                                    
                                     <td>
-                                        <div class="col-6">
-                                            <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                @method('PUT')
-                                                <select name="status" id="status" class="form-control col-6 @error('status') is-invalid @enderror" optional>
-                                                    <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                                    <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
-                                                    <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                                </select>
-                                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-arrows-spin"></i> Change</button>
-                                            </form>
-                                        </div>
+                                        <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
+                                            @csrf
+                                            @method('PUT')
+                                            <select name="status" class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
+                                                <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                                <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
+                                                <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                            </select>
+                                        </form>
+                                        @error('status')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
                                     </td>
-                                    @error('status')
-                                        <div class="form-text text-danger">{{ $message }}</div>
-                                    @enderror
+                                
                                 @else
-                                    <td class="badge badge-success me-4">Completed !</td>
+                                    <td>Completed !</td>
                                 @endif
 
                                 <td class="text-center">
@@ -72,8 +72,8 @@
                                             <a href="{{ route('kpis.edit', $kpi->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $kpi->id }})">
-                                                <i class="fas fa-trash"></i> Delete
+                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $kpi->id }})">
+                                                <i class="fa fa-times"></i>
                                             </button>
                         
                                             <form id="delete-form-{{ $kpi->id }}" action="{{ route('kpis.destroy', $kpi->id) }}" method="POST" style="display: none;">
