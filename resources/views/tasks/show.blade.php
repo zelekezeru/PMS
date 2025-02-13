@@ -242,10 +242,8 @@
         .catch(error => console.error("Error submitting feedback:", error));
     }
 
-    // Delete feedback or reply
+    // Delete feedback or reply without confirmation
     function deleteFeedback(feedbackId) {
-        if (!confirm("Are you sure you want to delete this feedback?")) return;
-
         fetch(`/feedback/${feedbackId}`, {
             method: "DELETE",
             headers: {
