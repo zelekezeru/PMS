@@ -45,8 +45,7 @@
                         </div>
                     @endif
                 </th>
-
-                <th>Department Head</th>    
+    
                 <th>Description</th>
                 <th style="width: 10%; text-align: center;">Actions</th>
             </tr>
@@ -56,17 +55,6 @@
                 <tr>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $loop->iteration }}</td>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->department_name }}</td>
-                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">
-                        @if ($department->departmentHead)
-                            @can('view-strategies')
-                                <a href="{{route('users.show', $department->departmentHead->id)}}"> {{ $department->departmentHead->name }} </a>
-                            @elsecan
-                                {{ $department->departmentHead->name }},
-                            @endcan
-                        @else
-                            Not Assigned To Any
-                        @endif
-                    </td>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->description }}</td>
                     <td class="text-center">
                         <div class="form-button-action">
