@@ -20,16 +20,16 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <div class="row">
             <a href="{{ route('tasks.index') }}">
-                <div class="col-sm-12">
+                <div class="col-sm-3">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-icon">
                                     <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                        <i class="fas fa-users"></i>
+                                        <i class="fa-solid fa-list-check"></i>
                                     </div>
                                 </div>
                                 <div class="col col-stats ms-3">
@@ -43,17 +43,14 @@
                     </div>
                 </a>
             </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-3">
                 <a href="{{ route('tasks.list', 'Pending') }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-icon">
-                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                        <i class="fas fa-users"></i>
+                                    <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                        <i class="fa-solid fa-spinner"></i>
                                     </div>
                                 </div>
                                 <div class="col col-stats ms-3">
@@ -67,16 +64,14 @@
                     </div>
                 </a>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-3">
                 <a href="{{ route('tasks.list', 'Progress') }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-icon">
-                                    <div class="icon-big text-center icon-info bubble-shadow-small">
-                                        <i class="fas fa-user-check"></i>
+                                    <div class="icon-big text-center icon-warning bubble-shadow-small">
+                                        <i class="fa-solid fa-arrow-up-right-dots"></i>
                                     </div>
                                 </div>
                                 <div class="col col-stats ms-3">
@@ -90,16 +85,14 @@
                     </div>
                 </a>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-3">
                 <a href="{{ route('tasks.list', 'Completed') }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-icon">
-                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                        <i class="fas fa-users"></i>
+                                    <div class="icon-big text-center icon-success bubble-shadow-small">
+                                        <i class="fa-solid fa-check"></i>
                                     </div>
                                 </div>
                                 <div class="col col-stats ms-3">
@@ -114,72 +107,73 @@
                 </a>
             </div>
         </div>
-        @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-            <div class="row">
-                <div class="col-sm-12">
-                    <a href="{{ route('departments.index') }}">
-                        <div class="card card-stats card-round">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-icon">
-                                        <div class="icon-big text-center icon-success bubble-shadow-small">
-                                            <i class="fas fa-luggage-cart"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col col-stats ms-3">
-                                        <div class="numbers">
-                                            <p class="card-category">Departments</p>
-                                            <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <a href="{{ route('users.index') }}">
-                        <div class="card card-stats card-round">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-icon">
-                                        <div class="icon-big text-center icon-secondary bubble-shadow-small">
-                                            <i class="far fa-check-circle"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col col-stats ms-3">
-                                        <div class="numbers">
-                                            @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
-                                                <p class="card-category">All Registered Users</p>
-                                            @else
-                                                <p class="card-category">Employees in your department</p>
-                                            @endif
-                                            <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        @endif
     </div>
-
-        <!-- Task Status Overview -->
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header text-center">
-                <h4 class="card-title">Task Status Overview</h4>
-            </div>
-            <div class="card-body">
-                <canvas id="taskChart"></canvas>
+    <div class="row">
+            <!-- Task Status Overview -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="taskChart"></canvas>
+                </div>
             </div>
         </div>
-    </div>
-        
+
+        <div class="col-md-4">
+            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a href="{{ route('departments.index') }}">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                                <i class="fa-solid fa-building"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3">
+                                            <div class="numbers">
+                                                <p class="card-category">Departments</p>
+                                                <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a href="{{ route('users.index') }}">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                                <i class="fa-solid fa-users"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3">
+                                            <div class="numbers">
+                                                @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+                                                    <p class="card-category">All Registered Users</p>
+                                                @else
+                                                    <p class="card-category">Employees in your department</p>
+                                                @endif
+                                                <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+    </div>    
         {{-- Pillars   --}}
          
     {{-- 5-Year Goals Section --}}

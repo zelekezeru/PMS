@@ -162,9 +162,6 @@ class TaskController extends Controller
 
     
         $task = Task::create($data);
-
-        // If Daily Task
-        if ($request->query('today')) {
         /** 
          * If the task created is daily the client form will send a query called forToday in the url
          * 
@@ -230,6 +227,7 @@ class TaskController extends Controller
         $task = $task->load('departments', 'users', 'kpis', 'subtasks');
 
         $users = $task->users;
+
         return view('tasks.show', compact('task', 'users'));
     }
 
