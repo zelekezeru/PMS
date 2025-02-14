@@ -205,7 +205,7 @@
                                         <div class="u-text text-white">
                                             <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
                                             <p class=" text-white">{{ Auth::user()->email ?? 'No email' }}</p>
-                                            <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                            <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">Edit Profile</a>
                                         </div>
                                     @endif
                                 </div>
@@ -257,7 +257,7 @@
                                     <div class="u-text text-white">
                                         <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
                                         <p class="text-white">{{ Auth::user()->email ?? 'No email' }}</p>
-                                        <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                        <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">Edit Profile</a>
                                     </div>
                                 @endif
                             </div>
