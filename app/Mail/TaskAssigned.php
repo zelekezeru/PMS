@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -14,13 +15,15 @@ class TaskAssigned extends Mailable
     use Queueable, SerializesModels;
 
     public $task;
+    public $assigningUser;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($task)
+    public function __construct($task, $assigningUser)
     {
         $this->task = $task;
+        $this->assigningUser = $assigningUser;
     }
 
     /**
@@ -30,7 +33,7 @@ class TaskAssigned extends Mailable
     {
         return new Envelope(
             subject: 'You have been assigned to a new task',
-            // from: ['your-email@example.com' => 'Your Name']  
+            from: new Address($this->assigningUser->email, $this->assigningUser->name)  // Set the From address dynamically
         );
     }
 
@@ -41,6 +44,7 @@ class TaskAssigned extends Mailable
     {
         return $this->markdown('emails.task-assigned')->with([
             'task' => $this->task,
+            'assigningUser' => $this->assigningUser,  // Pass the assigning user to the view
         ]);
     }
 
