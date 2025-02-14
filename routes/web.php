@@ -48,9 +48,8 @@ Route::middleware('auth')->group(function () {
         Route::get('users/{user}/approve', [UserController::class, 'approved'])->name('users.approved');
 
         //KPI Approval & Confirmation
-        Route::get('kpis/{kpi}/approve', [KpiController::class, 'approve'])->name('kpis.approve');
         Route::get('kpis/{kpi}/confirm', [KpiController::class, 'confirm'])->name('kpis.confirm');
-
+        Route::get('tasks/{task}/confirm', [TaskController::class, 'confirm'])->name('tasks.confirm');
 
         //Resource Routes
         Route::resource('users', UserController::class)->only('create', 'store', 'edit', 'update', 'destroy');
@@ -69,6 +68,10 @@ Route::middleware('auth')->group(function () {
     // Routes Accessible for SUPER_ADMIN, ADMIN, DEPARTMENT_HEAD
     Route::middleware('role:SUPER_ADMIN|ADMIN|DEPARTMENT_HEAD')->group(function () {
         Route::resource('users', UserController::class)->only('index', 'show');
+
+        //KPI Approval & Confirmation
+        Route::get('kpis/{kpi}/approve', [KpiController::class, 'approve'])->name('kpis.approve');
+        Route::get('tasks/{task}/approve', [TaskController::class, 'approve'])->name('tasks.approve');
 
     });
 

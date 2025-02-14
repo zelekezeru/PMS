@@ -108,13 +108,19 @@ class KpiController extends Controller
     public function approve($id)
     {
         $kpi = Kpi::findOrFail($id);
+
         $kpi->approved_by = Auth::user()->id;
+
         $kpi->save();
 
         if ($kpi->task_id != null) {
+
             return redirect()->route('tasks.show', $kpi->task_id)->with('success', 'KPI Approved successfully.');
+
         } else if ($kpi->target_id != null) {
+
             return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Approved successfully.');
+            
         }
     }
 

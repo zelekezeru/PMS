@@ -44,14 +44,14 @@
                     </tr>
                     <tr>
                         <th>Status:</th>
-                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']) || Auth::user()->tasks->contains($task->id))
+                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']) || Auth::user()->tasks->contains($task->id))
                             @if ($task->status != 'Completed')
                                 <td>
                                     <div class="col-6">
                                         <form action="{{ route('tasks.status', $task->id) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             @method('PUT')
-                                            <select name="status" id="status" class="form-control col-6 @error('status') is-invalid @enderror"  onchange="this.form.submit()" optional>
+                                            <select name="status" id="status" style="border: 2px solid black;" class="form-control col-lg-4 col-sm-6 @error('status') is-invalid @enderror"  onchange="this.form.submit()" optional>
                                                 <option value="Pending" {{ $task->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                                                 <option value="Progress" {{ $task->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
                                                 <option value="Completed" {{ $task->status == 'Completed' ? 'selected' : '' }}>Completed</option>

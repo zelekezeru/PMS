@@ -10,13 +10,27 @@
                         : (request('onlyToday') ? 'Tasks For Today' : 'All Tasks List')
                 }}
             </h2>
-            
-            @if (request('currentFortnight') )
-                <h6 class="text-center">{{ \Carbon\Carbon::parse($currentFortnight->start_date)->format('M - d - Y') }} to {{ \Carbon\Carbon::parse($currentFortnight->end_date)->format('M - d - Y') }}</h6>
-            @endif
             <div class="card-body">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-                    <div class="btn-group dropdown">
+                <div class="row d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+
+                    @if (request('currentFortnight') )
+                        <div class="col">
+                            <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::parse($currentFortnight->start_date)->format('M - d - Y') }} <span class="text-success"> to </span> {{ \Carbon\Carbon::parse($currentFortnight->end_date)->format('M - d - Y') }} )</h5>
+                        </div>
+                        
+                    @elseif (request('onlyToday') )
+                        <div class="col">
+                            <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::now()->format('M - d - Y') }} )</h5>
+                        </div>
+                    @else
+                        <div class="col">
+                            <h5 class="nav-item text-info justify-content-md-start "> All Registered Tasks</h5>
+                        </div>
+
+                    @endif
+                    
+
+                    <div class="col-2 btn-group dropdown">
                         <button
                           class="btn btn-primary dropdown-toggle"
                           type="button"
@@ -41,6 +55,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn {{ request('onlyToday') ? 'active' : '' }}" id="line-home-tab" href="{{route('tasks.index', ['onlyToday' => true])}}" role="tab" aria-controls="pills-home" aria-selected="true">Today's Tasks</a>
                     </li>
+                    
                 </ul>
                 @include('tasks.list')
                     <!-- SweetAlert Success Notifications -->

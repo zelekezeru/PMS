@@ -6,10 +6,13 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Full Name</th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    Full Name
+                                </div>
+                            </th>
                             <th>Email</th>
-                            <th>Role</th>
-                            <th>Approve</th>
+                            <th>Department</th>
                             @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                                 <th class="text-center" style="width: 20%;">Actions</th>
                             @endif
@@ -20,22 +23,26 @@
                         @forelse ($users as $user)
                                 <tr>
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
-                                    <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $user->name }}</td>
+                                    <td onclick="window.location='{{ route('users.show', $user->id) }}'" class="d-flex align-items-center">                                        
+                                        @if ($user->profile_image)
+                                            <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle mr-2" width="40" height="40">
+                                        @else
+                                            <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                        @endif
+                                        <span class="ml-3">{{ $user->name }}</span>
+                                        
+                                    </td>
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $user->email }}</td>
 
-                                    @if(count($user->roles) > 0)
-                                        <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ $user->roles->pluck('name')->join(', ') }}</td>
-                                    @else
-                                        <td><p class="badge badge-info">Not Assigned</p></td>
-                                    @endif
-
-                                    <td>
-                                        @if ($user->is_approved)
-                                            <p class="badge badge-success">Approved!</p>
+                                    <td onclick="window.location='{{ route('users.show', $user->id) }}'">                                        
+                                        @if($user->department_id != null)
+                                            {{ $user->department->department_name }}
                                         @else
-                                            <a href="{{ route('users.waiting') }}"><p class="badge badge-warning">Waiting!</p></a>
+                                            <p class="badge badge-info">Not Assigned</p>
                                         @endif
                                     </td>
+
+                                    
                                     @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                                         <td class="text-center">
                                             <div class="form-button-action">

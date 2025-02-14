@@ -25,10 +25,10 @@ class UserController extends Controller
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
             $department = request()->user()->department;
-            $users = $department->users()->paginate(15);
+            $users = $department->users()->paginate(25);
             
         } else {
-            $users = User::paginate(15);
+            $users = User::paginate(25);
         }
 
         return view('users.index', compact('users'));
