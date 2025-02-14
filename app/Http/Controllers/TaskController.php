@@ -16,6 +16,8 @@ use App\Models\Fortnight;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TaskAssigned;
 
 class TaskController extends Controller
 {
@@ -93,40 +95,26 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
-
+    
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
         $data['created_by'] = request()->user()->id;
-
-        /**
-         * Sets assigned departments ($departments) to the department the logged in user belongs to if the role of the user is EMPLOYEE or DEPARMENT_HEAD 
-         * But sets the assigned departments to what the logged in user requested to assign if the role is any other than the above(^)
-         * 
-         * sets the assigned users ($users) to the logged in user if the role is employee or sets it to what the logged in user assigned if the role is otherwise
-         */
+    
         $departments = request()->user()->hasAnyRole(['EMPLOYEE', 'DEPARTMENT_HEAD']) ? [0 => request()->user()->department->id] : $request['department_id'];
         $fortnights = $request['fortnight_id'];
         $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
-
-        // unsets(removes) fields from the $data array which dont belong to the tasks table
+    
         unset($data['department_id']);
         unset($data['fortnight_id']);
         unset($data['user_id']);
-
+    
         $task = Task::create($data);
-
-        /** 
-         * If the task created is daily the client form will send a query called forToday in the url
-         * 
-         * in that case we will fetch the current day from the database and attach it to the task that was just created and if the day doesnt exist we will create it
-         * 
-         */
+    
         if ($request->query('forToday')) {
-
             $today = Carbon::now()->format('Y-m-d');
-
+    
             $currentFortnightId = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first()->id;
-
+    
             if (Day::where('date', $today)->exists()) {
                 $day = Day::where('date', $today)->first();
             } else {
@@ -135,18 +123,20 @@ class TaskController extends Controller
                     'date' => $today
                 ]);
             }
-
+    
             $day->tasks()->attach($task);
         }
-
-        /**
-         * Attaches the departments, users and fortnights that were created above to the newly created task
-         */
-
+    
         $task->departments()->attach($departments);
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
-
+    
+        // Send email to assigned users
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+            Mail::to($user->email)->send(new TaskAssigned($task));
+        }
+    
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
     }
 
