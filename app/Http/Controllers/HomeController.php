@@ -28,7 +28,7 @@ class HomeController extends Controller
 
         $user = Auth::user();
 
-        if($user->roles->first()->name == 'SUPER_ADMIN' || $user->roles->first()->name == 'ADMIN')
+        if($user->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
         {
             $departments = Department::get();
 
@@ -36,24 +36,24 @@ class HomeController extends Controller
 
             $tasks = Task::get();
         }
-        elseif(request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
+        elseif($user->hasRole('DEPARTMENT_HEAD')) {
 
             $headOf = request()->user()->load('headOf')->headOf;
 
-            $tasks = $headOf ? $headOf->tasks() : Task::query()->get();
+            $tasks = $headOf ? $headOf->tasks : Task::query()->get();
 
             $departments = $user->department;
 
             $users = $departments->users;
             
         }
-        elseif($user->roles->first()->name == 'EMPLOYEE')
+        elseif($user->hasRole('EMPLOYEE'))
         {
             $departments = $user->departments;
 
-            $users = $user;
+            $users = null;
 
-            $tasks = $users->tasks;
+            $tasks = $user->tasks;
         }
 
         $pendingTasks = Task::where('status', 'pending')->count();

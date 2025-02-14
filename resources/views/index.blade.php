@@ -107,28 +107,31 @@
                 </a>
             </div>
             
-            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-                <div class="col-sm-6">
-                    <a href="{{ route('departments.index') }}">
-                        <div class="card card-stats card-round">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-icon">
-                                        <div class="icon-big text-center icon-success bubble-shadow-small">
-                                            <i class="fas fa-luggage-cart"></i>
+            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
+                @if (!request()->user()->hasRole('DEPARTMENT_HEAD'))
+                    <div class="col-sm-6">
+                        <a href="{{ route('departments.index') }}">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                                <i class="fas fa-luggage-cart"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col col-stats ms-3">
-                                        <div class="numbers">
-                                            <p class="card-category">Departments</p>
-                                            <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
+                                        <div class="col col-stats ms-3">
+                                            <div class="numbers">
+                                                <p class="card-category">Departments</p>
+                                                <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
+                @endif
                 <div class="col-sm-6">
                     <a href="{{ route('users.index') }}">
                         <div class="card card-stats card-round">
@@ -141,7 +144,11 @@
                                     </div>
                                     <div class="col col-stats ms-3">
                                         <div class="numbers">
-                                            <p class="card-category">Registered Users</p>
+                                            @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+                                                <p class="card-category">All Registered Users</p>
+                                            @else
+                                                <p class="card-category">Employees in your department</p>
+                                            @endif
                                             <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
                                         </div>
                                     </div>
@@ -182,37 +189,35 @@
 <div class="row">
     
     <!-- User List -->
-
-<div class="col-md-4">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Users</h4>
+    @if (!request()->user()->hasRole('EMPLOYEE'))
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Users</h4>
+                </div>
+                <div class="card-body user-list">
+                    <ul class="list-unstyled">
+                        @foreach ($users as $user)
+                            <li class="d-flex align-items-center mb-3">
+                                @if ($user->profile_image)
+                                    <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle" width="40" height="40">
+                                @else
+                                    <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                @endif
+                                <div class="ms-3">
+                                    <h6 class="mb-0">{{ $user->name }}</h6>
+                                    <small class="text-muted">{{ $user->role }}</small>
+                                </div>
+                                <div class="ms-auto d-flex">
+                                    <a href="mailto:{{ $user->email }}" class="text-primary me-2"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="card-body user-list">
-            <ul class="list-unstyled">
-                @foreach ($users as $user)
-                    <li class="d-flex align-items-center mb-3">
-                        @if ($user->profile_image)
-                            <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle" width="40" height="40">
-                        @else
-                            <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
-                        @endif
-                        <div class="ms-3">
-                            <h6 class="mb-0">{{ $user->name }}</h6>
-                            <small class="text-muted">{{ $user->role }}</small>
-                        </div>
-                        <div class="ms-auto d-flex">
-                            <a href="mailto:{{ $user->email }}" class="text-primary me-2"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-</div>
-
-        
-
+    @endif
 
     <!-- Task Status Overview -->
     <div class="col-md-8">
