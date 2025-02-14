@@ -44,8 +44,7 @@
                 </a>
             </div>
         </div>
-        <div class="row">
-        </div>
+        
         <div class="row">
             <div class="col-sm-12">
                 <a href="{{ route('tasks.list', 'Pending') }}">
@@ -114,9 +113,8 @@
                     </div>
                 </a>
             </div>
-            
+        </div>
         @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-            </div>
             <div class="row">
                 <div class="col-sm-12">
                     <a href="{{ route('departments.index') }}">
@@ -153,7 +151,11 @@
                                     </div>
                                     <div class="col col-stats ms-3">
                                         <div class="numbers">
-                                            <p class="card-category">Registered Users</p>
+                                            @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+                                                <p class="card-category">All Registered Users</p>
+                                            @else
+                                                <p class="card-category">Employees in your department</p>
+                                            @endif
                                             <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
                                         </div>
                                     </div>
@@ -162,26 +164,45 @@
                         </div>
                     </a>
                 </div>
-            @endif
-        </div>
+            </div>
+        @endif
     </div>
-    
-    
-    {{-- <div class="row"> --}}
 
         <!-- Task Status Overview -->
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-center">
-                    <h4 class="card-title">Task Status Overview</h4>
-                </div>
-                <div class="card-body">
-                    <canvas id="taskChart"></canvas>
-                </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4 class="card-title">Task Status Overview</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="taskChart"></canvas>
             </div>
         </div>
+    </div>
         
-        
+        {{-- Pillars   --}}
+         
+    {{-- 5-Year Goals Section --}}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">SITS Pillars</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+
+                    @forelse ($strategies as $strategy)
+
+                        <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
+
+                    @empty
+
+                    @endforelse
+
+                </ul>
+            </div>
+        </div>
+    </div>
         <!-- User List -->
         
                 
@@ -214,36 +235,10 @@
                     </div>
                 </div>
             </div>
-        @endif
-    
+        @endif    
         
-    {{-- </div> --}}
-    
-    {{-- 5-Year Goals Section --}}
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">SITS Pillars</h4>
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-
-                    @forelse ($strategies as $strategy)
-
-                        <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
-
-                    @empty
-
-                    @endforelse
-
-                </ul>
-            </div>
-        </div>
-
     </div>
-</div>
-
-    
+   
 </div>
 
 

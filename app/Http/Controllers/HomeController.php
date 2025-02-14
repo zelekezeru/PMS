@@ -55,7 +55,6 @@ class HomeController extends Controller
             $users = User::get();
 
             $tasks = Task::get();
-
         }
 
         $pendingTasks = $tasks->where('status', 'Pending')->count();
