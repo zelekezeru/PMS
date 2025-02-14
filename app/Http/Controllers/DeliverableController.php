@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeliverableStoreRequest;
 use App\Models\Deliverable;
 use Illuminate\Http\Request;
 
@@ -26,9 +27,16 @@ class DeliverableController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DeliverableStoreRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $data['user_id'] = request()->user()->id;
+
+        $deliverable = Deliverable::create($data);
+
+        return redirect()->route('fortnights.show', $request->fortnight_id)->with('status', 'Deliverable has been successfully created.');
+        
     }
 
     /**

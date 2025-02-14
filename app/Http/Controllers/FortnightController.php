@@ -48,9 +48,11 @@ class FortnightController extends Controller
     // Display the specified fortnight
     public function show(Fortnight $fortnight)
     {
-        $fortnight->load('tasks');
+        $fortnight->load('tasks', 'deliverables');
+
+        $deliverables = $fortnight->deliverables()->paginate(15);
         
-        return view('fortnights.show', compact('fortnight'));
+        return view('fortnights.show', compact('fortnight', 'deliverables'));
     }
 
     // Show the form for editing the specified fortnight

@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('deliverables');
+        
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fortnight_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name', 255);
-            $table->enum('status', ['ACHIEVED', 'NOT_ACHIEVED'])->default('NOT_ACHIEVED');
+            $table->boolean('is_completed')->default(false);
             $table->date('deadline')->nullable();
             $table->timestamps();
         });
