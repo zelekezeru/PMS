@@ -45,7 +45,7 @@
         </div>
         @if ($fortnight->tasks)
         @php
-            $tasks = $fortnight->tasks;
+            $tasks = $fortnight->tasks()->paginate(15);
         @endphp
 
         <div class="card-header">

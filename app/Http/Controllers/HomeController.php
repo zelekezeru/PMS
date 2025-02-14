@@ -56,7 +56,11 @@ class HomeController extends Controller
             $tasks = $users->tasks;
         }
 
-        return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users'));
+        $pendingTasks = Task::where('status', 'pending')->count();
+        $inProgressTasks = Task::where('status', 'progress')->count();
+        $completedTasks = Task::where('status', 'completed')->count();
+
+        return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users', 'pendingTasks', 'inProgressTasks', 'completedTasks'));
     }
 
     /**

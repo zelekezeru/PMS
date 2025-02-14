@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApproveConfirmed;
 
 class UserController extends Controller
 {
@@ -37,7 +40,7 @@ class UserController extends Controller
     public function waitingApproval()
     {
 
-        $users = User::where('is_approved', 0)->get();
+        $users = User::where('is_approved', 0)->paginate(15);
 
         return view('users.waiting', compact('users'));
     }
@@ -64,14 +67,19 @@ class UserController extends Controller
 
     public function approved(Request $request, User $user)
     {
-            $user->is_approved = true;
-
-            $user->is_active = true;
-
-            $user->save();
-
+        $user->is_approved = true;
+        $user->is_active = true;
+        $user->save();
+    
+        // Generate the login link
+        $loginLink = route('login');
+    
+        // Send the approval email with the login link
+        Mail::to($user->email)->send(new ApproveConfirmed($loginLink));
+    
         return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -123,7 +131,7 @@ class UserController extends Controller
             return abort(403);
         }
 
-        $tasks = $user->tasks;
+        $tasks = $user->tasks()->paginate(15);
 
         $department = $user->department;
 

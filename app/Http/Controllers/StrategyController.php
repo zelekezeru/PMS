@@ -15,7 +15,7 @@ class StrategyController extends Controller
      */
     public function index(): View
     {
-        $strategies = Strategy::paginate(10); // Use pagination to avoid loading too many records at once
+        $strategies = Strategy::paginate(15); // Use pagination to avoid loading too many records at once
 
         return view('strategies.index', compact('strategies'));
     }

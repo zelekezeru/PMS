@@ -54,7 +54,7 @@
         <tbody>
             @forelse ($departments as $department)
                 <tr>
-                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $loop->iteration }}</td>
+                    <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ ($departments->currentPage() - 1) * $departments->perPage() + $loop->iteration }}</td>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">{{ $department->department_name }}</td>
                     <td onclick="window.location='{{ route('departments.show', $department->id) }}'">
                         

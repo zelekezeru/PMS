@@ -30,15 +30,14 @@
                             @if ($kpi->status != 'Completed')
                                 <td>
                                     <div class="col-6">
-                                        <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
                                             @csrf
                                             @method('PUT')
-                                            <select name="status" id="status" class="form-control col-6 @error('status') is-invalid @enderror" optional>
+                                            <select name="status" class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
                                                 <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                                                 <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
                                                 <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
                                             </select>
-                                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-arrows-spin"></i> Change</button>
                                         </form>
                                     </div>
                                 </td>

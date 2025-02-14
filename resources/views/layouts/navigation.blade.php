@@ -24,7 +24,8 @@
 <!-- Navbar Header -->
 <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"data-background-color="dark">
     <div class="container-fluid">
-        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+        
+        {{--<nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <button type="submit" class="btn btn-search pe-1">
@@ -33,7 +34,7 @@
                 </div>
                 <input type="text" placeholder="Search ..." class="form-control" />
             </div>
-        </nav>
+        </nav>--}}
 
 
         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
@@ -101,7 +102,7 @@
                     </li>
                     <li>
                         <div class="notif-scroll scrollbar-outer">
-                            <div class="notif-center mr-2">
+                            <div class="notif-center m-3">
                                 @foreach(Auth::user()->tasks as $task)
                                     <a href="{{ route('tasks.show', $task->id) }}">
                                         <div class="notif-content">
@@ -116,7 +117,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="see-all" href="javascript:void(0);">See all notifications<i
+                        <a class="see-all" href="{{ route('tasks.index') }}">See all notifications<i
                                 class="fa fa-angle-right"></i>
                         </a>
                     </li>
@@ -204,7 +205,7 @@
                                         <div class="u-text text-white">
                                             <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
                                             <p class=" text-white">{{ Auth::user()->email ?? 'No email' }}</p>
-                                            <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                            <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">Edit Profile</a>
                                         </div>
                                     @endif
                                 </div>
@@ -256,7 +257,7 @@
                                     <div class="u-text text-white">
                                         <h4>{{ Auth::user()->name ?? 'Guest' }}</h4>
                                         <p class="text-white">{{ Auth::user()->email ?? 'No email' }}</p>
-                                        <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                        <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">Edit Profile</a>
                                     </div>
                                 @endif
                             </div>

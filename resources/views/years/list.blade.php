@@ -13,7 +13,7 @@
                     <tbody>
                         @forelse ($years as $year)
                             <tr>
-                                <td onclick="window.location='{{ route('years.show', $year->id) }}'">{{ $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('years.show', $year->id) }}'">{{ ($years->currentPage() - 1) * $years->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('years.show', $year->id) }}'">{{ $year->year }}</td>
                                 <td class="text-center">
                                     <div class="form-button-action">

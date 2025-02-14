@@ -16,7 +16,7 @@
                     <tbody>
                         @foreach ($days as $index => $day)
                             <tr>
-                                <td onclick="window.location='{{ route('days.show', $day->id) }}'">{{ $days->firstItem() + $index }}</td>
+                                <td onclick="window.location='{{ route('days.show', $day->id) }}'">{{ ($days->currentPage() - 1) * $days->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('days.show', $day->id) }}'">{{ $day->fortnight->quarter->year->year }}</td>
                                 <td onclick="window.location='{{ route('days.show', $day->id) }}'">{{ $day->fortnight->quarter->quarter }}</td>
                                 <td onclick="window.location='{{ route('days.show', $day->id) }}'">

@@ -37,7 +37,7 @@ class ReportController extends Controller
             $query->where('schedule', 'like', '%' . $request->schedule . '%');
         }
 
-        $reports = $query->get();
+        $reports = $query->paginate(15);
         $departments = Department::all();
         $users = User::all();
         $targets = Target::all();

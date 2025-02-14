@@ -17,7 +17,7 @@
                     <tbody>
                         @forelse ($strategies as $strategy)
                             <tr>
-                                <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $loop->iteration }}</td>
+                                <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ ($strategies->currentPage() - 1) * $strategies->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $strategy->pillar_name }}</td>
                                 <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $strategy->name }}</td>
                                 <td onclick="window.location='{{ route('strategies.show', $strategy->id) }}'">{{ $strategy->description }}</td>

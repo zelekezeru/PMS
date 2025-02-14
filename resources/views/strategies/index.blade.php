@@ -6,8 +6,8 @@
         <div class="card mt-5">
             <h2 class="card-header text-center">Strategies List</h2>
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">  
-                    <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search w-50 p-0 d-none d-md-flex">
+                <div class="d-flex justify-content-md-end align-items-center mb-3">  
+                    {{-- <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search w-50 p-0 d-none d-md-flex">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <button type="submit" class="btn btn-search pe-1">
@@ -16,7 +16,7 @@
                             </div>
                             <input type="text" placeholder="Search ..." class="form-control" />
                         </div>
-                    </nav>
+                    </nav> --}}
                     @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                         <a class="btn btn-success btn-sm" href="{{ route('strategies.create') }}">
                             <i class="fa fa-plus"></i> Add New Strategy

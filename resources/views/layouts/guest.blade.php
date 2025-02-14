@@ -30,6 +30,9 @@
             </div>
         </div>
             <!-- Sweet Alert -->
+            
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
             <script src="{{ asset('js/plugin/sweetalert/sweetalert.min.js') }}"></script>
     </body>
 </html>

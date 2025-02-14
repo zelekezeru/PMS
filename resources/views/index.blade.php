@@ -162,18 +162,99 @@
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
+
                     @forelse ($strategies as $strategy)
-                    <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
 
-
+                        <li class="list-group-item p-4"><i class="fas fa-check-circle text-success me-2"></i> {{$strategy->pillar_name}}</li>
 
                     @empty
 
                     @endforelse
+
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
+    
+    
+<div class="row">
+    
+    <!-- User List -->
+
+<div class="col-md-4">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Users</h4>
+        </div>
+        <div class="card-body user-list">
+            <ul class="list-unstyled">
+                @foreach ($users as $user)
+                    <li class="d-flex align-items-center mb-3">
+                        @if ($user->profile_image)
+                            <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle" width="40" height="40">
+                        @else
+                            <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                        @endif
+                        <div class="ms-3">
+                            <h6 class="mb-0">{{ $user->name }}</h6>
+                            <small class="text-muted">{{ $user->role }}</small>
+                        </div>
+                        <div class="ms-auto d-flex">
+                            <a href="mailto:{{ $user->email }}" class="text-primary me-2"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+</div>
+
+        
+
+
+    <!-- Task Status Overview -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Task Status Overview</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="taskChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+
 @endsection
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById("taskChart").getContext("2d");
+
+        var taskChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: ["Pending", "Progress", "Completed"],
+                datasets: [{
+                    data: [{{ $pendingTasks }}, {{ $inProgressTasks }}, {{ $completedTasks }}],
+                    backgroundColor: ["#dc3545", "#fd7e14", "#0d6efd"]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "bottom" // Move legend below the pie chart
+                    }
+                }
+            }
+        });
+    });
+</script>

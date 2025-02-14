@@ -22,7 +22,7 @@ class TargetController extends Controller
             $query->where('goal_id', $request->goal_id);
         }
     
-        $targets = $query->paginate(10);
+        $targets = $query->paginate(15);
     
         $goals = Goal::with(['targets'])->get();
     

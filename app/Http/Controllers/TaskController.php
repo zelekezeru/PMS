@@ -64,7 +64,7 @@ class TaskController extends Controller
         // This Filters the tasks as the user requested
         $tasks = $this->filterByColumns($tasks, $request);
 
-        $tasks = $tasks->with(['target', 'departments', 'createdBy'])->where('is_subtask', false)->paginate(10);
+        $tasks = $tasks->with(['target', 'departments', 'createdBy'])->where('is_subtask', false)->paginate(15);
 
         return view('tasks.index', compact('tasks', 'currentFortnight'));
     }
@@ -154,7 +154,8 @@ class TaskController extends Controller
     {
         $task = $task->load('departments', 'users', 'kpis', 'subtasks');
 
-        $users = $task->users;
+        $users = $task->users()->paginate(15);
+        
         return view('tasks.show', compact('task', 'users'));
     }
 
@@ -250,16 +251,16 @@ class TaskController extends Controller
                 $headOf = request()->user()->load('headOf')->headOf;
 
                 if ($headOf) {
-                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(15);
                 } else {
-                    $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
+                    $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(15);
                 }
             } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
-                $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
+                $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(15);
             } else {
 
-                $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+                $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(15);
             }
 
             $currentFortnight = null;
