@@ -20,10 +20,10 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="row">
             <a href="{{ route('tasks.index') }}">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="card card-stats card-round">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -43,7 +43,11 @@
                     </div>
                 </a>
             </div>
-            <div class="col-sm-6">
+        </div>
+        <div class="row">
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
                 <a href="{{ route('tasks.list', 'Pending') }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
@@ -64,7 +68,9 @@
                     </div>
                 </a>
             </div>
-            <div class="col-sm-6">
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
                 <a href="{{ route('tasks.list', 'Progress') }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
@@ -85,7 +91,9 @@
                     </div>
                 </a>
             </div>
-            <div class="col-sm-6">
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
                 <a href="{{ route('tasks.list', 'Completed') }}">
                     <div class="card card-stats card-round">
                         <div class="card-body">
@@ -107,8 +115,10 @@
                 </a>
             </div>
             
-            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-                <div class="col-sm-6">
+        @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                     <a href="{{ route('departments.index') }}">
                         <div class="card card-stats card-round">
                             <div class="card-body">
@@ -129,7 +139,9 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-sm-6">
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                     <a href="{{ route('users.index') }}">
                         <div class="card card-stats card-round">
                             <div class="card-body">
@@ -153,7 +165,60 @@
             @endif
         </div>
     </div>
+    
+    
+    {{-- <div class="row"> --}}
 
+        <!-- Task Status Overview -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="card-title">Task Status Overview</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="taskChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- User List -->
+        
+                
+        @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+    
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Message Users </h4>
+                    </div>
+                    <div class="card-body user-list">
+                        <ul class="list-unstyled">
+                            @foreach ($users as $user)
+                                <li class="d-flex align-items-center mb-3">
+                                    @if ($user->profile_image)
+                                        <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle" width="40" height="40">
+                                    @else
+                                        <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                    @endif
+                                    <div class="ms-3">
+                                        <h6 class="mb-0">{{ $user->name }}</h6>
+                                        <small class="text-muted">{{ $user->role }}</small>
+                                    </div>
+                                    <div class="ms-auto d-flex">
+                                        <a href="mailto:{{ $user->email }}" class="text-primary me-2"><i class="fas fa-envelope"></i></a>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
+    
+        
+    {{-- </div> --}}
+    
     {{-- 5-Year Goals Section --}}
     <div class="col-md-6">
         <div class="card">
@@ -174,57 +239,9 @@
                 </ul>
             </div>
         </div>
+
     </div>
 </div>
-
-    
-    
-<div class="row">
-    
-    <!-- User List -->
-
-<div class="col-md-4">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Users</h4>
-        </div>
-        <div class="card-body user-list">
-            <ul class="list-unstyled">
-                @foreach ($users as $user)
-                    <li class="d-flex align-items-center mb-3">
-                        @if ($user->profile_image)
-                            <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle" width="40" height="40">
-                        @else
-                            <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
-                        @endif
-                        <div class="ms-3">
-                            <h6 class="mb-0">{{ $user->name }}</h6>
-                            <small class="text-muted">{{ $user->role }}</small>
-                        </div>
-                        <div class="ms-auto d-flex">
-                            <a href="mailto:{{ $user->email }}" class="text-primary me-2"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-</div>
-
-        
-
-
-    <!-- Task Status Overview -->
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Task Status Overview</h4>
-            </div>
-            <div class="card-body">
-                <canvas id="taskChart"></canvas>
-            </div>
-        </div>
-    </div>
 
     
 </div>
@@ -243,7 +260,7 @@
                 labels: ["Pending", "Progress", "Completed"],
                 datasets: [{
                     data: [{{ $pendingTasks }}, {{ $inProgressTasks }}, {{ $completedTasks }}],
-                    backgroundColor: ["#dc3545", "#fd7e14", "#0d6efd"]
+                    backgroundColor: ["#dc3545", "#fd7e14", "#198754"]
                 }]
             },
             options: {

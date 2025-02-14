@@ -28,37 +28,41 @@ class HomeController extends Controller
 
         $user = Auth::user();
 
-        if($user->roles->first()->name == 'SUPER_ADMIN' || $user->roles->first()->name == 'ADMIN')
+        if($user->roles->first()->name == 'EMPLOYEE')
+        {
+            $departments = null;
+
+            $users = null;
+
+            $tasks = $user->tasks;
+        }
+        
+        elseif(request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
+
+            $department = request()->user()->load('headOf')->headOf;
+
+            $tasks = $department->tasks;
+
+            $users = $department->users;
+            
+            $departments = null;
+            
+        }
+        elseif($user->roles->first()->name == 'SUPER_ADMIN' || $user->roles->first()->name == 'ADMIN')
         {
             $departments = Department::get();
 
             $users = User::get();
 
             $tasks = Task::get();
-        }
-        elseif(request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
 
-            $headOf = request()->user()->load('headOf')->headOf;
-
-            $tasks = $headOf ? $headOf->tasks() : Task::query()->get();
-
-            $departments = $user->department;
-
-            $users = $departments->users;
-            
-        }
-        elseif($user->roles->first()->name == 'EMPLOYEE')
-        {
-            $departments = $user->departments;
-
-            $users = $user;
-
-            $tasks = $users->tasks;
         }
 
-        $pendingTasks = Task::where('status', 'pending')->count();
-        $inProgressTasks = Task::where('status', 'progress')->count();
-        $completedTasks = Task::where('status', 'completed')->count();
+        $pendingTasks = $tasks->where('status', 'Pending')->count();
+
+        $inProgressTasks = $tasks->where('status', 'Progress')->count();
+     
+        $completedTasks = $tasks->where('status', 'Completed')->count();
 
         return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users', 'pendingTasks', 'inProgressTasks', 'completedTasks'));
     }

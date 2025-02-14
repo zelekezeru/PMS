@@ -1534,7 +1534,7 @@
                       <div class="flex-1 ms-3 pt-1">
                         <h6 class="text-uppercase fw-bold mb-1">
                           Joko Subianto
-                          <span class="text-warning ps-3">pending</span>
+                          <span class="text-warning ps-3">Pending</span>
                         </h6>
                         <span class="text-muted"
                           >I am facing some trouble with my viewport. When i
@@ -1546,90 +1546,9 @@
                       </div>
                     </div>
                     <div class="separator-dashed"></div>
-                    <div class="d-flex">
-                      <div class="avatar avatar-offline">
-                        <span
-                          class="avatar-title rounded-circle border border-white bg-secondary"
-                          >P</span
-                        >
-                      </div>
-                      <div class="flex-1 ms-3 pt-1">
-                        <h6 class="text-uppercase fw-bold mb-1">
-                          Prabowo Widodo
-                          <span class="text-success ps-3">open</span>
-                        </h6>
-                        <span class="text-muted"
-                          >I have some query regarding the license issue.</span
-                        >
-                      </div>
-                      <div class="float-end pt-1">
-                        <small class="text-muted">1 Day Ago</small>
-                      </div>
-                    </div>
+                    
                     <div class="separator-dashed"></div>
-                    <div class="d-flex">
-                      <div class="avatar avatar-away">
-                        <span
-                          class="avatar-title rounded-circle border border-white bg-danger"
-                          >L</span
-                        >
-                      </div>
-                      <div class="flex-1 ms-3 pt-1">
-                        <h6 class="text-uppercase fw-bold mb-1">
-                          Lee Chong Wei
-                          <span class="text-muted ps-3">closed</span>
-                        </h6>
-                        <span class="text-muted"
-                          >Is there any update plan for RTL version near
-                          future?</span
-                        >
-                      </div>
-                      <div class="float-end pt-1">
-                        <small class="text-muted">2 Days Ago</small>
-                      </div>
-                    </div>
-                    <div class="separator-dashed"></div>
-                    <div class="d-flex">
-                      <div class="avatar avatar-offline">
-                        <span
-                          class="avatar-title rounded-circle border border-white bg-secondary"
-                          >P</span
-                        >
-                      </div>
-                      <div class="flex-1 ms-3 pt-1">
-                        <h6 class="text-uppercase fw-bold mb-1">
-                          Peter Parker
-                          <span class="text-success ps-3">open</span>
-                        </h6>
-                        <span class="text-muted"
-                          >I have some query regarding the license issue.</span
-                        >
-                      </div>
-                      <div class="float-end pt-1">
-                        <small class="text-muted">2 Day Ago</small>
-                      </div>
-                    </div>
-                    <div class="separator-dashed"></div>
-                    <div class="d-flex">
-                      <div class="avatar avatar-away">
-                        <span
-                          class="avatar-title rounded-circle border border-white bg-danger"
-                          >L</span
-                        >
-                      </div>
-                      <div class="flex-1 ms-3 pt-1">
-                        <h6 class="text-uppercase fw-bold mb-1">
-                          Logan Paul <span class="text-muted ps-3">closed</span>
-                        </h6>
-                        <span class="text-muted"
-                          >Is there any update plan for RTL version near
-                          future?</span
-                        >
-                      </div>
-                      <div class="float-end pt-1">
-                        <small class="text-muted">2 Days Ago</small>
-                      </div>
-                    </div>
+                    
                   </div>
                 </div>
               </div>

@@ -6,7 +6,11 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Full Name</th>
+                            <th>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    Full Name
+                                </div>
+                            </th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Approve</th>
