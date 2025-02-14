@@ -159,15 +159,18 @@ class TaskController extends Controller
         $task->users()->attach($users);
 
     
+        // Get the assigning user
+        $assigningUser = request()->user();
+    
         // Send email to assigned users
         foreach ($users as $userId) {
             $user = User::find($userId);
-            Mail::to($user->email)->send(new TaskAssigned($task));
+            Mail::to($user->email)->send(new TaskAssigned($task, $assigningUser));
         }
     
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
     }
-
+    
     public function show(Task $task)
     {
         $task = $task->load('departments', 'users', 'kpis', 'subtasks');
