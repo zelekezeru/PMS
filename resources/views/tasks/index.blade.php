@@ -10,10 +10,6 @@
                         : (request('onlyToday') ? 'Tasks For Today' : 'All Tasks List')
                 }}
             </h2>
-            
-            @if (request('currentFortnight') )
-                <a href="{{ route('fortnights.show', $currentFortnight->id) }}"><h6 class="text-center">{{ \Carbon\Carbon::parse($currentFortnight->start_date)->format('M - d - Y').'('. \Carbon\Carbon::parse($currentFortnight->start_date)->format('D') .')' }}  To  {{ \Carbon\Carbon::parse($currentFortnight->end_date)->format('M - d - Y').'('. \Carbon\Carbon::parse($currentFortnight->start_date)->format('D') .')' }}</h6></a>
-            @endif
             <div class="card-body">
                 <div class="row d-grid gap-2 d-md-flex justify-content-md-end mb-3">
 

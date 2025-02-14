@@ -121,7 +121,9 @@ class TaskController extends Controller
 
         $parent_task_id = $request->input('parent_task_id', null);
 
-        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'parent_task_id', 'today'));
+        $forToday = null;
+
+        return view('tasks.create', compact('targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'parent_task_id', 'today', 'forToday'));
     }
 
     public function store(TaskStoreRequest $request)
@@ -129,8 +131,11 @@ class TaskController extends Controller
         $data = $request->validated();
 
         if (isset($data['parent_task_id'])) {
+
             $data['is_subtask'] = true;
+
         } else {
+
             $data['is_subtask'] = false;
         }
 
@@ -187,7 +192,6 @@ class TaskController extends Controller
                     'date' => $today
                 ]);
             }
-
     
             $day->tasks()->attach($task);
         }
@@ -198,13 +202,12 @@ class TaskController extends Controller
             $task->departments()->attach($departments);
         }
         
-
         /**
          * Attaches the departments, users and fortnights that were created above to the newly created task
          */
-
     
         $task->departments()->attach($departments);
+
         $task->fortnights()->attach($fortnights);
 
         $task->users()->attach($users);
@@ -215,7 +218,9 @@ class TaskController extends Controller
     
         // Send email to assigned users
         foreach ($users as $userId) {
+
             $user = User::find($userId);
+
             Mail::to($user->email)->send(new TaskAssigned($task, $assigningUser));
         }
     
@@ -255,7 +260,7 @@ class TaskController extends Controller
 
         $fortnights = Fortnight::get();
 
-        $forToday = 'forToday';
+        $forToday = null;
 
         return view('tasks.edit', compact('task', 'targets', 'parent_tasks', 'departments', 'users', 'fortnights', 'assignedUsers', 'today', 'forToday'));
     }
