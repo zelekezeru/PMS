@@ -43,7 +43,7 @@ class HomeController extends Controller
 
             $departmentTasks = $department->tasks;
 
-            $departmentTasks = Auth::user()->tasks;
+            $departmentTasks = request()->user()->tasks;
 
             $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
 
