@@ -25,9 +25,9 @@
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'">{{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
                                     <td onclick="window.location='{{ route('users.show', $user->id) }}'" class="d-flex align-items-center">                                        
                                         @if ($user->profile_image)
-                                            <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle mr-2" width="40" height="40">
+                                            <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle mx-2" width="40" height="40">
                                         @else
-                                            <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                            <span class="avatar-circle mx-2">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                                         @endif
                                         <span class="ml-3">{{ $user->name }}</span>
                                         
