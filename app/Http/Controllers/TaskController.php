@@ -334,7 +334,15 @@ class TaskController extends Controller
                 $headOf = request()->user()->load('headOf')->headOf;
 
                 if ($headOf) {
-                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+
+                    $department = request()->user()->load('headOf')->headOf;
+        
+                    $departmentTasks = $department->tasks;
+        
+                    $departmentTasks = request()->user()->tasks;
+        
+                    $tasks = $departmentTasks->merge($departmentTasks)->unique('id')->paginate(10);
+                    
                 } else {
                     $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
                 }
