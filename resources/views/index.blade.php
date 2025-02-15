@@ -249,7 +249,7 @@
                 labels: ["Pending", "Progress", "Completed"],
                 datasets: [{
                     data: [{{ $pendingTasks }}, {{ $inProgressTasks }}, {{ $completedTasks }}],
-                    backgroundColor: ["#dc3545", "#fd7e14", "#198754"]
+                    backgroundColor: ["#f25961", "#ffad46", "#31ce36"]
                 }]
             },
             options: {
