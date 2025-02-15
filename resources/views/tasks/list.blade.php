@@ -37,7 +37,7 @@
                         <label for="selectStatus" class="form-label">Filter by Status</label>
                         <select class="form-select" id="selectStatus" name="status" onchange="this.form.submit()">
                             <option value="">All Status</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
                             <option value="progress" {{ request('status') == 'progress' ? 'selected' : '' }}>In Progress</option>
                             <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
                         </select>

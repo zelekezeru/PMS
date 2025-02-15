@@ -9,7 +9,10 @@
                             <th>Title</th>
                             <th>Value</th>
                             <th>Status</th>
-                            <th>Change Status</th>
+                            
+                            @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
+                                <th>Approvals</th>
+                            @endif
                             <th style="text-align: center;">Action</th>
                         </tr>
                     </thead>
@@ -19,7 +22,6 @@
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->name }}</td>
                                 <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->value }}</td>
-                                <td onclick="window.location='{{ route('kpis.show', $kpi->id) }}'">{{ $kpi->status }}</td>
                                 
                                 @if ($kpi->status != 'Completed')
                                     
@@ -27,7 +29,7 @@
                                         <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
                                             @csrf
                                             @method('PUT')
-                                            <select name="status" class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
+                                            <select name="status" style="border: 2px solid black;"  class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
                                                 <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                                                 <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
                                                 <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
@@ -39,22 +41,23 @@
                                     </td>
                                 
                                 @else
-                                    <td>Completed !</td>
+                                    <td class="badge badge-success me-4">Completed !</td>
                                 @endif
 
-                                <td class="text-center">
-                                    <div class="form-button-action">
-                                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
+                                @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']))
 
-                                            @if ($kpi->approved_by)
-                                                <p class="badge badge-success me-4" >Approved !</p>
-                                            @else
-                                                <a href="{{ route('kpis.approve', $kpi->id) }}" class="btn btn-link btn-info " data-bs-toggle="tooltip" title="Approve">
-                                                    <p class="badge badge-warning mr-3"><i class="fa-solid fa-check"></i> Approve!</p>
-                                                </a>
-                                            @endif
+                                    <td class="text-center">
+                                        <div class="form-button-action">
 
+                                        @if ($kpi->approved_by)
+                                            <p class="badge badge-success me-4" >Approved !</p>
+                                        @else
+                                            <a href="{{ route('kpis.approve', $kpi->id) }}" class="btn btn-link btn-info " data-bs-toggle="tooltip" title="Approve">
+                                                <p class="badge badge-warning mr-3"><i class="fa-solid fa-check"></i> Approve!</p>
+                                            </a>
                                         @endif
+
+                                @endif
 
                                         @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
 
@@ -65,7 +68,15 @@
                                                     <p class="badge badge-warning"><i class="fa-solid fa-list-check"></i> Confirm </p>
                                                 </a>
                                             @endif
+                                        </div>
+                                    </td>
 
+                                    @else
+                                        </div>
+                                    </td>
+
+                                    @endif
+                                        <td>
                                             <a href="{{ route('kpis.show', $kpi->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
                                                 <i class="fa fa-eye"></i>
                                             </a>
@@ -80,7 +91,6 @@
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
-                                        @endif
                                     </div>
                                 </td>
                             </tr>

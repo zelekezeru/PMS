@@ -53,12 +53,10 @@
 
         <div class="col-md-6 mb-3">
             <label for="status" class="form-label"><strong>Status:</strong></label>
-            <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
+            <select name="status" style="border: 2px solid black;"  id="status" class="form-control @error('status') is-invalid @enderror" required>
                 <option value="Pending" {{ old('status', $kpi->status ?? '') == 'Pending' ? 'selected' : '' }}> Pending</option>
                 <option value="Progress" {{ old('status', $kpi->status ?? '') == 'Progress' ? 'selected' : '' }}>In Progress</option>
                 <option value="Completed" {{ old('status', $kpi->status ?? '') == 'Completed' ? 'selected' : '' }}>Completed</option>
-                {{-- <option value="Approved'" {{ old('status', $kpi->status ?? '') == 'Approved' ? 'selected' : '' }}>Approved</option>
-                <option value="Confirmed'" {{ old('status', $kpi->status ?? '') == 'Confirmed' ? 'selected' : '' }}>Confirmed</option> --}}
             </select>
             @error('status')
                 <div class="form-text text-danger">{{ $message }}</div>

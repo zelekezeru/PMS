@@ -33,7 +33,7 @@
                                         <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
                                             @csrf
                                             @method('PUT')
-                                            <select name="status" class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
+                                             class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
                                                 <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                                                 <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
                                                 <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
