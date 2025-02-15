@@ -41,7 +41,11 @@ class HomeController extends Controller
 
             $department = request()->user()->load('headOf')->headOf;
 
-            $tasks = $department->tasks;
+            $departmentTasks = $department->tasks;
+
+            $departmentTasks = Auth::user()->tasks;
+
+            $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
 
             $users = $department->users;
             

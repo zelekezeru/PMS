@@ -7,59 +7,79 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label for="report_date" class="form-label"><strong>Report Date:</strong></label>
-            <input type="date" name="report_date" id="report_date" class="form-control @error('report_date') is-invalid @enderror" value="{{ isset($report) ? $report->report_date : old('report_date') }}" required>
-            @error('report_date')
+            <label for="start_date" class="form-label"><strong>Report Starting Date:</strong></label>
+            <input type="date" name="start_date" id="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ isset($report) ? $report->start_date : old('start_date') }}" required>
+            @error('start_date')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="col-md-6 mb-3">
-            <label for="department_id" class="form-label"><strong>Department:</strong></label>
-            <select name="department_id" id="department_id" class="form-control @error('department_id') is-invalid @enderror" required>
-                <option value="">Select Department</option>
-                @foreach($departments as $department)
-                    <option value="{{ $department->id }}" {{ isset($report) && $report->department_id == $department->id ? 'selected' : '' }}>{{ $department->department_name }}</option>
-                @endforeach
-            </select>
-            @error('department_id')
+            <label for="end_date" class="form-label"><strong>Report Ending Date:</strong></label>
+            <input type="date" name="end_date" id="end_date" class="form-control @error('end_date') is-invalid @enderror" value="{{ isset($report) ? $report->end_date : old('end_date') }}" required>
+            @error('end_date')
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label for="user_id" class="form-label"><strong>User:</strong></label>
-            <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror" required>
-                <option value="">Select User</option>
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ isset($report) && $report->user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                @endforeach
-            </select>
-            @error('user_id')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
-        </div>
+        <!-- Assign Users in Two Columns -->
+        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']) && ($users || $departments))
+            <!-- Assign Users and Assign Departments Card -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Select Users & Departments</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @if ($users)
+                                <div class="col-md-6">
+                                    <label for="users" class="form-label">Select Users:</label>
+                                    <div class="row">
+                                        @foreach($users as $index => $user)
+                                            @if ($index % 2 == 0 && $index > 0)
+                                                </div><div class="row"> <!-- New Row -->
+                                            @endif
+                                            <div class="col-md-6">
+                                                <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @error('user_id')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>                                
+                            @endif
 
-        <div class="col-md-6 mb-3">
-            <label for="target_id" class="form-label"><strong>Target:</strong></label>
-            <select name="target_id" id="target_id" class="form-control @error('target_id') is-invalid @enderror" required>
-                <option value="">Select Target</option>
-                @foreach($targets as $target)
-                    <option value="{{ $target->id }}" {{ isset($report) && $report->target_id == $target->id ? 'selected' : '' }}>{{ $target->name }}</option>
-                @endforeach
-            </select>
-            @error('target_id')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="col-md-12 mb-3">
-            <label for="schedule" class="form-label"><strong>Schedule:</strong></label>
-            <input type="text" name="schedule" id="schedule" class="form-control @error('schedule') is-invalid @enderror" value="{{ isset($report) ? $report->schedule : old('schedule') }}" required>
-            @error('schedule')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
-        </div>
+                            <!-- Assign Departments -->
+                            @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+                                <div class="col-md-6">
+                                    <label for="department_id" class="form-label">Responsible Departments:</label>
+                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple>
+                                        @php
+                                            $selectedDepartments = old('department_id', isset($report) && $report->departments()->count() !== 0 ? $report->departments->pluck('id')->toArray() : []);
+                                        @endphp
+                                        @foreach($departments as $department)
+                                            <option value="{{ $department->id }}" {{ in_array($department->id, $selectedDepartments) ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('department_id')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+            @php
+                $departmentId = Auth::user()->department_id ?? (isset($report) ? $report->departments->first()->id : null);
+                $userId = Auth::user()->id ?? (isset($report) ? $report->users->first()->id : null);
+            @endphp
+            <input type="hidden" name="user_id[]" value="{{ $userId }}">
+            <input type="hidden" name="department_id[]" value="{{ $departmentId }}">
+        @endif
 
     </div>
 

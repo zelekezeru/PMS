@@ -7,6 +7,8 @@ use App\Models\Department;
 use App\Models\User;
 use App\Models\Target;
 use Illuminate\Http\Request;
+use App\Http\Requests\ReportStoreRequest;
+use App\Http\Requests\ReportUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
@@ -49,21 +51,30 @@ class ReportController extends Controller
     public function create()
     {
         $departments = Department::all();
+
         $users = User::all();
+
         $targets = Target::all();
 
-        return view('reports.create', compact('departments', 'users', 'targets'));
+        $assignedUsers = [];
+
+        $report = new Report;
+
+        return view('reports.create', compact('departments', 'users', 'targets', 'report', 'assignedUsers'));
     }
 
-    // Show the form for editing an existing report
-    public function edit($id)
+    public function store(ReportStoreRequest $request)
     {
-        $report = Report::findOrFail($id);
-        $departments = Department::all();
-        $users = User::all();
-        $targets = Target::all();
+        $data = $request->validated();
 
-        return view('reports.edit', compact('report', 'departments', 'users', 'targets'));
+        $users = User::whereIn('id', $request->user_id)->get();
+
+        $departments = Department::whereIn('id', $request->department_id)->get();
+        
+        // Report::create($request->all());
+
+        // Set session message
+        return redirect()->route('reports.index')->with('status', 'Report created successfully.');
     }
 
     // Display the specified report
@@ -74,41 +85,27 @@ class ReportController extends Controller
         return view('reports.show', compact('report'));
     }
 
-        public function store(Request $request)
+    // Show the form for editing an existing report
+    public function edit($id)
     {
-        $validator = Validator::make($request->all(), [
-            'report_date' => 'required|date',
-            'department_id' => 'required|exists:departments,id',
-            'user_id' => 'required|exists:users,id',
-            'target_id' => 'required|exists:targets,id',
-            'schedule' => 'required|string|max:255',
-        ]);
+        $report = Report::findOrFail($id);
 
-        if ($validator->fails()) {
-            return redirect()->route('reports.create')
-                            ->withErrors($validator)
-                            ->withInput();
-        }
+        $departments = Department::all();
 
-        Report::create($request->all());
+        $users = User::all();
 
-        // Set session message
-        return redirect()->route('reports.index')->with('status', 'Report created successfully.');
+        $targets = Target::all();
+
+        return view('reports.edit', compact('report', 'departments', 'users', 'targets'));
     }
 
-    public function update(Request $request, $id)
+    public function update(ReportStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'report_date' => 'required|date',
-            'department_id' => 'required|exists:departments,id',
-            'user_id' => 'required|exists:users,id',
-            'target_id' => 'required|exists:targets,id',
-            'schedule' => 'required|string|max:255',
-        ]);
+        $data = $request->validated();
 
-        if ($validator->fails()) {
+        if ($request->fails()) {
             return redirect()->route('reports.edit', $id)
-                            ->withErrors($validator)
+                            ->withErrors($data)
                             ->withInput();
         }
 
