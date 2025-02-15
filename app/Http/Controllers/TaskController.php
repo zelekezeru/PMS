@@ -26,13 +26,9 @@ class TaskController extends Controller
         // Fetch tasks based on roles
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
 
-            $department = request()->user()->load('headOf')->headOf;
+            $headOf = request()->user()->load('headOf')->headOf;
 
-            $departmentTasks = $department->tasks;
-
-            $departmentTasks = request()->user()->tasks;
-
-            $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
+            $tasks = $headOf ? $headOf->tasks() : Task::query();
 
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
@@ -203,6 +199,9 @@ class TaskController extends Controller
         if (!request()->user()->hasRole('EMPLOYEE')) {
             $task->departments()->attach($departments);
         }
+        elseif (request()->user()->hasRole('DEPARTMENT_HEAD')) {
+            $task->departments()->attach($departments);
+        }
         else {
             $task->departments()->attach($departments);
         }
@@ -334,15 +333,7 @@ class TaskController extends Controller
                 $headOf = request()->user()->load('headOf')->headOf;
 
                 if ($headOf) {
-
-                    $department = request()->user()->load('headOf')->headOf;
-        
-                    $departmentTasks = $department->tasks;
-        
-                    $departmentTasks = request()->user()->tasks;
-        
-                    $tasks = $departmentTasks->merge($departmentTasks)->unique('id')->paginate(10);
-                    
+                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
                 } else {
                     $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
                 }

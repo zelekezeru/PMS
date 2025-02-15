@@ -92,6 +92,12 @@
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            @elseif(Auth::user()->hasAnyRole(['DEPARTMENT_HEAD']))
+                                @php
+                                    $departmentId = Auth::user()->department_id ?? (isset($task) ? $task->departments->first()->id : null);
+                                @endphp
+                                
+                                <input type="hidden" name="department_id[]" value="{{ $departmentId }}">
                             @endif
                         </div>
                     </div>
