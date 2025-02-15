@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="col col-stats ms-3">
                                     <div class="numbers">
-                                        <p class="card-category">Tasks In Progress</p>
+                                        <p class="card-category">Tasks InProgress</p>
                                         <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Progress')->count() : 0 }}</h4>
                                     </div>
                                 </div>
@@ -249,7 +249,7 @@
                 labels: ["Pending", "Progress", "Completed"],
                 datasets: [{
                     data: [{{ $pendingTasks }}, {{ $inProgressTasks }}, {{ $completedTasks }}],
-                    backgroundColor: ["#dc3545", "#fd7e14", "#198754"]
+                    backgroundColor: ["#f25961", "#ffad46", "#31ce36"]
                 }]
             },
             options: {
