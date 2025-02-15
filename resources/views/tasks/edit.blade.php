@@ -11,9 +11,9 @@
                 </div>
 
                 @include('tasks.form', [
-                    'action' => route('tasks.store', ),
+                    'action' => route('tasks.store', $task),
                     'action' => route('tasks.update', $task->id),
-                    'method' => 'PUT',
+                    'method' => 'PATCH',
                     'task' => $task,
                     'buttonText' => 'Update'
                 ])
