@@ -1,0 +1,119 @@
+[33md3857f7[m[33m ([m[1;36mHEAD -> [m[1;32mstaging[m[33m, [m[1;31morigin/staging[m[33m)[m Merge branch 'main' into staging
+[33m23cfe7e[m Tak and user list
+[33m1f3b20b[m Main dashbord modified
+[33m2e32fc9[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33mb3e0c48[m KPI , Dep head roles $ Tasks
+[33mea0c1f0[m[33m ([m[1;32msafe-branch[m[33m)[m fixed home page bugs
+[33mb9b67e9[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33mb524b9f[m Update TaskController.php
+[33mae80ad2[m some update on user task email notification
+[33m00a129f[m Task Assigned email notification
+[33m0154747[m Merge pull request #64 from zelekezeru/staging
+[33m2bf9a57[m deliverable crud in progress
+[33mf9b10a1[m Delete email.blade.php
+[33m8bd72f1[m Create email.blade.php
+[33mdb7be8a[m Update header.blade.php
+[33m4a02477[m Merge pull request #63 from zelekezeru/staging
+[33m95e9387[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33m5600d30[m Update guest.blade.php
+[33m71f86a8[m Update 2025_01_28_125307_create_deliverables_table.php
+[33md2eeec5[m Merge pull request #62 from zelekezeru/staging
+[33m2615a55[m mail modification
+[33m05f8980[m MAIL implemented
+[33m6274081[m Update navigation.blade.php
+[33md4e34c9[m Update index.blade.php
+[33macce25a[m Update navigation.blade.php
+[33m1f7d8f7[m some modification on the dashboard
+[33ma7ad8a7[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33m27e2247[m Update index.blade.php
+[33m23e5d4c[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33m82d10ad[m made the style.css files mutable for
+[33madc4834[m Update index.blade.php
+[33m62dbd40[m Update index.blade.php
+[33m24af8d2[m Dashboard modification
+[33m98b4fb0[m profile image error fixed
+[33m2ef4272[m Add Chart to Dashboard
+[33m2f7373e[m Update ReportController.php
+[33m9011a52[m Update show.blade.php
+[33m9aad4bc[m Update show.blade.php
+[33m0013cfe[m paginaton bug fixed
+[33mf76b07c[m Update UserController.php
+[33mcfc8bf6[m Update app.blade.php
+[33m760eb4d[m feedback delete implemented but need some modifications
+[33m972317e[m Update list.blade.php
+[33m57a7991[m Update navigation.blade.php
+[33m628def5[m Update navigation.blade.php
+[33m16fab4b[m pagination update
+[33m18e5d1d[m Kpi Status Input updated
+[33m1e5bca1[m task form update
+[33m33677a1[m Merge pull request #61 from zelekezeru/staging
+[33m201cc56[m Task list and KPI
+[33mcd46973[m Merge pull request #60 from zelekezeru/staging
+[33m77b4c61[m Update DepartmentController.php
+[33mf33fe80[m Merge pull request #59 from zelekezeru/staging
+[33m86582bb[m Update DepartmentController.php
+[33m1819780[m Merge pull request #58 from zelekezeru/staging
+[33m9c3f4de[m Department head edit functionality
+[33m2e40f00[m Merge pull request #57 from zelekezeru/staging
+[33mab47a45[m Update list.blade.php
+[33mfcf0aba[m Merge pull request #56 from zelekezeru/staging
+[33m71c5f31[m Update list.blade.php
+[33m61b3370[m Merge pull request #55 from zelekezeru/staging
+[33m43600e4[m Update list.blade.php
+[33m7578b1b[m Revert "department head visible in list"
+[33mabdd79f[m Merge pull request #54 from zelekezeru/staging
+[33m06749b2[m department head visible in list
+[33m18384ac[m fixed tasks
+[33m62b2617[m making tables responsive
+[33mbb982bb[m Merge pull request #53 from zelekezeru/staging
+[33m142815c[m Department head task status access
+[33mf1ba0f6[m fixed some errors
+[33m18f32ad[m 403 removed from department
+[33mb571861[m Merge pull request #52 from zelekezeru/staging
+[33mf885a28[m Update PermissionSeeder.php
+[33mb59f99b[m hided the current fortnight in todays task
+[33m5af39f0[m Update side-navigation.blade.php
+[33mdc3c05e[m 403 pages are cleared for employee
+[33maf5ed55[m Update side-navigation.blade.php
+[33mb40b395[m todays tasks not fetching fixed
+[33m6aec902[m Merge pull request #51 from zelekezeru/staging
+[33md4829bd[m Update show.blade.php
+[33ma61712d[m Update show.blade.php
+[33m4308a3b[m Update show.blade.php
+[33mce46629[m Update show.blade.php
+[33mbe98a05[m Update show.blade.php
+[33m8b318c1[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33m27b13d5[m Update show.blade.php
+[33mbf9f7a8[m Merge pull request #50 from zelekezeru/staging
+[33mdd64514[m Users department list
+[33m6c3c812[m Merge pull request #49 from zelekezeru/staging
+[33m8a6da85[m Update index.blade.php
+[33m7d9a07f[m Merge pull request #48 from zelekezeru/staging
+[33md3e3f3e[m Update TaskController.php
+[33m16b5368[m Merge pull request #47 from zelekezeru/staging
+[33m271bb0b[m EMployee task details
+[33mf18743f[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33m20b628b[m fixed task edit errors
+[33m9fb3f9f[m Merge branch 'staging' of https://github.com/zelekezeru/PMS into staging
+[33mc050b5c[m fixed employee edit
+[33m50e3e4e[m fixed today's task error
+[33m499bee5[m dashboard bug fixed
+[33mf31895d[m Merge pull request #46 from zelekezeru/staging
+[33m1a97589[m Status tasks
+[33m8bb29a4[m Merge branch 'staging'
+[33mc96db24[m task update error fixed
+[33md92512d[m daily task implemeted
+[33m0883cdf[m Merge pull request #45 from zelekezeru/staging
+[33mf8401d0[m Task  and user department head access
+[33m9893ddd[m Merge pull request #44 from zelekezeru/staging
+[33mbe8879b[m daily tasks in progress
+[33m1b51b20[m Merge pull request #43 from zelekezeru/staging
+[33m1938403[m Update task controller
+[33md8ff707[m bug in the update department request
+[33m574a181[m bug related to date comparisons fixed
+[33mbb73fca[m filter by due_date
+[33md877a66[m made tasks filterable
+[33m75c10a3[m tasks can not be deleted if they have associated feedback
+[33m83520aa[m refined feedbacks more
+[33mb417f4b[m Merge pull request #42 from zelekezeru/staging
+[33m6a7b591[m made a temporary solution for feedback replies
