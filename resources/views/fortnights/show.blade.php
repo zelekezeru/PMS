@@ -26,14 +26,15 @@
                 </a>
                 @endcan
                 @can('delete-fortnights')
-                <form action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST"
-                    onsubmit="return confirm('Are you sure you want to delete this fortnight?')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm">
+               
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $fortnight->id }})">
                         <i class="fas fa-trash"></i> Delete
                     </button>
-                </form>
+                    
+                    <form id="delete-form-{{ $fortnight->id }}" action="{{ route('fortnights.destroy', $fortnight->id) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
 
                 @endcan
             </div>
