@@ -163,7 +163,7 @@
                     {{-- fortnight Navigation --}}
                     <li class="nav-item {{ request()->routeIs('fortnights.index') || request()->routeIs('fortnights.create') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#fortnight">
-                            <i class="fas fa-crosshairs"></i>
+                            <i class="fas  fa-clock"></i>
                             <p>Fortnight Planning</p>
                             <span class="caret"></span>
                         </a>
