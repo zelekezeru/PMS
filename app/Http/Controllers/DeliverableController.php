@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DeliverableStoreRequest;
+use App\Http\Requests\DeliverableUpdateRequest;
 use App\Models\Deliverable;
 use Illuminate\Http\Request;
 
@@ -52,15 +53,20 @@ class DeliverableController extends Controller
      */
     public function edit(Deliverable $deliverable)
     {
-        //
+        $fortnight = $deliverable->fortnight;
+        return view('deliverables.edit', compact('deliverable', 'fortnight'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Deliverable $deliverable)
+    public function update(DeliverableUpdateRequest $request, Deliverable $deliverable)
     {
-        //
+        $data = $request->validated();
+
+        $deliverable->update($data);
+
+        return redirect()->route('fortnights.show', $deliverable->fortnight->id)->with('status', 'Deliverable has been successfully created.');
     }
 
     /**
@@ -68,6 +74,8 @@ class DeliverableController extends Controller
      */
     public function destroy(Deliverable $deliverable)
     {
-        //
+        $fortnightId = $deliverable->fortnight->id;
+        $deliverable->delete();
+        return redirect()->route('fortnights.show', $fortnightId)->with('status', 'Deliverable deleted successfully.');
     }
 }

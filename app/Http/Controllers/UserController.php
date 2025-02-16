@@ -164,8 +164,43 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user)
     {
         $data = $request->validated();
+        $data = $request->validated();
+
+        // Get the department ID if provided
+        $department = $data['department_id'] ?? null;
+
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
+
+        // Check if the user is assigned as DEPARTMENT_HEAD (role_id = 3)
+        if ($data['role_id'] == 3) {
+            // Ensure department is required for this role
+            if ($department === null) {
+                return redirect()->back()->withErrors(['department_id' => 'Department is required for this role.'])->withInput();
+            }
+
+            // Prevent a user from being assigned to multiple departments as head
+            else if ($user->headOf()->exists()) {
+                return redirect()->back()->withErrors([
+                    'department_id' => 'The User is already a department head of "' . $user->headOf->department_name . '".'
+                ])->withInput();
+            } 
+
+            else {
+                // Find the department
+                $department = Department::find($data['department_id']);
+
+                // If the department already has a different head, downgrade that head to 'EMPLOYEE'
+                if ($department->department_head !== null && $department->department_head != $user->id) {
+                    $department->departmentHead->assignRole('EMPLOYEE'); // Remove department head role from the current head
+                }
+
+                // Assign the user as the new department head
+                $department->department_head = $user->id;
+
+                $department->save();
+            }
+        }
 
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
@@ -181,7 +216,7 @@ class UserController extends Controller
             $user->roles()->detach();
 
             $role = Role::findById($data['role_id']);
-            
+
             $user->assignRole($role);
         }
 

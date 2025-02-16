@@ -10,25 +10,31 @@
                         : (request('onlyToday') ? 'Tasks For Today' : 'All Tasks List')
                 }}
             </h2>
+            
+            @if (request('currentFortnight') )
+                <div class="col text-center">
+                    @can('view-fortnights')
+                        <a href="{{ route('fortnights.index') }}">
+                            <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::parse($currentFortnight->start_date)->format('M - d - Y') }} <span class="text-success"> to </span> {{ \Carbon\Carbon::parse($currentFortnight->end_date)->format('M - d - Y') }} )</h5>    
+                        </a>      
+                    @elsecan                  
+                        <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::parse($currentFortnight->start_date)->format('M - d - Y') }} <span class="text-success"> to </span> {{ \Carbon\Carbon::parse($currentFortnight->end_date)->format('M - d - Y') }} )</h5>    
+                    @endcan
+                </div>
+                
+            @elseif (request('onlyToday') )
+                <div class="col text-center">
+                    <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::now()->format('M - d - Y') }} )</h5>
+                </div>
+            @else
+                <div class="col text-center">
+                    <h5 class="nav-item text-info justify-content-md-start "> All Registered Tasks</h5>
+                </div>
+
+            @endif
+            
             <div class="card-body">
                 <div class="row d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-
-                    @if (request('currentFortnight') )
-                        <div class="col">
-                            <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::parse($currentFortnight->start_date)->format('M - d - Y') }} <span class="text-success"> to </span> {{ \Carbon\Carbon::parse($currentFortnight->end_date)->format('M - d - Y') }} )</h5>
-                        </div>
-                        
-                    @elseif (request('onlyToday') )
-                        <div class="col">
-                            <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::now()->format('M - d - Y') }} )</h5>
-                        </div>
-                    @else
-                        <div class="col">
-                            <h5 class="nav-item text-info justify-content-md-start "> All Registered Tasks</h5>
-                        </div>
-
-                    @endif
-                    
 
                     <div class="col-2 btn-group dropdown">
                         <button

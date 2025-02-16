@@ -40,22 +40,43 @@ class DepartmentController extends Controller
     public function store(DepartmentStoreRequest $request)
     {
         $data = $request->validated();
-
+        
+        // Check if a department head is assigned
         if ($data['department_head']) {
             $user = User::find($data['department_head']);
-            if ($user->id != User::first()->id) {
-                $user->roles()->detach();
-                $user->assignRole('DEPARTMENT_HEAD');
-            } else {
-                return redirect()->back();
+    
+            // Prevent assigning SUPER_ADMIN as a department head
+            if ($user->hasRole('SUPER_ADMIN')) {
+                return redirect()->back()->withErrors([
+                    'department_head' => 'SUPER_ADMIN cannot be assigned as a department head.'
+                ])->withInput();
             }
+    
+            // Prevent assigning a user who is already a department head in another department
+            if ($user->headOf()->exists()) {
+                return redirect()->back()->withErrors([
+                    'department_head' => 'The user is already a department head of "' . $user->headOf->department_name . '".'
+                ])->withInput();
+            }
+    
+            // Assign the user as DEPARTMENT_HEAD
+            $user->roles()->detach(); // Remove existing roles
+            $user->assignRole('DEPARTMENT_HEAD'); // Assign department head role
         }
-
-        Department::create($data);
-
-        // Return with success status
+    
+        // Create the department
+        $department = Department::create($data);
+    
+        // If a department head was assigned, also make them a member of the department
+        if ($data['department_head']) {
+            $user->department_id = $department->id;
+            $user->save();
+        }
+    
+        // Redirect with success message
         return redirect()->route('departments.index')->with('status', 'Department has been successfully created.');
     }
+    
 
     public function edit(Department $department)
     {
@@ -69,27 +90,63 @@ class DepartmentController extends Controller
     public function update(DepartmentUpdateRequest $request, Department $department)
     {
         $data = $request->validated();
+    
+        // Load the department's current department head
         $department = $department->load('departmentHead');
+    
+        // Check if the department head has changed
         if ($data['department_head'] !== $department->department_head) {
-            if ($department->department_head !== null ) {
+    
+            // Get the new department head user
+            $user = User::find($data['department_head']);
+    
+            // Ensure the user is not a SUPER_ADMIN
+            if ($user->hasRole('SUPER_ADMIN')) {
+                return redirect()->back()->withErrors([
+                    'department_head' => 'SUPER_ADMIN cannot be assigned as a department head.'
+                ])->withInput();
+            }
+            
+            // Ensure the user is not already assigned to another department
+            if ($user->department()->exists()) {
+                return redirect()->back()->withErrors([
+                     'department_head' => 'The user is already a department head of "' . $user->headOf->department_name . '".'
+                ])->withInput();
+            }
+
+            // Detach previous department head's roles, and assign them as an EMPLOYEE
+            if ($department->department_head !== null) {
                 $department->departmentHead->roles()->detach();
                 $department->departmentHead->assignRole('EMPLOYEE');
             }
 
-            $user = User::find($data['department_head']);
-            if ($user->id != User::first()->id) {
-                $user->roles()->detach();
-                $user->assignRole('DEPARTMENT_HEAD');
+            // If the user is not the first user, assign them as DEPARTMENT_HEAD
+            if (!$user->hasRole('SUPER_ADMIN')) {
+
+                $user->roles()->detach(); // Remove any existing roles
+                $user->assignRole('DEPARTMENT_HEAD'); // Assign department head role
+
             } else {
-                return redirect()->back();
+                return redirect()->back()->withErrors([
+                    'department_head' => 'SUPER_ADMIN cannot be assigned as a department head.'
+                ])->withInput();
+
             }
         }
-
+    
+        // Update the department details
         $department->update($data);
-
+    
+        // If the department head has been updated, assign the user to this department
+        if ($data['department_head'] !== $department->department_head) {
+            $user->department_id = $department->id; // Assign the department to the user
+            $user->save(); // Save the user with the updated department_id
+        }
+    
         // Return with success status
-        return redirect()->route('departments.index')->with('status', 'Department has been successfully Updated.');
+        return redirect()->route('departments.index')->with('status', 'Department has been successfully updated.');
     }
+    
 
     public function destroy(Department $department)
     {

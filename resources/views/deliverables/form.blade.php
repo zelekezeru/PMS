@@ -1,38 +1,31 @@
 <form action="{{ $action }}" method="POST">
     @csrf
-    @if ($method === 'PUT')
-        @method('PUT')
+    @if ($method)
+        @method($method)
     @endif
 
-    <div class="col-md-6 mb-3">
-        <label for="deliverable_name" class="form-label"><strong>deliverable Name:</strong></label>
-        <input type="text" name="deliverable_name" class="form-control @error('deliverable_name') is-invalid @enderror" id="deliverable_name" value="{{ old('deliverable_name', $deliverable->deliverable_name ?? '') }}" placeholder="deliverable name" required>
-        @error('deliverable_name')
-            <div class="form-text text-danger">{{ $message }}</div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Deliverable Name</label>
+        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $deliverable->name) }}" required>
+        @error('name')
+            <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
 
-    <div class="col-md-6 mb-3">
-        <label for="description" class="form-label"><strong>Description:</strong></label>
-        <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="5" placeholder="Description">{{ old('description', $deliverable->description ?? '') }}</textarea>
-        @error('description')
-            <div class="form-text text-danger">{{ $message }}</div>
+    <div class="mb-3">
+        <label for="deadline" class="form-label">Deadline</label>
+        <input type="date" value="{{ old('deadline', $deliverable->deadline) }}" min="{{ $fortnight->start_date }}" max="{{ $fortnight->end_date }}" class="form-control @error('deadline') is-invalid @enderror" name="deadline">
+        @error('deadline')
+            <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
 
-    <div class="col-md-6 mb-3">
-        <label for="deliverable_head" class="form-label"><strong>deliverable Head:</strong></label>
-        <select name="deliverable_head" class="form-control @error('deliverable_head') is-invalid @enderror" id="deliverable_head">
-            <!-- Assuming you have a list of users -->
-            <option value="" {{ old('deliverable_head') == '' ? 'selected' : '' }}>Select User</option>
-            @foreach($users as $user)
-                <option value="{{ $user->id }}" {{ old('deliverable_head', $deliverable->deliverable_head ?? '') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-            @endforeach
-        </select>
-        @error('deliverable_head')
-            <div class="form-text text-danger">{{ $message }}</div>
-        @enderror
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="is_completed" name="is_completed" value="1" {{ old('is_completed', $deliverable->is_completed) ? 'checked' : '' }}>
+        <label class="form-check-label" for="is_completed">Completed</label>
     </div>
 
-    <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> {{ $buttonText }}</button>
+    <button type="submit" class="btn btn-success">
+        <i class="fa-solid fa-floppy-disk"></i> Save
+    </button>
 </form>

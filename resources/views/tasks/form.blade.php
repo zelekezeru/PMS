@@ -1,7 +1,7 @@
 <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @if ($method === 'PUT')
-        @method('PUT')
+    @if ($method)
+        @method($method)
     @endif
 
     <div class="row">
@@ -92,6 +92,12 @@
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            @elseif(Auth::user()->hasAnyRole(['DEPARTMENT_HEAD']))
+                                @php
+                                    $departmentId = Auth::user()->department_id ?? (isset($task) ? $task->departments->first()->id : null);
+                                @endphp
+                                
+                                <input type="hidden" name="department_id[]" value="{{ $departmentId }}">
                             @endif
                         </div>
                     </div>
@@ -199,14 +205,12 @@
                         <!-- Starting and Due Date -->
                         @if ($forToday)
                             <div class="col-md-6 mb-3">
-                                <label for="starting_date" class="form-label">Starting Date:</label>
                                 <input type="date" name="starting_date" class="form-control @error('starting_date') is-invalid @enderror" id="starting_date" value="{{ $forToday }}" readonly hidden>
                                 @error('starting_date')
                                     <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="due_date" class="form-label">Due (End) Date:</label>
                                 <input type="date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" value="{{ $forToday }}" readonly hidden>
                                 @error('due_date')
                                     <div class="form-text text-danger">{{ $message }}</div>
