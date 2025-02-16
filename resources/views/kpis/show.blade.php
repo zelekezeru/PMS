@@ -29,17 +29,18 @@
                         <th>Status:</th>
                             @if ($kpi->status != 'Completed')
                                 <td>
-                                    <div class="col-6">
-                                        <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
-                                            @csrf
-                                            @method('PUT')
-                                             class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
-                                                <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
-                                                <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                            </select>
-                                        </form>
-                                    </div>
+                                    <form action="{{ route('kpis.status', $kpi->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" style="border: 2px solid black;"  class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
+                                            <option value="Pending" {{ $kpi->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="Progress" {{ $kpi->status == 'Progress' ? 'selected' : '' }}>In Progress</option>
+                                            <option value="Completed" {{ $kpi->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                        </select>
+                                    </form>
+                                    @error('status')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
                                 </td>
                                 @error('status')
                                     <div class="form-text text-danger">{{ $message }}</div>
@@ -59,38 +60,41 @@
                     </tr>
                 </table>
 
-                <div class="d-flex justify-content-end mt-4">
-                    <a href="{{ route('kpis.edit', $kpi->id) }}" class="btn btn-warning btn-sm me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $kpi->id }})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                
+                @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']) || $kpi->status != 'Completed')
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="{{ route('kpis.edit', $kpi->id) }}" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $kpi->id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
 
-                    <form id="delete-form-{{ $kpi->id }}" action="{{ route('kpis.destroy', $kpi->id) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                        <form id="delete-form-{{ $kpi->id }}" action="{{ route('kpis.destroy', $kpi->id) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
 
-                    <script>
-                        function confirmDelete(kpiId) {
-                            Swal.fire({
-                                title: "Are you sure?",
-                                text: "Once deleted, this kpi cannot be recovered!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#d33",
-                                cancelButtonColor: "#3085d6",
-                                confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    document.getElementById('delete-form-' + kpiId).submit();
-                                }
-                            });
-                        }
-                    </script>
+                        <script>
+                            function confirmDelete(kpiId) {
+                                Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "Once deleted, this kpi cannot be recovered!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#d33",
+                                    cancelButtonColor: "#3085d6",
+                                    confirmButtonText: "Yes, delete it!"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        document.getElementById('delete-form-' + kpiId).submit();
+                                    }
+                                });
+                            }
+                        </script>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
