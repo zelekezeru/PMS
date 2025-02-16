@@ -14,7 +14,7 @@
             @if (request('currentFortnight') )
                 <div class="col text-center">
                     @can('view-fortnights')
-                        <a href="{{ route('fortnights.index') }}">
+                        <a href="{{ route('fortnights.show', $currentFortnight->id) }}">
                             <h5 class="nav-item text-info justify-content-md-start "> ( {{ \Carbon\Carbon::parse($currentFortnight->start_date)->format('M - d - Y') }} <span class="text-success"> to </span> {{ \Carbon\Carbon::parse($currentFortnight->end_date)->format('M - d - Y') }} )</h5>    
                         </a>      
                     @elsecan                  
