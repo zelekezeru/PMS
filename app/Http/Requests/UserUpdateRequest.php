@@ -28,7 +28,7 @@ class UserUpdateRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.request()->user->id],
             'phone_number' => 'required|string',
             'department_id' => 'nullable|exists:departments,id',
-            'role_id' => 'nullable',
+            'role_id' => 'nullable|exists:roles,id',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png',
         ];
     }
