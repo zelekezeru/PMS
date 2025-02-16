@@ -9,23 +9,15 @@
             Fortnight Details</h2>
 
         @endif
+
+        <h4 class="card-header text-center text-primary">{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span class="text-info"> to </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</h4>
+        
         <div class="card-body">
             <div class="d-flex justify-content-end">
                 <a class="btn btn-primary btn-sm mb-3" href="{{ route('fortnights.index') }}">
                     <i class="fa fa-arrow-left"></i> Back to List
                 </a>
             </div>
-
-            <table class="table table-bordered">
-                <tr>
-                    <th>Start Date:</th>
-                    <td>{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
-                </tr>
-                <tr>
-                    <th>Due Date:</th>
-                    <td>{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
-                </tr>
-            </table>
 
             <div class="d-flex justify-content-end mt-4">
                 @can('edit-fortnights')
