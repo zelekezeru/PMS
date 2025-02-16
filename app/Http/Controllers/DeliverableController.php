@@ -66,7 +66,7 @@ class DeliverableController extends Controller
 
         $deliverable->update($data);
 
-        return redirect()->route('fortnights.show', $deliverable->fortnight->id)->with('status', 'Deliverable has been successfully created.');
+        return redirect()->route('fortnights.show', $deliverable->fortnight->id)->with('status', 'Deliverable has been successfully Updated.');
     }
 
     /**
