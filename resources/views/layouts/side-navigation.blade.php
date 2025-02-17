@@ -77,7 +77,7 @@
                                 @can('view-fortnights')
                                 <li class="{{ request()->routeIs('fortnights.index') ? 'active' : '' }}">
                                     <a href="{{ route('fortnights.index') }}">
-                                        <i class="fas fa-bullseye"></i> All FortnightS
+                                        <i class="fas fa-bullseye"></i> All Fortnights
                                     </a>
                                 </li>
                                 @endcan

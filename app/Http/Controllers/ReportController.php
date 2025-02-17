@@ -67,11 +67,13 @@ class ReportController extends Controller
     {
         $data = $request->validated();
 
-        // $users = User::whereIn('id', $request->user_id)->get();
+        $users = User::whereIn('id', $request->user_id)->get();
 
-        // $departments = Department::whereIn('id', $request->department_id)->get();
+        $departments = Department::whereIn('id', $request->department_id)->get();
+
+        $calculate_task = $this->calculate_tasks($users);
         
-        // Report::create($request->all());
+        Report::create($request->all());
 
         // Set session message
         return redirect()->route('reports.index')->with('status', 'Report created successfully.');
@@ -121,6 +123,27 @@ class ReportController extends Controller
         $report->delete();
 
         return redirect()->route('reports.index')->with('status', 'Report deleted successfully.');
+    }
+
+    public function calculate_tasks($users)
+    {
+        foreach($users as $user)
+        {
+            $tasks = collect($user->tasks); // Fetch once and store in a variable
+
+            $all_tasks = $tasks->count(); // Total number of tasks
+
+            $taskCounts = $tasks->groupBy('status')->map->count(); 
+
+            $pendingCount = $taskCounts->get('Pending', 0);
+
+            $progressCount = $taskCounts->get('Progress', 0);
+
+            $completedCount = $taskCounts->get('Completed', 0);
+
+            dd($taskCounts);
+                
+        }
     }
 
 }

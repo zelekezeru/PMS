@@ -11,7 +11,7 @@
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
     </div>
-
+    
     <div class="col-md-6 mb-3">
         <label for="description" class="form-label"><strong>Description:</strong></label>
         <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="5" placeholder="Description">{{ old('description', $department->description ?? '') }}</textarea>

@@ -46,8 +46,8 @@
                                     @csrf
                                     @method('PUT')
                                     <select name="status" style="border: 2px solid black;"  class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
-                                        <option value="Pending" {{ $deliverable->is_completed == null ? 'selected' : '' }}>Not Completed</option>
-                                        <option value="Completed" {{ $deliverable->is_completed == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                        <option value="Pending" {{ $deliverable->is_completed == null ? 'selected' : '' }}>Not Achieved!</option>
+                                        <option value="Achieved!" {{ $deliverable->is_completed == 'Completed' ? 'selected' : '' }}>Achieved!</option>
                                     </select>
                                 </form>
                                 @error('status')
