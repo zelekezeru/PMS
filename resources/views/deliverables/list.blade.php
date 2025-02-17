@@ -38,7 +38,7 @@
                     </td>
 
                         @if ($deliverable->is_completed)
-                            <td class="badge badge-success me-4">Completed !</td>              
+                            <td><span class="badge bg-success">Achieved</span></td>     
                         @else
                                     
                             <td>
