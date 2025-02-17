@@ -64,6 +64,28 @@
 
                 @endcanany
 
+                @canany(['view-fortnights', 'create-fortnights'])
+                    {{-- fortnight Navigation --}}
+                    <li class="nav-item {{ request()->routeIs('fortnights.index') || request()->routeIs('fortnights.create') ? 'active' : '' }}">
+                        <a data-bs-toggle="collapse" href="#fortnight">
+                            <i class="fas  fa-clock"></i>
+                            <p>Fortnight Planning</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="fortnight">
+                            <ul class="nav nav-collapse">
+                                @can('view-fortnights')
+                                <li class="{{ request()->routeIs('fortnights.index') ? 'active' : '' }}">
+                                    <a href="{{ route('fortnights.index') }}">
+                                        <i class="fas fa-bullseye"></i> All FortnightS
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
+
                 {{-- Strategy Navigation --}}
                 @canany(['view-strategies', 'create-strategies', 'edit-strategies', 'delete-strategies'])
                     <li class="nav-item {{ request()->routeIs('strategies.index') || request()->routeIs('strategies.create') ? 'active' : '' }}">
@@ -153,28 +175,6 @@
                                         </a>
                                     </li>
 
-                                @endcan
-                            </ul>
-                        </div>
-                    </li>
-                @endcanany
-
-                @canany(['view-fortnights', 'create-fortnights'])
-                    {{-- fortnight Navigation --}}
-                    <li class="nav-item {{ request()->routeIs('fortnights.index') || request()->routeIs('fortnights.create') ? 'active' : '' }}">
-                        <a data-bs-toggle="collapse" href="#fortnight">
-                            <i class="fas  fa-clock"></i>
-                            <p>Fortnight Planning</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="fortnight">
-                            <ul class="nav nav-collapse">
-                                @can('view-fortnights')
-                                    <li class="{{ request()->routeIs('fortnights.index') ? 'active' : '' }}">
-                                        <a href="{{ route('fortnights.index') }}">
-                                            <i class="fas fa-bullseye"></i> Manage Fortnight
-                                        </a>
-                                    </li>
                                 @endcan
                             </ul>
                         </div>

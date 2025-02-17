@@ -67,9 +67,9 @@ class ReportController extends Controller
     {
         $data = $request->validated();
 
-        $users = User::whereIn('id', $request->user_id)->get();
+        // $users = User::whereIn('id', $request->user_id)->get();
 
-        $departments = Department::whereIn('id', $request->department_id)->get();
+        // $departments = Department::whereIn('id', $request->department_id)->get();
         
         // Report::create($request->all());
 

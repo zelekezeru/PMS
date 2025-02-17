@@ -43,9 +43,13 @@ class DeliverableController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Deliverable $deliverable)
+    public function achieved(Deliverable $deliverable)
     {
-        //
+        $deliverable->is_completed = 1;
+
+        $deliverable->save();
+
+        return redirect()->route('fortnights.show', $deliverable->fortnight_id)->with('status', 'Deliverable has been successfully Achieved.');
     }
 
     /**
@@ -54,6 +58,7 @@ class DeliverableController extends Controller
     public function edit(Deliverable $deliverable)
     {
         $fortnight = $deliverable->fortnight;
+
         return view('deliverables.edit', compact('deliverable', 'fortnight'));
     }
 
@@ -75,7 +80,9 @@ class DeliverableController extends Controller
     public function destroy(Deliverable $deliverable)
     {
         $fortnightId = $deliverable->fortnight->id;
+
         $deliverable->delete();
+
         return redirect()->route('fortnights.show', $fortnightId)->with('status', 'Deliverable deleted successfully.');
     }
 }
