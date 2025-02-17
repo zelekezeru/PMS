@@ -44,12 +44,14 @@
                         <a href="{{ route('days.edit', $day->id) }}" class="btn btn-warning btn-sm me-2">
                             <i class="fas fa-edit"></i> Edit
                         </a>
-                        <form action="{{ route('days.destroy', $day->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this day?')">
+
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $day->id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        
+                        <form id="delete-form-{{ $day->id }}" action="{{ route('days.destroy', $day->id) }}" method="POST" style="display: none;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
                         </form>
                     </div>
                 @endif

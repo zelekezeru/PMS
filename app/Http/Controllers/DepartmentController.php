@@ -95,7 +95,7 @@ class DepartmentController extends Controller
         $department = $department->load('departmentHead');
     
         // Check if the department head has changed
-        if ($data['department_head'] !== $department->department_head) {
+        if ($data['department_head'] && $data['department_head'] !== $department->department_head) {
     
             // Get the new department head user
             $user = User::find($data['department_head']);
