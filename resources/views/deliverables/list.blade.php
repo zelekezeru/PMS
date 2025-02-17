@@ -27,27 +27,36 @@
         <tbody>
             @forelse ($deliverables as $deliverable)
                 <tr>
-                    <td onclick="window.location='{{ route('deliverables.show', $deliverable->id) }}'">{{ ($deliverables->currentPage() - 1) * $deliverables->perPage() + $loop->iteration }}</td>
-                    <td onclick="window.location='{{ route('deliverables.show', $deliverable->id) }}'">{{ $deliverable->name }}</td>
-                    <td onclick="window.location='{{ route('deliverables.show', $deliverable->id) }}'">
+                    <td>{{ ($deliverables->currentPage() - 1) * $deliverables->perPage() + $loop->iteration }}</td>
+                    <td>{{ $deliverable->name }}</td>
+                    <td>
                         @if ($deliverable->deadline)
                             {{ \Carbon\Carbon::parse($deliverable->deadline)->format('M d, Y') }}
                         @else
                             No Deadline
                         @endif
                     </td>
-                    <td onclick="window.location='{{ route('deliverables.show', $deliverable->id) }}'">
+
                         @if ($deliverable->is_completed)
-                            <span class="badge bg-success">Achieved</span>
+                            <td class="badge badge-success me-4">Completed !</td>              
                         @else
-                            <span class="badge bg-danger">Not Achieved</span>
+                                    
+                            <td>
+                                <form action="{{ route('deliverables.status', $deliverable->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
+                                    @csrf
+                                    @method('PUT')
+                                    <select name="status" style="border: 2px solid black;"  class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
+                                        <option value="Pending" {{ $deliverable->is_completed == null ? 'selected' : '' }}>Not Completed</option>
+                                        <option value="Completed" {{ $deliverable->is_completed == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                    </select>
+                                </form>
+                                @error('status')
+                                    <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
+                            </td>
                         @endif
-                    </td>
                     <td class="text-center">
                         <div class="form-button-action">
-                            <a href="{{ route('deliverables.show', $deliverable->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
-                                <i class="fa fa-eye"></i>
-                            </a>
                             <a href="{{ route('deliverables.edit', $deliverable->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
                                 <i class="fa fa-edit"></i>
                             </a>
