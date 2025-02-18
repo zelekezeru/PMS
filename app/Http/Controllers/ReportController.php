@@ -129,19 +129,55 @@ class ReportController extends Controller
     {
         foreach($users as $user)
         {
-            $tasks = collect($user->tasks); // Fetch once and store in a variable
+            // Fetch tasks and KPIs once to avoid redundant queries
+            $tasks = collect($user->tasks);
 
-            $all_tasks = $tasks->count(); // Total number of tasks
+            // Group and count task statuses
+            $taskCounts = $tasks->groupBy('status')->map->count();
+            $taskSummary = [
+                'all_tasks' => $tasks->count(),
+                'pending' => $taskCounts->get('Pending', 0),
+                'progress' => $taskCounts->get('Progress', 0),
+                'completed' => $taskCounts->get('Completed', 0),
+            ];
 
-            $taskCounts = $tasks->groupBy('status')->map->count(); 
+            foreach($tasks as $task)
+            {
+                $kpis = collect($task->kpis);
+                // Group and count KPI statuses
 
-            $pendingCount = $taskCounts->get('Pending', 0);
+                $kpiCounts = $kpis->groupBy('status')->map->count();
 
-            $progressCount = $taskCounts->get('Progress', 0);
+                $kpiSummary = [
+                    'all_kpis' => $kpis->count(),
+                    'pending' => $kpiCounts->get('Pending', 0),
+                    'progress' => $kpiCounts->get('Progress', 0),
+                    'completed' => $kpiCounts->get('Completed', 0),
+                ];
+            }
+                
 
-            $completedCount = $taskCounts->get('Completed', 0);
+                dd($kpiSummary);
+                
+            // If KPI summary is needed for each task, create an array
+            $taskKpiSummaries = [];
 
-            dd($taskCounts);
+            foreach ($tasks as $task) {
+                $taskKpiSummaries[$task->id] = $kpiSummary;
+            }
+
+            // Return data as JSON or pass it to a view
+            return response()->json([
+                'task_summary' => $taskSummary,
+                'kpi_summary' => $kpiSummary,
+                'task_kpi_summaries' => $taskKpiSummaries
+            ]);
+
+
+            
+
+            // Return as JSON response (for API) or pass it to a view
+            return response()->json($taskSummary);
                 
         }
     }
