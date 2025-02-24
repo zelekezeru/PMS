@@ -52,7 +52,7 @@ class HomeController extends Controller
             $departments = null;
             
         }
-        elseif($user->roles->first()->name == 'SUPER_ADMIN' || $user->roles->first()->name == 'ADMIN')
+        elseif(request()->user()->hasAnyRole(['SUPER_ADMIN']) || request()->user()->hasAnyRole(['ADMIN']))
         {
             $departments = Department::get();
 
