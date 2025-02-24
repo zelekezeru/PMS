@@ -28,7 +28,7 @@ class HomeController extends Controller
 
         $user = Auth::user();
 
-        if($user->roles->first()->name == 'EMPLOYEE')
+        if(request()->user()->hasAnyRole(['EMPLOYEE']))
         {
             $departments = null;
 
