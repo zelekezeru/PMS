@@ -42,23 +42,21 @@
         </div>
     </div>
     @if ($fortnight->tasks)
-    @php
-    $tasks = $fortnight->tasks()->paginate(15);
-    @endphp
-
-    <div class="card-header">
-        <h3 class="card-title mb-5">Tasks of this fortnight</h3>
-    </div>
-
-    @include('tasks.list')
-
-    <div class="d-flex justify-content-start mt-3">
-        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#createDeliverableModal">
-            <i class="fas fa-plus"></i> Add Deliverable
-        </button>
-    </div>
     
-    @include('deliverables.list')
+        <div class="card-header">
+            <h3 class="card-title mb-5">Tasks of this fortnight</h3>
+        </div>
+
+        @include('tasks.list')
+
+        <div class="d-flex justify-content-start mt-3">
+            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#createDeliverableModal">
+                <i class="fas fa-plus"></i> Add Deliverable
+            </button>
+        </div>
+        
+        @include('deliverables.list')
+
     @else
     <div class="alert alert-warning mt-3">
         <p>No Tasks found for this fortnight.</p>

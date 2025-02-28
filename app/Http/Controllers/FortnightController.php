@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fortnight;
 use App\Models\Quarter;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class FortnightController extends Controller
@@ -12,6 +13,7 @@ class FortnightController extends Controller
     public function index()
     {
         $fortnights = Fortnight::with('quarter.year')->paginate(15);
+
         return view('fortnights.index', compact('fortnights'));
     }
 
@@ -51,8 +53,31 @@ class FortnightController extends Controller
         $fortnight->load('tasks', 'deliverables');
 
         $deliverables = $fortnight->deliverables()->paginate(15);
+
+        if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+            {
+                $tasks = Task::with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
+                    $query->where('fortnights.id', $fortnight->id);
+                })->paginate(15);
+            }
         
-        return view('fortnights.show', compact('fortnight', 'deliverables'));
+        elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD']))
+            {
+                $headOf = request()->user()->load('headOf')->headOf;
+
+                $tasks = $headOf ? $headOf->tasks()->whereHas('fortnights', function ($query) use ($fortnight) {
+                    $query->where('fortnights.id', $fortnight->id);
+                })->paginate(15) : Task::query()->paginate(15);
+            }
+
+        elseif (request()->user()->hasRole('EMPLOYEE'))
+            {
+                $tasks = request()->user()->tasks()->with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
+                    $query->where('fortnights.id', $fortnight->id);
+                })->paginate(15);
+            }       
+            
+        return view('fortnights.show', compact('fortnight', 'deliverables', 'tasks'));
     }
 
     // Show the form for editing the specified fortnight
