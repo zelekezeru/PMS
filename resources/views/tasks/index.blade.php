@@ -63,7 +63,9 @@
                     </li>
                     
                 </ul>
+                
                 @include('tasks.list')
+
                     <!-- SweetAlert Success Notifications -->
                     @if (session('status'))
                     <script>
