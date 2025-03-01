@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->date('report_date');
-            $table->unsignedBigInteger('department_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('target_id');
-            $table->string('schedule');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedBigInteger('fortnight_id')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
         });
     }

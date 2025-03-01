@@ -6,21 +6,57 @@
     @endif
 
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <label for="start_date" class="form-label"><strong>Report Starting Date:</strong></label>
-            <input type="date" name="start_date" id="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ isset($report) ? $report->start_date : old('start_date') }}" required>
-            @error('start_date')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="col-md-6 mb-3">
-            <label for="end_date" class="form-label"><strong>Report Ending Date:</strong></label>
-            <input type="date" name="end_date" id="end_date" class="form-control @error('end_date') is-invalid @enderror" value="{{ isset($report) ? $report->end_date : old('end_date') }}" required>
-            @error('end_date')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
+        <div class="col-6 card mt-3">
+            <div class="card-header">
+                <strong>Fortnight Report</strong>
+            </div>
+            <div class="card-body">
+                <!-- Fortnight Task Selection -->
+                <div class="col-md-12 mb-3">
+                    <label for="fortnight" class="form-label">If you need a Forthnight Report Select the Fotnight you want.</label>
+                    <select name="fortnight_id" class="form-control @error('fortnight_id') is-invalid @enderror" id="fortnight" size="10">
+                        
+                        <option value=""> Select Fortnights</option>
+                        @foreach($fortnights as $fortnight)
+                            <option value="{{ $fortnight->id }}" {{ (old('fortnight_id', [])) ? 'selected': '' }}> From: {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span  class="text-info"> - To - </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }} </option>
+                        @endforeach
+                    </select>
+                    @error('fortnight')
+                        <div class="form-text text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
         </div>
 
+        <div class="col-6">
+            <div class="card-header">
+                <strong>Custom Report</strong>
+            </div>
+            <div class="card-body">
+                <!-- Custom Task Selection -->
+                <div class="col-md-12 mb-3">
+                    <label for="fortnight" class="form-label">If you need a Fustome Date Report Select the Fotnight you want.</label>
+                </div>
+
+                <label for="start_date" class="form-label"><strong>Report Starting Date:</strong></label>
+                <input type="date" name="start_date" id="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ isset($report) ? $report->start_date : old('start_date') }}" required>
+                @error('start_date')
+                    <div class="form-text text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="card-body">            
+                <div class="col-md-12 mb-3">
+                <label for="end_date" class="form-label"><strong>Report Ending Date:</strong></label>
+                <input type="date" name="end_date" id="end_date" class="form-control @error('end_date') is-invalid @enderror" value="{{ isset($report) ? $report->end_date : old('end_date') }}" required>
+                @error('end_date')
+                    <div class="form-text text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <!-- Assign Users in Two Columns -->
         @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']) && ($users || $departments))
             <!-- Assign Users and Assign Departments Card -->
@@ -54,8 +90,11 @@
                             <!-- Assign Departments -->
                             @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                                 <div class="col-md-6">
-                                    <label for="department_id" class="form-label">Responsible Departments:</label>
-                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple>
+                                    @php
+                                        $selectedDepartments = old('department_id', isset($report) && $report->departments()->count() !== 0 ? $report->departments->pluck('id')->toArray() : []);
+                                    @endphp
+                                    
+                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple size="10">
                                         @php
                                             $selectedDepartments = old('department_id', isset($report) && $report->departments()->count() !== 0 ? $report->departments->pluck('id')->toArray() : []);
                                         @endphp
@@ -83,7 +122,9 @@
 
     </div>
 
-    <button type="submit" class="btn {{ isset($report) ? 'btn-warning' : 'btn-success' }} mt-3">
-        {{ isset($report) ? 'Update Report' : 'Create Report' }}
-    </button>
+    <div class="col-4">
+        <button type="submit" class="btn {{ isset($report) ? 'btn-warning' : 'btn-success' }} mt-3">
+            {{ isset($report) ? 'Update Report' : 'Create Report' }}
+        </button>
+    </div>
 </form>

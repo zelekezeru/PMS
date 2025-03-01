@@ -22,6 +22,7 @@ class ReportStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'fortnight_id' => 'nullable',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'user_id' => 'sometimes|array',

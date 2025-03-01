@@ -11,11 +11,17 @@ class CreateDepartmentTargetTable extends Migration
      */
     public function up(): void
     {
+        // Drop the table if it already exists
+        Schema::dropIfExists('department_target');
+
         Schema::create('department_target', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('department_id')->constrained()->onDelete('cascade');
-            $table->foreignId('target_id')->constrained()->onDelete('cascade');
-            $table->timestamps(0);
+            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('target_id');
+            $table->timestamps();
+
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->foreign('target_id')->references('id')->on('targets')->onDelete('cascade');
         });
     }
 
@@ -26,4 +32,4 @@ class CreateDepartmentTargetTable extends Migration
     {
         Schema::dropIfExists('department_target');
     }
-};
+}
