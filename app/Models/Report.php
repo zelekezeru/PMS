@@ -9,13 +9,7 @@ class Report extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'report_date',
-        'department_id',
-        'user_id',
-        'target_id',
-        'schedule',
-    ];
+    protected $guarded = [];
 
     // Relationship with Department
     public function department()
@@ -27,5 +21,10 @@ class Report extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function taskSummaries()
+    {
+        return $this->hasmany(TaskSummary::class);
     }
 }

@@ -6,10 +6,9 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Report Date</th>
-                            <th>Department</th>
-                            <th>User</th>
-                            <th>Target</th>
+                            <th>Report Duration</th>
+                            <th>Report of</th>
+                            <th>All Tasks</th>
                             <th>Schedule</th>
                             <th style="width: 10%; text-align: center;">Action</th>
                         </tr>
@@ -18,9 +17,15 @@
                         @forelse ($reports as $report)
                             <tr>
                                 <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ ($reports->currentPage() - 1) * $reports->perPage() + $loop->iteration }}</td>
-                                <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->report_date }}</td>
-                                <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->department->department_name }}</td>
-                                <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->user->name }}</td>
+                                <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->start_date }} - To - {{ $report->end_date }}</td>
+                                <td onclick="window.location='{{ route('reports.show', $report->id) }}'">
+                                    @if ($report->department)
+                                        {{ $report->department->department_name }}
+                                    @elseif ($report->user)
+                                        {{ $report->user->name }}
+                                    @endif
+                                </td>
+
                                 <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->target }}</td>
                                 <td onclick="window.location='{{ route('reports.show', $report->id) }}'">{{ $report->schedule }}</td>
                                 <td class="text-center">

@@ -1,3 +1,7 @@
+@php
+    $forToday = $forToday ?? false;
+@endphp
+
 <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
     @if ($method)
@@ -80,7 +84,7 @@
                             @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
                                 <div class="col-md-6">
                                     <label for="department_id" class="form-label">Responsible Departments:</label>
-                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple>
+                                    <select name="department_id[]" class="form-control @error('department_id') is-invalid @enderror" id="department_id" multiple size="10">
                                         @php
                                             $selectedDepartments = old('department_id', isset($task) && $task->departments()->count() !== 0 ? $task->departments->pluck('id')->toArray() : []);
                                         @endphp
