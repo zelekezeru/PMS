@@ -216,7 +216,7 @@
 
                 {{-- Report Navigation --}}
 
-                @canany (['view-reports', 'create-reports'])
+                {{-- @canany (['view-reports', 'create-reports'])
                     <li class="nav-item {{ request()->routeIs('reports.index') || request()->routeIs('reports.create') ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#Report">
                             <i class="fas fa-file-alt"></i>
@@ -243,7 +243,7 @@
                             </ul>
                         </div>
                     </li>
-                @endcanany
+                @endcanany --}}
 
                 @canany(['view-years', 'view-quarters', 'view-days', 'view-fortnights', 'view-days'])
 

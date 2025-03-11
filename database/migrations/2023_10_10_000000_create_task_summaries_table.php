@@ -10,7 +10,7 @@ class CreateTaskSummariesTable extends Migration
     {
         Schema::create('task_summaries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('report_id')->onDelete('cascade');;
+            $table->foreignId('report_id')->constrained()->onDelete('cascade');
             $table->integer('all_tasks')->nullable()->default(0);
             $table->integer('pending_tasks')->nullable()->default(0);
             $table->integer('progress_tasks')->nullable()->default(0);
