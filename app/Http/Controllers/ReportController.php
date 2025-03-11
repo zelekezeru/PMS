@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Target;
 use App\Models\TaskSummary;
 use App\Models\Fortnight;
+use App\Models\TaskKpiSummary;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReportStoreRequest;
 use App\Http\Requests\ReportUpdateRequest;
@@ -18,6 +19,7 @@ class ReportController extends Controller
     // Display a listing of the reports with filters
     public function index(Request $request)
     {
+        
         $query = Report::query();
 
         // Apply filters if provided
@@ -42,8 +44,11 @@ class ReportController extends Controller
         }
 
         $reports = $query->paginate(15);
+        
         $departments = Department::all();
+
         $users = User::all();
+
         $targets = Target::all();
 
         return view('reports.index', compact('reports', 'departments', 'users', 'targets'));
@@ -71,48 +76,102 @@ class ReportController extends Controller
     {
         $data = $request->validated();
 
-        $users = User::whereIn('id', $request->user_id)->get();
-        $departments = Department::whereIn('id', $request->department_id)->get();
+        if($request->has('fortnight_id'))
+        {
+            $data['fortnight_id'] = $request->fortnight_id;
 
-        $fortnight = Fortnight::findOrFail($request->fortnight_id);
-
-        $user_tasks = $this->calculate_tasks($users, 'user')->getData();
-
-        $department_tasks = $this->calculate_tasks($departments, 'department')->getData();
-
-    
-        // Save user_tasks data to TaskSummary table
-        foreach ($user_tasks->component_task_summaries as $taskSummary) {
-
-            $report_data = [
-                'start_date' => $request->start_date ?? $fortnight->start_date,
-                'end_date' => $request->end_date ?? $fortnight->end_date,
-                'user_id' => $user_tasks->task_user,
-                'department_id' => $user_tasks->task_department,
-                'fortnight_id' => $request->fortnight_id,
-                'created_by' => auth()->id(),
-            ];
-            
-            $report = Report::create($report_data);
-
-            $report->taskSummaries()->create((array) $taskSummary);
+            $fortnight = Fortnight::findOrFail($request->fortnight_id);
         }
 
-        // Save department_tasks data to TaskSummary table
-        foreach ($department_tasks->component_task_summaries as $taskSummary) {
+        if($request->has('user_id'))
+        {
+            $data['user_id'] = $request->user_id;
 
-            $report_data = [
-                'start_date' => $request->start_date ?? $fortnight->start_date,
-                'end_date' => $request->end_date ?? $fortnight->end_date,
-                'user_id' => $user_tasks->task_user,
-                'department_id' => $user_tasks->task_department,
-                'fortnight_id' => $request->fortnight_id,
-                'created_by' => auth()->id(),
-            ];
+            $users = User::whereIn('id', $request->user_id)->get();
             
-            $report = Report::create($report_data);
+            // Calculate tasks for each user and department
+            foreach($users as $user)
+            {
+                $tasks = $user->tasks->where('created_at', '>=', $fortnight->start_date)->where('created_at', '<=', $fortnight->end_date);
+                
+                $user_tasks = $this->calculate_tasks($tasks, $user)->getData();
+                
+                $report_data = [
+                    'start_date' => $request->start_date ?? $fortnight->start_date,
+                    'end_date' => $request->end_date ?? $fortnight->end_date,
+                    'user_id' => $user->id,
+                    'department_id' => $user->department->department_id,
+                    'fortnight_id' => $request->fortnight_id,
+                    'created_by' => auth()->id(),
+                ];
 
-            $report->taskSummaries()->create((array) $taskSummary);
+                $report = Report::create($report_data);
+                
+                TaskSummary::create([
+                    'report_id' => $report->id,
+                    'all_tasks' => $user_tasks->taskSummary->all_tasks,
+                    'pending_tasks' => $user_tasks->taskSummary->pending_tasks,
+                    'progress_tasks' => $user_tasks->taskSummary->progress_tasks,
+                    'completed_tasks' => $user_tasks->taskSummary->completed_tasks,
+                ]);
+
+                foreach ($user_tasks->task_kpi_summaries as $kpiSummary) {
+                    TaskKpiSummary::create([
+                        'task_id' => $kpiSummary->task_id,
+                        'task_kpis' => $kpiSummary->task_kpis,
+                        'pending_kpis' => $kpiSummary->pending_kpis,
+                        'progress_kpis' => $kpiSummary->progress_kpis,
+                        'completed_kpis' => $kpiSummary->completed_kpis,
+                    ]);
+                }
+            }
+        }
+
+        if($request->has('department_id'))
+        {
+            $data['department_id'] = $request->department_id;
+
+            $departments = Department::whereIn('id', $request->department_id)->get();
+        
+            foreach($departments as $department)
+            {
+                $tasks = $department->tasks->where('created_at', '>=', $fortnight->start_date)->where('created_at', '<=', $fortnight->end_date);
+
+                $department_tasks = $this->calculate_tasks($tasks, $department)->getData();
+            }
+
+            // Save department_tasks data to TaskSummary table
+            foreach ($department_tasks->component_task_summaries as $taskSummary) {
+
+                $report_data = [
+                    'start_date' => $request->start_date ?? $fortnight->start_date,
+                    'end_date' => $request->end_date ?? $fortnight->end_date,
+                    'user_id' => $user_tasks->task_user,
+                    'department_id' => $user_tasks->task_department,
+                    'fortnight_id' => $request->fortnight_id,
+                    'created_by' => auth()->id(),
+                ];
+                
+                $report = Report::create($report_data);
+
+                TaskSummary::create([
+                    'report_id' => $report->id,
+                    'all_tasks' => $taskSummary->all_tasks,
+                    'pending_tasks' => $taskSummary->pending_tasks,
+                    'progress_tasks' => $taskSummary->progress_tasks,
+                    'completed_tasks' => $taskSummary->completed_tasks,
+                ]);
+
+                foreach ($department_tasks->task_kpi_summaries as $kpiSummary) {
+                    TaskKpiSummary::create([
+                        'task_id' => $kpiSummary->task_id,
+                        'task_kpis' => $kpiSummary->task_kpis,
+                        'pending_kpis' => $kpiSummary->pending_kpis,
+                        'progress_kpis' => $kpiSummary->progress_kpis,
+                        'completed_kpis' => $kpiSummary->completed_kpis,
+                    ]);
+                }
+            }
         }
 
         // Set session message
@@ -124,7 +183,10 @@ class ReportController extends Controller
     {
         $report = Report::findOrFail($id);
 
-        return view('reports.show', compact('report'));
+        $taskSummaries = $report->taskSummaries->toArray();
+        $taskKpiSummaries = TaskKpiSummary::whereIn('task_id', array_column($taskSummaries, 'task_id'))->get()->toArray();
+
+        return view('reports.show', compact('report', 'taskSummaries', 'taskKpiSummaries'));
     }
 
     // Show the form for editing an existing report
@@ -138,21 +200,16 @@ class ReportController extends Controller
 
         $targets = Target::all();
 
-        return view('reports.edit', compact('report', 'departments', 'users', 'targets'));
+        $fortnights = Fortnight::all();
+
+        $assignedUsers = $report->users->pluck('id')->toArray();
+
+        return view('reports.edit', compact('report', 'departments', 'users', 'targets', 'assignedUsers', 'fortnights'));
     }
 
     public function update(ReportStoreRequest $request)
     {
         $data = $request->validated();
-
-        if ($request->fails()) {
-            return redirect()->route('reports.edit', $id)
-                            ->withErrors($data)
-                            ->withInput();
-        }
-
-        $report = Report::findOrFail($id);
-        $report->update($request->all());
 
         return redirect()->route('reports.index')->with('status', 'Report updated successfully.');
     }
@@ -160,88 +217,55 @@ class ReportController extends Controller
     public function destroy($id)
     {
         $report = Report::findOrFail($id);
+
         $report->delete();
 
         return redirect()->route('reports.index')->with('status', 'Report deleted successfully.');
     }
 
-    public function calculate_tasks($components, $type)
-    {
-        // The operation is done for all users in the collection
+    public function calculate_tasks($tasks, $component)
+    {        
+        // Group and count task statuses
+        $taskCounts = $tasks->groupBy('status')->map->count();
 
-        foreach($components as $component)
+        $taskSummary = [
+            'all_tasks' => $tasks->count(),
+            'pending_tasks' => $taskCounts->get('Pending', 0),
+            'progress_tasks' => $taskCounts->get('Progress', 0),
+            'completed_tasks' => $taskCounts->get('Completed', 0),
+        ];
+
+        // count the Kpis for each task
+        foreach($tasks as $task)
         {
-            // Fetch tasks and KPIs once to avoid redundant queries
-            $tasks = collect($component->tasks);
+            $kpis = collect($task->kpis);
+
+            // Group and count KPI statuses for each task
+            $kpiCounts = $kpis->groupBy('status')->map->count();
+
+            $kpiSummary = [
+                'task_id' => $task->id,
+                'task_kpis' => $kpis->count(),
+                'pending_kpis' => $kpiCounts->get('Pending', 0),
+                'progress_kpis' => $kpiCounts->get('Progress', 0),
+                'completed_kpis' => $kpiCounts->get('Completed', 0),
+            ];
             
-            // Group and count task statuses
-            $taskCounts = $tasks->groupBy('status')->map->count();
+            // Initialize the array if not already initialized
+            if (!isset($taskKpiSummaries)) {
+                $taskKpiSummaries = [];
+            }
 
-            if($type == 'user')
-            {
-                $taskSummary = [
-                    'all_tasks' => $tasks->count(),
-                    'pending_tasks' => $taskCounts->get('Pending', 0),
-                    'progress_tasks' => $taskCounts->get('Progress', 0),
-                    'completed_tasks' => $taskCounts->get('Completed', 0),
-                ];
-                $task_user = $component->id;
-                $task_department = 0;
-            }
-            else
-            {
-                $taskSummary = [
-                    'all_tasks' => $tasks->count(),
-                    'pending_tasks' => $taskCounts->get('Pending', 0),
-                    'progress_tasks' => $taskCounts->get('Progress', 0),
-                    'completed_tasks' => $taskCounts->get('Completed', 0),
-                ];
-                $task_user = 0;
-                $task_department = $component->id;
-            }
+            // Store the KPI summary for each task
+            $taskKpiSummaries[$task->id] = $kpiSummary;
             
-            // count the Kpis for each task
-            foreach($tasks as $task)
-            {
-                $kpis = collect($task->kpis);
-                // Group and count KPI statuses
-
-                $kpiCounts = $kpis->groupBy('status')->map->count();
-
-                $kpiSummary = [
-                    'task_kpis' => $kpis->count(),
-                    'pending_kpis' => $kpiCounts->get('Pending', 0),
-                    'progress_kpis' => $kpiCounts->get('Progress', 0),
-                    'completed_kpis' => $kpiCounts->get('Completed', 0),
-                ];
-                
-                // Initialize the array if not already initialized
-                if (!isset($taskKpiSummaries)) {
-                    $taskKpiSummaries = [];
-                }
-
-                // Store the KPI summary for each task
-                $taskKpiSummaries[$task->id] = $kpiSummary;
-            }
-                // Initialize the array if not already initialized
-                if (!isset($componentTaskSummaries)) {
-                    $componentTaskSummaries = [];
-                }
-
-                // Store the KPI summary for each task
-                $componentTaskSummaries[$component->id] = $taskSummary;
         }
 
         // Return data as JSON or pass it to a view
         return response()->json([
-            'component_task_summaries' => $componentTaskSummaries,
+            'taskSummary' => $taskSummary,
             'task_kpi_summaries' => $taskKpiSummaries,
-            'task_user' => $task_user,
-            'task_department' => $task_department
         ]);
-
-        // Return as JSON response (for API) or pass it to a view
-        return response()->json($taskSummary);
                 
     }
 

@@ -11,14 +11,10 @@ class TaskSummary extends Model
 
     protected $fillable = [
         'report_id',
-        'user_id',
-        'user_name',
-        'department_id',
-        'department_name',
         'all_tasks',
-        'pending_kpis',
-        'progress_kpis',
-        'completed_kpis',
+        'pending_tasks',
+        'progress_tasks',
+        'completed_tasks',
     ];
 
     public function report()

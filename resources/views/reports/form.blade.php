@@ -39,7 +39,7 @@
                 </div>
 
                 <label for="start_date" class="form-label"><strong>Report Starting Date:</strong></label>
-                <input type="date" name="start_date" id="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ isset($report) ? $report->start_date : old('start_date') }}" required>
+                <input type="date" name="start_date" id="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ isset($report) ? $report->start_date : old('start_date') }}">
                 @error('start_date')
                     <div class="form-text text-danger">{{ $message }}</div>
                 @enderror
@@ -48,7 +48,7 @@
             <div class="card-body">            
                 <div class="col-md-12 mb-3">
                 <label for="end_date" class="form-label"><strong>Report Ending Date:</strong></label>
-                <input type="date" name="end_date" id="end_date" class="form-control @error('end_date') is-invalid @enderror" value="{{ isset($report) ? $report->end_date : old('end_date') }}" required>
+                <input type="date" name="end_date" id="end_date" class="form-control @error('end_date') is-invalid @enderror" value="{{ isset($report) ? $report->end_date : old('end_date') }}">
                 @error('end_date')
                     <div class="form-text text-danger">{{ $message }}</div>
                 @enderror
