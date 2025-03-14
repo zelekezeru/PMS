@@ -25,11 +25,11 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.request()->user->id],
-            'phone_number' => 'required|string',
-            'department_id' => 'nullable|exists:departments,id',
-            'role_id' => 'nullable|exists:roles,id',
-            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png',
+            'email' => 'sometimes', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.request()->user->id,
+            'phone_number' => 'sometimes|string',
+            'department_id' => 'sometimes|exists:departments,id',
+            'role_id' => 'sometimes|exists:roles,id',
+            'profile_image' => 'sometimes|image|mimes:jpg,jpeg,png',
         ];
     }
 }
