@@ -162,23 +162,23 @@ class UserController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UserUpdateRequest $request, User $user)
-    {
-        $data = $request->validated();
-        $data = $request->validated();
-
+    {                
+        $data = $request->all();
+        
         // Get the department ID if provided
         $department = $data['department_id'] ?? null;
-
+        
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
 
         // Check if the user is assigned as DEPARTMENT_HEAD (role_id = 3)
-        if ($data['role_id'] == 3) {
+        
+        if ($data['role_id'] == 'DEPARTMENT_HEAD') {
             // Ensure department is required for this role
-            if ($department === null) {
+            if ($department == null) {    dd($department);
                 return redirect()->back()->withErrors(['department_id' => 'Department is required for this role.'])->withInput();
-            }
-
+                }
+            
             // Prevent a user from being assigned to multiple departments as head
             else if ($user->headOf()->exists()) {
                 return redirect()->back()->withErrors([
