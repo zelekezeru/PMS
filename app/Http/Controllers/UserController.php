@@ -67,15 +67,10 @@ class UserController extends Controller
 
     public function approved(Request $request, User $user)
     {
+        
         $user->is_approved = true;
         $user->is_active = true;
         $user->save();
-    
-        // Generate the login link
-        $loginLink = route('login');
-    
-        // Send the approval email with the login link
-        Mail::to($user->email)->send(new ApproveConfirmed($loginLink));
     
         return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
@@ -101,17 +96,24 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make('pms@SITS');
+
+        $phone_end = substr($data['phone_number'], -4);
+        
+        // Set the default password
+        $data['password'] = Hash::make('sits@' . $phone_end);
+
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }
 
         $data['is_approved'] = $request->is_approved ? 1 : 0;
-        $data['is_active'] = $request->is_active ? 1 : 0;
-        $user = User::create($data);
-        $user->assignRole('EMPLOYEE');
 
+        $data['is_active'] = $request->is_active ? 1 : 0;
+
+        $user = User::create($data);
+
+        $user->assignRole('EMPLOYEE');
 
         if ($data['is_approved']) {
             return redirect()->route('users.index')->with('status', 'User has been successfully created.');
@@ -127,6 +129,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id)->load('tasks', 'department');
+
         if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
