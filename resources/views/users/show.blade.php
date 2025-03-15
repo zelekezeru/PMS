@@ -55,6 +55,20 @@
 
                         </tr>
                     @endif
+
+                    @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']) && $user->department == null)
+                        
+                        @php
+                            $password = 'sits@' . substr($user->phone_number, -4);
+                        @endphp
+
+                        <tr>
+                            <th class= "text-danger">Original Password (User Must Change) </th>
+
+                            <td>{{ $password }}</td>
+                        </tr>
+
+                    @endif
                 </table>
                 @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
                     <div class="d-flex justify-content-end mt-4">

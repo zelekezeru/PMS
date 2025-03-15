@@ -260,7 +260,7 @@ class TaskController extends Controller
             abort(403);
         }
 
-        if ($task->kpis()->exists() || $task->deliverables()->exists() || $task->feedbacks()->exists()) {
+        if ($task->kpis()->exists() || $task->feedbacks()->exists()) {
             return redirect()->route('tasks.index')
                 ->with('status', 'You can\'t Delete This pending Task it have feedback on it.');
         }
