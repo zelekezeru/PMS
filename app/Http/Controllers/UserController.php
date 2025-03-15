@@ -39,7 +39,6 @@ class UserController extends Controller
      */
     public function waitingApproval()
     {
-
         $users = User::where('is_approved', 0)->paginate(15);
 
         return view('users.waiting', compact('users'));
@@ -62,7 +61,7 @@ class UserController extends Controller
             $user->save();
         };
 
-        return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
+        return redirect()->route('users.waiting')->with('status', 'User has been successfully Approved.');
     }
 
     public function approved(Request $request, User $user)
@@ -72,7 +71,7 @@ class UserController extends Controller
         $user->is_active = true;
         $user->save();
     
-        return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
+        return redirect()->route('users.waiting')->with('status', 'User has been successfully Approved.');
     }
     
 
