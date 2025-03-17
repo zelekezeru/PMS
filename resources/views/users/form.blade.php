@@ -54,46 +54,46 @@
     </div>
 
     @if(!isset($isCreate) && !$user->hasRole('SUPER_ADMIN'))
-        <div class="col-md-6 mb-3">
-            <label for="role_id" class="form-label"><strong>Role:</strong></label>
-            
+    <div class="col-md-6 mb-3">
+        <label for="role_id" class="form-label"><strong>Role:</strong></label>
+
             @if($user->hasRole('DEPARTMENT_HEAD'))
-                <input type="hidden" name="role_id" value="3">
+                <input type="hidden" name="role_id" value="DEPARTMENT_HEAD">
                 <p>The User is <span class="text-info">{{ $user->department->department_name }}</span> Depertment Head, Assign another Head first!</p>
             @else
 
-                <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
-                    <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
-                    @foreach($roles as $role)
-                        @if ($role->name !== 'SUPER_ADMIN')
-                            <option value="{{ $role->id }}" {{ old('role_id', isset($user) && $user->roles->contains($role->id) ? $role->id : '') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
-                        @endif
-                    @endforeach
-                </select>
-                @error('role_id')
-                    <div class="form-text text-danger">{{ $message }}</div>
-                @enderror
-
-                <!-- Assign Departments -->
-                <div class="col-md-6 mb-3">
-                    <label for="department_id" class="form-label">Department:</label>
-                    <select name="department_id" class="form-control @error('department_id') is-invalid @enderror" id="department_id" required>
-                        <option value="" {{ old('department_id') == '' ? 'selected' : '' }}>Select Department</option>
-                        @foreach($departments as $department)
-                            <option value="{{ $department->id }}"
-                                {{ old('department_id', $user->department_id ?? '') == $department->id ? 'selected' : '' }}>
-                                {{ $department->department_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('department_id')
-                        <div class="form-text text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
-            @endif
-        </div>
+            <select name="role_id" class="form-control @error('role_id') is-invalid @enderror" id="role" required>
+                <option value="" {{ old('role_id') == '' ? 'selected' : '' }}>Select Role</option>
+                @foreach($roles as $role)
+                    @if ($role->name !== 'SUPER_ADMIN')
+                        <option value="{{ $role->id }}" {{ old('role_id', isset($user) && $user->roles->contains($role->id) ? $role->id : '') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                    @endif
+                @endforeach
+            </select>
+            @error('role_id')
+                <div class="form-text text-danger">{{ $message }}</div>
+            @enderror
+        @endif
+    </div>
     @endif
+
+
+    <!-- Assign Departments -->
+    <div class="col-md-6 mb-3">
+        <label for="department_id" class="form-label">Department:</label>
+        <select name="department_id" class="form-control @error('department_id') is-invalid @enderror" id="department_id" required>
+            <option value="" {{ old('department_id') == '' ? 'selected' : '' }}>Select Department</option>
+            @foreach($departments as $department)
+                <option value="{{ $department->id }}"
+                    {{ old('department_id', $user->department_id ?? '') == $department->id ? 'selected' : '' }}>
+                    {{ $department->department_name }}
+                </option>
+            @endforeach
+        </select>
+        @error('department_id')
+            <div class="form-text text-danger">{{ $message }}</div>
+        @enderror
+    </div>
 
     <button type="submit" class="btn btn-success">
         <i class="fa-solid fa-floppy-disk"></i> {{ $buttonText }}

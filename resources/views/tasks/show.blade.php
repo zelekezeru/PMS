@@ -7,9 +7,11 @@
             <h2 class="card-header text-center">Task Details</h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end">
-                    <a class="btn btn-primary btn-sm mb-3" href="{{ route('tasks.index') }}">
+                    <a class="btn btn-primary btn-sm mb-3 mx-4" href="{{ route('tasks.index') }}">
                         <i class="fa fa-arrow-left"></i> Back
                     </a>
+                    <a class="btn btn-success btn-sm mb-3" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task KPI</a>
+                    
                 </div>
 
                 <table class="table table-bordered">
@@ -128,10 +130,6 @@
             
         @endif
 
-        <div class="col">
-            <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task Indicators</a>
-        </div>
-
         @if ($task->kpis)
             @php
                 $kpis = $task->kpis()->paginate(15);
@@ -139,6 +137,10 @@
 
             <div class="card-header">
                 <h3 class="card-title mb-5">KPIs of this task</h3>
+            </div>
+
+            <div class="col mb-4">
+                <a class="btn btn-success btn-sm mr-2" href="{{ route('kpis.create_task', ['task' => $task->id]) }}"><i class="fa fa-plus"></i> Add Task KPI</a>
             </div>
 
             @include('kpis.list')

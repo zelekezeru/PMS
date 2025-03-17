@@ -27,6 +27,7 @@ class TaskController extends Controller
             $headOf = request()->user()->load('headOf')->headOf;
 
             $tasks = $headOf ? $headOf->tasks() : Task::query();
+            
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
             $tasks = Task::with(['target', 'departments']);
@@ -38,21 +39,25 @@ class TaskController extends Controller
         $currentFortnight = null;
 
         $today = Carbon::now()->format('Y-m-d');
-        if ($request->query('currentFortnight')) {
 
+        if ($request->query('currentFortnight')) {
 
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
 
             $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
-                $query->where('fortnights.id', $currentFortnight->id);
-            });
-        } elseif ($request->query('todays')) {
+                    $query->where('fortnights.id', $currentFortnight->id);
+                });
+        } 
+        elseif ($request->query('todays')) {
+
             $currentFortnight = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first();
 
             if (Day::where('date', $today)->exists()) {
+
                 $date = Day::where('date', $today)->first()->id;
+
             } else {
                 $date = Day::create([
                     'fortnight_id' => $currentFortnight->id,
@@ -95,8 +100,10 @@ class TaskController extends Controller
             $tasks = $tasks->orderBy('name', $order);
         }
 
+        // Sort tasks from most recent to old
+        $tasks = $tasks->orderBy('created_at', 'desc');
 
-        $tasks = $tasks->with(['target', 'departments', 'createdBy'])->paginate(10);
+        $tasks = $tasks->with(['target', 'departments', 'createdBy'])->paginate(15);
 
         return view('tasks.index', compact('tasks', 'currentFortnight'));
     }
@@ -112,7 +119,7 @@ class TaskController extends Controller
         $users = request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users :  (request()->user()->hasRole('EMPLOYEE') ? [] : User::get());
 
         $today = (bool) request()->query('dailyTask') === true ? Carbon::now()->format('Y-m-d') : null;
-
+        
         $fortnights = Fortnight::get();
 
         $assignedUsers = [];
@@ -125,13 +132,25 @@ class TaskController extends Controller
     public function store(TaskStoreRequest $request)
     {
         $data = $request->validated();
-
+        
         if (isset($data['parent_task_id'])) {
+
             $data['is_subtask'] = true;
+
         } else {
+
             $data['is_subtask'] = false;
+
         }
 
+        if ($request->parent_task_id_2 != null) {
+
+            $main_task = Task::where('id', $request->parent_task_id_2)->first();
+            
+            $data['target_id'] = $main_task->target_id;
+
+        }
+        
         $data['is_subtask'] = $data['parent_task_id'] ? true : false;
 
         $data['created_by'] = request()->user()->id;
@@ -154,6 +173,8 @@ class TaskController extends Controller
         if ($request->query('today')) {
 
             $today = Carbon::now()->format('Y-m-d');
+
+            $data['parent_task_id'] = request()->parent_task_id_2;
 
             $currentFortnightId = Fortnight::whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)->first()->id;
@@ -180,6 +201,7 @@ class TaskController extends Controller
         $task->fortnights()->attach($fortnights);
 
         $task->users()->attach($users);
+
         return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
     }
 
@@ -188,6 +210,7 @@ class TaskController extends Controller
         $task = $task->load('departments', 'users', 'kpis', 'subtasks');
 
         $users = $task->users;
+
         return view('tasks.show', compact('task', 'users'));
     }
 
@@ -282,18 +305,18 @@ class TaskController extends Controller
                 $headOf = request()->user()->load('headOf')->headOf;
 
                 if ($headOf) {
-                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(15);
                 } else {
-                    $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
+                    $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(15);
                 }
             
             } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
                 
-                $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(10);
+                $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(15);
             
             } else {
                 
-                $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(10);
+                $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(15);
             }
 
             $currentFortnight = null;
