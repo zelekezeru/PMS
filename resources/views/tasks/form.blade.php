@@ -117,38 +117,36 @@
         @endif
 
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <strong>Target & Fortnight Selection</strong>
-                </div>
-                <div class="card-body">
-                    <div class="row">
+            <div class="card"> 
+                @if ($today == null)    
+                    <div class="card-header">
+                        <strong>Target & Fortnight Selection</strong>
+                    </div>
+                    <div class="card-body">
 
                         <div class="row">
-
-                        <div class="card mt-3">
-                            <div class="card-header">
-                                <strong>Target Selection</strong>
-                            </div>
-                            <div class="card-body">
-                                <div class="col-md-12 mb-3">
-                                    <label for="target_id" class="form-label"><strong>Target:</strong></label>
-                                    <select name="target_id" class="form-control @error('target_id') is-invalid @enderror" id="target_id">
-                                        <option value="">Select Target</option>
-                                        @foreach($targets as $target)
-                                            <option value="{{ $target->id }}" {{ old('target_id', $task->target_id ?? '') == $target->id ? 'selected' : '' }}>
-                                                {{ $target->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('target_id')
-                                        <div class="form-text text-danger">{{ $message }}</div>
-                                    @enderror
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    <strong>Target Selection</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="target_id" class="form-label"><strong>Target:</strong></label>
+                                        <select name="target_id" class="form-control @error('target_id') is-invalid @enderror" id="target_id">
+                                            <option value="">Select Target</option>
+                                            @foreach($targets as $target)
+                                                <option value="{{ $target->id }}" {{ old('target_id', $task->target_id ?? '') == $target->id ? 'selected' : '' }}>
+                                                    {{ $target->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('target_id')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        @if (!$forToday)
+                            
                             <div class="card mt-3">
                                 <div class="card-header">
                                     <strong>Fortnight Task</strong>
@@ -172,11 +170,40 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
-
                         </div>
                     </div>
-                </div>
+
+                @elseif($today)
+                    <div class="card-header">
+                        <strong>Related Fortnight Task</strong>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    <strong>Related Task</strong>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Fortnight Task Selection -->
+                                    <div class="col-md-12 mb-3">
+                                        <select name="parent_task_id_2" class="form-control @error('parent_task_id_2') is-invalid @enderror" id="parent_task_id_2" required>
+                                            <!-- Assuming you have a list of users -->
+                                            <option value="" {{ old('parent_task_id_2') == '' ? 'selected' : '' }}>Select Task</option>
+                                            @foreach($user->tasks as $task)
+                                                <option value="{{ $task->id }}" {{ old('parent_task_id_2', $task->parent_task_id_2 ?? '') == $task->id ? 'selected' : '' }}>{{ $task->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('parent_task_id_2')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                            
+                @endif
             </div>
         </div>
 

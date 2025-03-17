@@ -24,7 +24,9 @@ class UserController extends Controller
     public function index()
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
+
             $department = request()->user()->department;
+            
             $users = $department->users()->paginate(25);
             
         } else {
@@ -39,7 +41,7 @@ class UserController extends Controller
      */
     public function waitingApproval()
     {
-        $users = User::where('is_approved', 0)->paginate(15);
+        $users = User::where('is_approved', 0)->orderBy('created_at', 'desc')->paginate(15);
 
         return view('users.waiting', compact('users'));
     }
@@ -133,7 +135,7 @@ class UserController extends Controller
             return abort(403);
         }
 
-        $tasks = $user->tasks()->paginate(15);
+        $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(15);
 
         $department = $user->department;
 
