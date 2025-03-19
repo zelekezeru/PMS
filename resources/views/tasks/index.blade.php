@@ -5,10 +5,12 @@
         <div class="card mt-5">
             <h2 class="card-header text-center">
                 {{
-                    request('currentFortnight') 
+                    (request('myTasks') || request()->user()->hasRole('EMPLOYEE') ? 'My ' : '') . 
+                    (request('currentFortnight') 
                         ? 'Current Fortnight Tasks' 
-                        : (request('onlyToday') ? 'Tasks For Today' : 'All Tasks List')
+                        : (request('onlyToday') ? 'Tasks For Today' : 'All Tasks List'))
                 }}
+                
             </h2>
             
             @if (request('currentFortnight') )
@@ -52,14 +54,34 @@
                     </div>
                 </div>
                 <ul class="nav nav-tabs nav-line nav-color-secondary" id="line-tab" role="tablist">
+                    @if (request()->user()->hasAnyRole(['SUPER_ADMIN','ADMIN', 'DEPARTMENT_HEAD']))
+                        @hasrole('DEPARTMENT_HEAD')
+                            <li class="nav-item">
+                                <a class="nav-link btn {{ request('currentFortnight') || request('onlyToday') || request('myTasks') ? '' : 'active' }}" id="line-home-tab" href="{{route('tasks.index')}}" role="tab" aria-controls="pills-home" aria-selected="true">All Department Tasks</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link btn {{ request('currentFortnight') || request('onlyToday') || request('myTasks') ? '' : 'active' }}" id="line-home-tab" href="{{route('tasks.index')}}" role="tab" aria-controls="pills-home" aria-selected="true">All Tasks</a>
+                            </li>
+
+                        @endhasrole
+
+                        <li class="nav-item">
+                            <a class="nav-link btn {{ request('myTasks') ? 'active' : '' }}" id="line-home-tab" href="{{route('tasks.index', ['myTasks' => true])}}" role="tab" aria-controls="pills-home" aria-selected="true">My Tasks</a>
+                        </li>
+                    
+                    @elseif(request()->user()->hasRole('SUPER-ADMIN'))
+                        <li class="nav-item">
+                            <a class="nav-link btn {{ request('myTasks') ? '' : 'active' }}" id="line-home-tab" href="{{route('tasks.index')}}" role="tab" aria-controls="pills-home" aria-selected="true">My Tasks</a>
+                        </li>
+                        
+                    @endif
+
                     <li class="nav-item">
-                        <a class="nav-link btn {{ request('currentFortnight') || request('onlyToday') ? '' : 'active' }}" id="line-home-tab" href="{{route('tasks.index')}}" role="tab" aria-controls="pills-home" aria-selected="true">All Tasks</a>
+                        <a class="nav-link btn {{ request('currentFortnight') ? 'active' : '' }}" id="line-home-tab" href="{{route('tasks.index', ['currentFortnight' => true, 'myTasks' => request('myTasks')])}}" role="tab" aria-controls="pills-home" aria-selected="true">Current Fortnight</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn {{ request('currentFortnight') ? 'active' : '' }}" id="line-home-tab" href="{{route('tasks.index', ['currentFortnight' => true])}}" role="tab" aria-controls="pills-home" aria-selected="true">Current Fortnight</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn {{ request('onlyToday') ? 'active' : '' }}" id="line-home-tab" href="{{route('tasks.index', ['onlyToday' => true])}}" role="tab" aria-controls="pills-home" aria-selected="true">Today's Tasks</a>
+                        <a class="nav-link btn {{ request('onlyToday') ? 'active' : '' }}" id="line-home-tab" href="{{route('tasks.index', ['onlyToday' => true, 'myTasks' => request('myTasks')])}}" role="tab" aria-controls="pills-home" aria-selected="true">Today's Tasks</a>
                     </li>
                     
                 </ul>

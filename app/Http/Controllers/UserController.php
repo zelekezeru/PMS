@@ -24,9 +24,7 @@ class UserController extends Controller
     public function index()
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
-
             $department = request()->user()->department;
-            
             $users = $department->users()->paginate(25);
             
         } else {
@@ -41,7 +39,8 @@ class UserController extends Controller
      */
     public function waitingApproval()
     {
-        $users = User::where('is_approved', 0)->orderBy('created_at', 'desc')->paginate(15);
+
+        $users = User::where('is_approved', 0)->paginate(15);
 
         return view('users.waiting', compact('users'));
     }
@@ -63,17 +62,22 @@ class UserController extends Controller
             $user->save();
         };
 
-        return redirect()->route('users.waiting')->with('status', 'User has been successfully Approved.');
+        return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
 
     public function approved(Request $request, User $user)
     {
-        
         $user->is_approved = true;
         $user->is_active = true;
         $user->save();
     
-        return redirect()->route('users.waiting')->with('status', 'User has been successfully Approved.');
+        // Generate the login link
+        $loginLink = route('login');
+    
+        // Send the approval email with the login link
+        Mail::to($user->email)->send(new ApproveConfirmed($loginLink));
+    
+        return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
     
 
@@ -97,24 +101,17 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         $data = $request->validated();
-
-        $phone_end = substr($data['phone_number'], -4);
-        
-        // Set the default password
-        $data['password'] = Hash::make('sits@' . $phone_end);
-
+        $data['password'] = Hash::make('pms@SITS');
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }
 
         $data['is_approved'] = $request->is_approved ? 1 : 0;
-
         $data['is_active'] = $request->is_active ? 1 : 0;
-
         $user = User::create($data);
-
         $user->assignRole('EMPLOYEE');
+
 
         if ($data['is_approved']) {
             return redirect()->route('users.index')->with('status', 'User has been successfully created.');
@@ -130,12 +127,11 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id)->load('tasks', 'department');
-
         if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
 
-        $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(15);
+        $tasks = $user->tasks()->paginate(15);
 
         $department = $user->department;
 
@@ -166,23 +162,22 @@ class UserController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UserUpdateRequest $request, User $user)
-    {                
-        $data = $request->all();
-        
+    {
+        $data = $request->validated();
+
         // Get the department ID if provided
         $department = $data['department_id'] ?? null;
-        
+
         $data['is_approved'] = $request->is_approved ? 1 : 0;
         $data['is_active'] = $request->is_active ? 1 : 0;
 
         // Check if the user is assigned as DEPARTMENT_HEAD (role_id = 3)
-        
-        if ($data['role_id'] == 'DEPARTMENT_HEAD') {
+        if ($data['role_id'] == 3) {
             // Ensure department is required for this role
-            if ($department == null) {    dd($department);
+            if ($department === null) {
                 return redirect()->back()->withErrors(['department_id' => 'Department is required for this role.'])->withInput();
-                }
-            
+            }
+
             // Prevent a user from being assigned to multiple departments as head
             else if ($user->headOf()->exists()) {
                 return redirect()->back()->withErrors([

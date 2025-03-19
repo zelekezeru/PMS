@@ -14,7 +14,7 @@
     <div>
     </div>
     <div class="ms-md-auto py-2 py-md-0">
-        <a href="{{ route('tasks.index') }}" class="btn btn-label-info btn-round me-2">Manage Tasks</a>
+        <a href="{{ route('tasks.index', ['myTasks' => true]) }}" class="btn btn-label-info btn-round me-2">My Tasks</a>
         <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round">Add Fortnight Task</a>
         <a href="{{ route('tasks.create', ['dailyTask' => true]) }}" class="btn btn-info btn-round">Add Daily Task</a>
     </div>
