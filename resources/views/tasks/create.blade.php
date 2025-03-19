@@ -11,7 +11,7 @@
                 </div>
 
                 @include('tasks.form', [
-                    'action' => route('tasks.store', ['forToday' => $today]),
+                    'action' => route('tasks.store', ['forToday' => $forToday]),
                     'method' => 'POST',
                     'task' => null,
                     'buttonText' => 'Create'

@@ -25,7 +25,7 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'sometimes', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.request()->user->id,
+            'email' => ['sometimes', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.request()->user->id],
             'phone_number' => 'sometimes|string',
             'department_id' => 'sometimes|exists:departments,id',
             'role_id' => 'sometimes|exists:roles,id',
