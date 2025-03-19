@@ -163,7 +163,6 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        // dd(hi);
         $data = $request->validated();
 
         // Get the department ID if provided

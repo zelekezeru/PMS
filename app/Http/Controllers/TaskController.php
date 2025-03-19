@@ -25,14 +25,29 @@ class TaskController extends Controller
     {
         // Fetch tasks based on roles
         if (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
-
-            $headOf = request()->user()->load('headOf')->headOf;
-
-            $tasks = $headOf ? $headOf->tasks() : Task::query();
+            /**
+            * Filter out tasks that are assigned to the logged in user and nothing else
+            */
+            if ($request->query('myTasks')) {
+                $tasks = request()->user()->tasks();
+                
+            } else {
+                $headOf = request()->user()->load('headOf')->headOf;
+    
+                $tasks = $headOf ? $headOf->tasks() : Task::query();
+            }
             
         } else if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
+            /**
+            * Filter out tasks that are assigned to the logged in user and nothing else
+            */
+            if ($request->query('myTasks')) {
+                $tasks = request()->user()->tasks();
+                
+            } else {
+                $tasks = Task::query();
+            }
 
-            $tasks = Task::with(['target', 'departments']);
         } else {
 
             $tasks = request()->user()->tasks();
