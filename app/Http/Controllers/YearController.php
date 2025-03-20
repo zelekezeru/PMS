@@ -10,6 +10,7 @@ class YearController extends Controller
     public function index()
     {
         $years = Year::paginate(15);
+
         return view('years.index', compact('years'));
     }
 
@@ -21,7 +22,7 @@ class YearController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'year' => 'required|integer|unique:years,year'
+            'year' => 'required|integer|unique:years,year',
         ]);
 
         Year::create($request->all());
@@ -42,7 +43,7 @@ class YearController extends Controller
     public function update(Request $request, Year $year)
     {
         $request->validate([
-            'year' => 'required|integer|unique:years,year,' . $year->id
+            'year' => 'required|integer|unique:years,year,'.$year->id,
         ]);
 
         $year->update($request->all());
@@ -52,10 +53,9 @@ class YearController extends Controller
 
     public function destroy(Year $year)
     {
-        if($year->quarters()->exists())
-        {
+        if ($year->quarters()->exists()) {
             return redirect()->route('years.index')
-            ->with('related', 'Item-related');
+                ->with('related', 'Item-related');
         }
 
         $year->delete();

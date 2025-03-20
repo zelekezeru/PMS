@@ -11,6 +11,7 @@ class DayController extends Controller
     public function index()
     {
         $days = Day::with('fortnight.quarter.year')->paginate(15); // Added pagination
+
         return view('days.index', compact('days'));
     }
 
@@ -18,11 +19,9 @@ class DayController extends Controller
     {
         $fortnights = Fortnight::get();
 
-        if(count($fortnights) == 0)
-        {
+        if (count($fortnights) == 0) {
             return redirect()->route('quarters.index')->with('status', 'parent');
-        }
-        else{
+        } else {
             $fortnights = Fortnight::with('quarter.year')->get();
 
             return view('days.create', compact('fortnights'));
@@ -50,6 +49,7 @@ class DayController extends Controller
     public function edit(Day $day)
     {
         $fortnights = Fortnight::with('quarter.year')->get();
+
         return view('days.edit', compact('day', 'fortnights'));
     }
 
@@ -57,7 +57,7 @@ class DayController extends Controller
     {
         $validated = $request->validate([
             'fortnight_id' => 'required|exists:fortnights,id',
-            'date' => 'required|date|unique:days,date,' . $day->id,
+            'date' => 'required|date|unique:days,date,'.$day->id,
         ]);
 
         $day->update($validated);
@@ -68,6 +68,7 @@ class DayController extends Controller
     public function destroy(Day $day)
     {
         $day->delete();
+
         return redirect()->route('days.index')->with('status', 'Day has been successfully Deleted.');
     }
 }

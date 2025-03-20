@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeliverableStoreRequest;
 use App\Http\Requests\DeliverableUpdateRequest;
 use App\Models\Deliverable;
-use Illuminate\Http\Request;
 
 class DeliverableController extends Controller
 {
@@ -37,7 +36,7 @@ class DeliverableController extends Controller
         $deliverable = Deliverable::create($data);
 
         return redirect()->route('fortnights.show', $request->fortnight_id)->with('status', 'Deliverable has been successfully created.');
-        
+
     }
 
     /**

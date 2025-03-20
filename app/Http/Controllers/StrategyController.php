@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Strategy;
 use Illuminate\Http\Request;
-use App\Http\Requests\StrategyStoreRequest;
-use App\Http\Requests\StrategyUpdateRequest;
 use Illuminate\View\View;
 
 class StrategyController extends Controller
@@ -77,10 +75,9 @@ class StrategyController extends Controller
 
     public function destroy(Strategy $strategy)
     {
-        if($strategy->goals()->exists())
-        {
+        if ($strategy->goals()->exists()) {
             return redirect()->route('strategies.index')
-            ->with('status', 'Strategy has been successfully deleted.');
+                ->with('status', 'Strategy has been successfully deleted.');
         }
 
         $strategy->delete();
@@ -88,5 +85,4 @@ class StrategyController extends Controller
         return redirect()->route('strategies.index')->with('status', 'Strategy has been successfully deleted.');
 
     }
-
 }

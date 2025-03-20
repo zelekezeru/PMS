@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\KpiStoreRequest;
 use App\Http\Requests\KpiUpdateRequest;
 use App\Models\Kpi;
-use App\Models\Task;
 use App\Models\Target;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,7 +45,7 @@ class KpiController extends Controller
         Kpi::create($request->validated());
         if ($request['task_id']) {
             return redirect()->route('tasks.show', $request['task_id'])->with('success', 'KPI created successfully.');
-        } else if ($request['target_id']) {
+        } elseif ($request['target_id']) {
             return redirect()->route('targets.show', $request['target_id'])->with('success', 'KPI created successfully.');
         }
 
@@ -59,14 +59,11 @@ class KpiController extends Controller
 
     public function edit(Kpi $kpi)
     {
-        if($kpi->task_id != null)
-        {
+        if ($kpi->task_id != null) {
             $task = Task::where('id', $kpi->task_id)->first();
 
             $target = null;
-        }
-        elseif($kpi->target_id != null)
-        {
+        } elseif ($kpi->target_id != null) {
             $target = Target::where('id', $kpi->target_id)->first();
 
             $task = null;
@@ -81,9 +78,10 @@ class KpiController extends Controller
 
         if ($request['task_id']) {
             return redirect()->route('tasks.show', $request['task_id'])->with('success', 'KPI created successfully.');
-        } else if ($request['target_id']) {
+        } elseif ($request['target_id']) {
             return redirect()->route('targets.show', $request['target_id'])->with('success', 'KPI created successfully.');
         }
+
         return redirect()->route('tasks.show', $request['task_id'])->with('success', 'KPI created successfully.');
     }
 
@@ -95,7 +93,7 @@ class KpiController extends Controller
 
         if ($kpi->task_id != null) {
             return redirect()->route('tasks.show', $task_kpi)->with('success', 'KPI created successfully.');
-        } else if ($kpi->target_id != null) {
+        } elseif ($kpi->target_id != null) {
             return redirect()->route('targets.show', $task_kpi)->with('success', 'KPI created successfully.');
         }
 
@@ -117,10 +115,10 @@ class KpiController extends Controller
 
             return redirect()->route('tasks.show', $kpi->task_id)->with('success', 'KPI Approved successfully.');
 
-        } else if ($kpi->target_id != null) {
+        } elseif ($kpi->target_id != null) {
 
             return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Approved successfully.');
-            
+
         }
     }
 
@@ -133,10 +131,9 @@ class KpiController extends Controller
         $kpi->confirmed_by = Auth::user()->id;
         $kpi->save();
 
-
         if ($kpi->task_id != null) {
             return redirect()->route('tasks.show', $kpi->task_id)->with('success', 'KPI Confirmed successfully.');
-        } else if ($kpi->target_id != null) {
+        } elseif ($kpi->target_id != null) {
             return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Confirmed successfully.');
         }
     }
@@ -152,7 +149,7 @@ class KpiController extends Controller
 
         if ($kpi->task_id != null) {
             return redirect()->route('tasks.show', $kpi->task_id)->with('success', 'KPI Confirmed successfully.');
-        } else if ($kpi->target_id != null) {
+        } elseif ($kpi->target_id != null) {
             return redirect()->route('targets.show', $kpi->target_id)->with('success', 'KPI Confirmed successfully.');
         }
     }

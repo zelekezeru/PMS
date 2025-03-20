@@ -20,9 +20,9 @@ class DepartmentUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'department_name' => 'required|string|max:255|unique:departments,department_name,' . $this->department->id,
+            'department_name' => 'required|string|max:255|unique:departments,department_name,'.$this->department->id,
             'description' => 'string|max:255|sometimes',
-            'department_head' => 'sometimes'
+            'department_head' => 'sometimes',
         ];
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::dropIfExists('deliverables');
-        
+
         Schema::create('deliverables', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fortnight_id')->constrained()->onDelete('cascade');

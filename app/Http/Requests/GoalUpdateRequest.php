@@ -24,7 +24,7 @@ class GoalUpdateRequest extends FormRequest
         return [
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|nullable|string|max:255',
-            'strategy_id' => 'sometimes|required|exists:strategies,id'
+            'strategy_id' => 'sometimes|required|exists:strategies,id',
         ];
     }
 }
