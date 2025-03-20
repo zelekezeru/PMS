@@ -13,7 +13,7 @@ class Feedback extends Model
         'task_id',
         'user_id',
         'feedback_id',
-        'comment'
+        'comment',
     ];
 
     // Relationship: A feedback belongs to a task

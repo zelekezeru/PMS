@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
-use App\Models\Department;
-use App\Models\User;
-use App\Models\Target;
-use App\Models\TaskSummary;
-use App\Models\Fortnight;
-use App\Models\TaskKpiSummary;
-use Illuminate\Http\Request;
 use App\Http\Requests\ReportStoreRequest;
-use App\Http\Requests\ReportUpdateRequest;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Department;
+use App\Models\Fortnight;
+use App\Models\Report;
+use App\Models\Target;
+use App\Models\TaskKpiSummary;
+use App\Models\TaskSummary;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     // Display a listing of the reports with filters
     public function index(Request $request)
     {
-        
+
         $query = Report::query();
 
         // Apply filters if provided
@@ -40,11 +38,11 @@ class ReportController extends Controller
         }
 
         if ($request->has('schedule') && $request->schedule != '') {
-            $query->where('schedule', 'like', '%' . $request->schedule . '%');
+            $query->where('schedule', 'like', '%'.$request->schedule.'%');
         }
 
         $reports = $query->paginate(15);
-        
+
         $departments = Department::all();
 
         $users = User::all();
@@ -76,26 +74,23 @@ class ReportController extends Controller
     {
         $data = $request->validated();
 
-        if($request->has('fortnight_id'))
-        {
+        if ($request->has('fortnight_id')) {
             $data['fortnight_id'] = $request->fortnight_id;
 
             $fortnight = Fortnight::findOrFail($request->fortnight_id);
         }
 
-        if($request->has('user_id'))
-        {
+        if ($request->has('user_id')) {
             $data['user_id'] = $request->user_id;
 
             $users = User::whereIn('id', $request->user_id)->get();
-            
+
             // Calculate tasks for each user and department
-            foreach($users as $user)
-            {
+            foreach ($users as $user) {
                 $tasks = $user->tasks->where('created_at', '>=', $fortnight->start_date)->where('created_at', '<=', $fortnight->end_date);
-                
+
                 $user_tasks = $this->calculate_tasks($tasks, $user)->getData();
-                
+
                 $report_data = [
                     'start_date' => $request->start_date ?? $fortnight->start_date,
                     'end_date' => $request->end_date ?? $fortnight->end_date,
@@ -106,7 +101,7 @@ class ReportController extends Controller
                 ];
 
                 $report = Report::create($report_data);
-                
+
                 TaskSummary::create([
                     'report_id' => $report->id,
                     'all_tasks' => $user_tasks->taskSummary->all_tasks,
@@ -127,14 +122,12 @@ class ReportController extends Controller
             }
         }
 
-        if($request->has('department_id'))
-        {
+        if ($request->has('department_id')) {
             $data['department_id'] = $request->department_id;
 
             $departments = Department::whereIn('id', $request->department_id)->get();
-        
-            foreach($departments as $department)
-            {
+
+            foreach ($departments as $department) {
                 $tasks = $department->tasks->where('created_at', '>=', $fortnight->start_date)->where('created_at', '<=', $fortnight->end_date);
 
                 $department_tasks = $this->calculate_tasks($tasks, $department)->getData();
@@ -151,7 +144,7 @@ class ReportController extends Controller
                     'fortnight_id' => $request->fortnight_id,
                     'created_by' => auth()->id(),
                 ];
-                
+
                 $report = Report::create($report_data);
 
                 TaskSummary::create([
@@ -224,7 +217,7 @@ class ReportController extends Controller
     }
 
     public function calculate_tasks($tasks, $component)
-    {        
+    {
         // Group and count task statuses
         $taskCounts = $tasks->groupBy('status')->map->count();
 
@@ -236,8 +229,7 @@ class ReportController extends Controller
         ];
 
         // count the Kpis for each task
-        foreach($tasks as $task)
-        {
+        foreach ($tasks as $task) {
             $kpis = collect($task->kpis);
 
             // Group and count KPI statuses for each task
@@ -250,15 +242,15 @@ class ReportController extends Controller
                 'progress_kpis' => $kpiCounts->get('Progress', 0),
                 'completed_kpis' => $kpiCounts->get('Completed', 0),
             ];
-            
+
             // Initialize the array if not already initialized
-            if (!isset($taskKpiSummaries)) {
+            if (! isset($taskKpiSummaries)) {
                 $taskKpiSummaries = [];
             }
 
             // Store the KPI summary for each task
             $taskKpiSummaries[$task->id] = $kpiSummary;
-            
+
         }
 
         // Return data as JSON or pass it to a view
@@ -266,7 +258,6 @@ class ReportController extends Controller
             'taskSummary' => $taskSummary,
             'task_kpi_summaries' => $taskKpiSummaries,
         ]);
-                
-    }
 
+    }
 }

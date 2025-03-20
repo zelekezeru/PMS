@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Fortnight extends Model
 {
@@ -14,7 +14,6 @@ class Fortnight extends Model
         'start_date',
         'end_date',
     ];
-
 
     public function quarter()
     {

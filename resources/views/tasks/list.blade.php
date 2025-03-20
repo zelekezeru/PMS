@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('tasks.index') }}" method="GET">
+            <form action="{{ url(request()->path()) }}" method="GET">
                 <div class="row mb-3">
                     <div class="col-md-4">
                         
@@ -68,12 +68,12 @@
                                     Title
                                     <div class="d-flex flex-column align-items-center">
                                         <div>
-                                            <a href="{{ route('tasks.index', array_merge(request()->query(), ['order' => 'asc'])) }}">
+                                            <a href="{{ url(request()->path(), array_merge(request()->query(), ['order' => 'asc'])) }}">
                                                 <i class="fa fa-sort-up"></i>
                                             </a>
                                         </div>
                                         <div>
-                                            <a href="{{ route('tasks.index', array_merge(request()->query(), ['order' => 'desc'])) }}">
+                                            <a href="{{ url(request()->path(), array_merge(request()->query(), ['order' => 'desc'])) }}">
                                                 <i class="fa fa-sort-down"></i>
                                             </a>
                                         </div>

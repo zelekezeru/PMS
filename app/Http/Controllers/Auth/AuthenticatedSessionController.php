@@ -18,6 +18,7 @@ class AuthenticatedSessionController extends Controller
     public function create(): View
     {
         $status = session('status') ?? null;
+
         return view('auth.login', compact('status'));
     }
 
@@ -31,7 +32,6 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->authenticate();
-        
 
         $request->session()->regenerate();
 

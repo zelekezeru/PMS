@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
+use App\Mail\ApproveConfirmed;
 use App\Models\Department;
 use App\Models\User;
+use App\Services\FilterTasksService;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ApproveConfirmed;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -26,7 +24,7 @@ class UserController extends Controller
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
             $department = request()->user()->department;
             $users = $department->users()->paginate(25);
-            
+
         } else {
             $users = User::paginate(25);
         }
@@ -48,7 +46,7 @@ class UserController extends Controller
     public function approve(Request $request)
     {
         $request->validate([
-            'approve' => 'required'
+            'approve' => 'required',
         ]);
 
         foreach ($request->approve as $key => $value) {
@@ -60,7 +58,7 @@ class UserController extends Controller
             $user->is_active = true;
 
             $user->save();
-        };
+        }
 
         return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
@@ -70,16 +68,15 @@ class UserController extends Controller
         $user->is_approved = true;
         $user->is_active = true;
         $user->save();
-    
+
         // Generate the login link
         $loginLink = route('login');
-    
+
         // Send the approval email with the login link
         Mail::to($user->email)->send(new ApproveConfirmed($loginLink));
-    
+
         return redirect()->route('users.index')->with('status', 'User has been successfully Approved.');
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -112,7 +109,6 @@ class UserController extends Controller
         $user = User::create($data);
         $user->assignRole('EMPLOYEE');
 
-
         if ($data['is_approved']) {
             return redirect()->route('users.index')->with('status', 'User has been successfully created.');
         }
@@ -120,22 +116,28 @@ class UserController extends Controller
         return redirect()->route('users.waiting')->with('status', 'User has been successfully created.');
     }
 
-
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $user = User::find($id)->load('tasks', 'department');
-        if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
+        if ($user->hasRole('SUPER_ADMIN') && ! request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
-
-        $tasks = $user->tasks()->paginate(15);
-
+        
         $department = $user->department;
+        $tasks = $user->tasks();
 
-        if (!$user) {
+        // Check tasks index and also the Service to understand how this functions work
+        $filterTasksService = new FilterTasksService();
+        
+        [$tasks] = $filterTasksService->filterByScope($tasks, $request);
+        $tasks = $filterTasksService->filterByColumns($tasks, $request);
+        $tasks = $tasks->paginate(15);
+        
+
+        if (! $user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
 
@@ -147,7 +149,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if ($user->hasRole('SUPER_ADMIN') && !request()->user()->hasRole('SUPER_ADMIN')) {
+        if ($user->hasRole('SUPER_ADMIN') && ! request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
 
@@ -179,13 +181,11 @@ class UserController extends Controller
             }
 
             // Prevent a user from being assigned to multiple departments as head
-            else if ($user->headOf()->exists()) {
+            elseif ($user->headOf()->exists()) {
                 return redirect()->back()->withErrors([
-                    'department_id' => 'The User is already a department head of "' . $user->headOf->department_name . '".'
+                    'department_id' => 'The User is already a department head of "'.$user->headOf->department_name.'".',
                 ])->withInput();
-            } 
-
-            else {
+            } else {
                 // Find the department
                 $department = Department::find($data['department_id']);
 
@@ -210,7 +210,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        if (!empty($data['role_id'])) {
+        if (! empty($data['role_id'])) {
 
             $user->roles()->detach();
 
@@ -227,25 +227,22 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->hasRole('SUPER_ADMIN') ) {
+        if ($user->hasRole('SUPER_ADMIN')) {
             return redirect()->route('users.index')->with('status', 'not-allowed.');
         }
 
-        if ($user->department()->exists() ) {
+        if ($user->department()->exists()) {
 
             $department = $user->department;
 
-            if($user->id == $department->department_head)
-            {
+            if ($user->id == $department->department_head) {
                 return redirect()->route('users.index')
-                ->with('related', 'Item-related');
+                    ->with('related', 'Item-related');
             }
 
-        }
-        elseif($user->tasks()->exists())
-        {
+        } elseif ($user->tasks()->exists()) {
             return redirect()->route('users.index')
-            ->with('related', 'Item-related');
+                ->with('related', 'Item-related');
 
         }
 

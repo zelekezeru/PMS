@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -56,10 +54,10 @@ class PermissionSeeder extends Seeder
 
             if ($role === 'SUPER_ADMIN') {
                 $roleRow->syncPermissions(Permission::all());
-            } else if ($role === 'ADMIN') {
+            } elseif ($role === 'ADMIN') {
                 $adminPermissions = array_values(array_diff($permissions, []));
                 $roleRow->syncPermissions($adminPermissions);
-            } else if ($role === 'DEPARTMENT_HEAD') {
+            } elseif ($role === 'DEPARTMENT_HEAD') {
                 $headPermissions = array_values(array_diff($permissions, [
                     'create-users', 'edit-users', 'delete-users', 'approve-users', 'view-waiting-users',
                     'create-strategies', 'edit-strategies', 'delete-strategies',
@@ -77,7 +75,7 @@ class PermissionSeeder extends Seeder
             } else {
 
                 $employeeRoles = array_values(array_diff($permissions, [
-                    'view-users','view-department-users', 'create-users', 'edit-users', 'delete-users', 'approve-users', 'view-waiting-users',
+                    'view-users', 'view-department-users', 'create-users', 'edit-users', 'delete-users', 'approve-users', 'view-waiting-users',
                     'create-strategies', 'edit-strategies', 'delete-strategies',
                     'create-targets', 'edit-targets', 'delete-targets',
                     'create-goals', 'edit-goals', 'delete-goals',

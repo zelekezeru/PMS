@@ -1,27 +1,24 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Spatie\Permission\Middleware\RoleMiddleware;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StrategyController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\TargetController;
-use App\Http\Controllers\GoalController;
-use App\Http\Controllers\DeliverableController;
-use App\Http\Controllers\YearController;
-use App\Http\Controllers\QuarterController;
-use App\Http\Controllers\FortnightController;
-use App\Http\Controllers\WeekController;
 use App\Http\Controllers\DayController;
+use App\Http\Controllers\DeliverableController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\FortnightController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KpiController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuarterController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StrategyController;
+use App\Http\Controllers\TargetController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Middleware\IsApprovedMiddleware;
-use App\Models\Feedback;
+use App\Http\Controllers\WeekController;
+use App\Http\Controllers\YearController;
+use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Dashboard Route
@@ -35,23 +32,22 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/upload', [ProfileController::class, 'uploadProfileImage'])->name('profile.uploadProfileImage');
 });
 
-
 // Resource Routes
 Route::middleware('auth')->group(function () {
 
-    //Routes Accessible for SUPER_ADMIN, ADMIN
+    // Routes Accessible for SUPER_ADMIN, ADMIN
     Route::middleware('role:SUPER_ADMIN|ADMIN')->group(function () {
         Route::get('users/waiting-approval', [UserController::class, 'waitingApproval'])->name('users.waiting');
 
-        //User Approval
+        // User Approval
         Route::patch('users/approve', [UserController::class, 'approve'])->name('users.approve');
         Route::get('users/{user}/approve', [UserController::class, 'approved'])->name('users.approved');
 
-        //KPI Approval & Confirmation
+        // KPI Approval & Confirmation
         Route::get('kpis/{kpi}/confirm', [KpiController::class, 'confirm'])->name('kpis.confirm');
         Route::get('tasks/{task}/confirm', [TaskController::class, 'confirm'])->name('tasks.confirm');
 
-        //Resource Routes
+        // Resource Routes
         Route::resource('users', UserController::class)->only('create', 'store', 'edit', 'update', 'destroy');
 
         Route::resource('strategies', StrategyController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
@@ -69,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:SUPER_ADMIN|ADMIN|DEPARTMENT_HEAD')->group(function () {
         Route::resource('users', UserController::class)->only('index', 'show');
 
-        //KPI Approval & Confirmation
+        // KPI Approval & Confirmation
         Route::get('kpis/{kpi}/approve', [KpiController::class, 'approve'])->name('kpis.approve');
         Route::get('tasks/{task}/approve', [TaskController::class, 'approve'])->name('tasks.approve');
 
@@ -94,7 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('kpis', KpiController::class);
 
     Route::get('feedbacks/{taskId}', [FeedbackController::class, 'taskFeedbacks'])->name('taskFeedbacks');
-    //KPI
+    // KPI
     Route::get('kpis/create_target/{target}', [KpiController::class, 'create_target'])->name('kpis.create_target');
     Route::get('kpis/create_task/{task}', [KpiController::class, 'create_task'])->name('kpis.create_task');
     Route::put('/kpis/{kpi}/status', [KpiController::class, 'updateStatus'])->name('kpis.status');

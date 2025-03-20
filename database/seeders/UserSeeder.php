@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +25,7 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => '2025-02-01 08:18:17',
                 'updated_at' => '2025-02-03 08:52:30',
-                'department_id' => 1
+                'department_id' => 1,
             ],
             [
                 'id' => 2,
@@ -40,7 +39,7 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => '2025-02-01 18:08:31',
                 'updated_at' => '2025-02-02 10:14:08',
-                'department_id' => 2
+                'department_id' => 2,
             ],
             [
                 'id' => 3,
@@ -68,7 +67,7 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => '2025-02-01 08:15:25',
                 'updated_at' => '2025-02-01 08:15:25',
-                'department_id' => 4
+                'department_id' => 4,
             ],
             [
                 'id' => 5,
@@ -110,10 +109,9 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => '2025-02-01 09:40:08',
                 'updated_at' => '2025-02-01 09:41:46',
-                'department_id' => null
+                'department_id' => null,
             ],
         ]);
-
 
     }
 }

@@ -24,7 +24,7 @@ class GoalStoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
-            'strategy_id' => 'required|exists:strategies,id'
+            'strategy_id' => 'required|exists:strategies,id',
         ];
     }
 }

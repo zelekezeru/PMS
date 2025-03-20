@@ -19,11 +19,9 @@ class QuarterController extends Controller
     {
         $years = Year::get();
 
-        if(count($years) == 0)
-        {
+        if (count($years) == 0) {
             return redirect()->route('quarters.index')->with('status', 'parent');
-        }
-        else{
+        } else {
 
             return view('quarters.create', compact('years'));
         }
@@ -49,6 +47,7 @@ class QuarterController extends Controller
     public function edit(Quarter $quarter)
     {
         $years = Year::get();
+
         return view('quarters.edit', compact('quarter', 'years'));
     }
 
@@ -66,12 +65,10 @@ class QuarterController extends Controller
 
     public function destroy(Quarter $quarter)
     {
-        if($quarter->fortnights()->exists())
-        {
+        if ($quarter->fortnights()->exists()) {
             return redirect()->route('quarters.index')
-            ->with('related', 'Item-related');
-        }
-        else{
+                ->with('related', 'Item-related');
+        } else {
             $quarter->delete();
 
             return redirect()->route('quarters.index')->with('status', 'Quarter has been successfully Deleted.');

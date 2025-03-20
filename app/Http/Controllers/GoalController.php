@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Goal;
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\GoalStoreRequest;
 use App\Http\Requests\GoalUpdateRequest;
+use App\Models\Goal;
 use App\Models\Strategy;
-use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class GoalController extends Controller
 {
@@ -72,10 +70,9 @@ class GoalController extends Controller
 
     public function destroy(Goal $goal)
     {
-        if($goal->targets()->exists())
-        {
+        if ($goal->targets()->exists()) {
             return redirect()->route('goals.index')
-            ->with('status', 'Goal has been successfully Deleted.');
+                ->with('status', 'Goal has been successfully Deleted.');
         }
 
         $goal->delete();

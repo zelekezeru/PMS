@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('strategies', function (Blueprint $table) {
             $table->id();
             $table->string('pillar_name');
-            $table->string('name');   
-            $table->string('description');   
+            $table->string('name');
+            $table->string('description');
             $table->timestamps(0);
         });
     }

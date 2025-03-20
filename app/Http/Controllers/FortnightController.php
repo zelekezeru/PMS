@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fortnight;
 use App\Models\Quarter;
 use App\Models\Task;
+use App\Services\FilterTasksService;
 use Illuminate\Http\Request;
 
 class FortnightController extends Controller
@@ -22,11 +23,9 @@ class FortnightController extends Controller
     {
         $quarters = Quarter::with('year')->get();
 
-        if(count($quarters) == 0)
-        {
+        if (count($quarters) == 0) {
             return redirect()->route('fortnights.index')->with('status', 'parent');
-        }
-        else{
+        } else {
 
             return view('fortnights.create', compact('quarters'));
         }
@@ -48,35 +47,36 @@ class FortnightController extends Controller
     }
 
     // Display the specified fortnight
-    public function show(Fortnight $fortnight)
+    public function show(Fortnight $fortnight, Request $request)
     {
         $fortnight->load('tasks', 'deliverables');
 
         $deliverables = $fortnight->deliverables()->paginate(15);
 
-        if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-            {
-                $tasks = Task::with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
-                    $query->where('fortnights.id', $fortnight->id);
-                })->paginate(15);
-            }
+        if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN'])) {
+            $tasks = Task::with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
+                $query->where('fortnights.id', $fortnight->id);
+            });
+        } elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
+            $headOf = request()->user()->load('headOf')->headOf;
+
+            $tasks = $headOf ? $headOf->tasks()->whereHas('fortnights', function ($query) use ($fortnight) {
+                $query->where('fortnights.id', $fortnight->id);
+            }) : Task::query();
+        } elseif (request()->user()->hasRole('EMPLOYEE')) {
+            $tasks = request()->user()->tasks()->with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
+                $query->where('fortnights.id', $fortnight->id);
+            });
+        }
+
         
-        elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD']))
-            {
-                $headOf = request()->user()->load('headOf')->headOf;
+        // Check tasks index and also the Service to understand how this functions work
+        $filterTasksService = new FilterTasksService();
+        
+        [$tasks] = $filterTasksService->filterByScope($tasks, $request);
+        $tasks = $filterTasksService->filterByColumns($tasks, $request);
+        $tasks = $tasks->paginate(15);
 
-                $tasks = $headOf ? $headOf->tasks()->whereHas('fortnights', function ($query) use ($fortnight) {
-                    $query->where('fortnights.id', $fortnight->id);
-                })->paginate(15) : Task::query()->paginate(15);
-            }
-
-        elseif (request()->user()->hasRole('EMPLOYEE'))
-            {
-                $tasks = request()->user()->tasks()->with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
-                    $query->where('fortnights.id', $fortnight->id);
-                })->paginate(15);
-            }       
-            
         return view('fortnights.show', compact('fortnight', 'deliverables', 'tasks'));
     }
 
@@ -84,6 +84,7 @@ class FortnightController extends Controller
     public function edit(Fortnight $fortnight)
     {
         $quarters = Quarter::with('year')->get();
+
         return view('fortnights.edit', compact('fortnight', 'quarters'));
     }
 
@@ -104,12 +105,10 @@ class FortnightController extends Controller
     // Remove the specified fortnight from the database
     public function destroy(Fortnight $fortnight)
     {
-        if($fortnight->tasks()->exists() || $fortnight->days()->exists())
-        {
+        if ($fortnight->tasks()->exists() || $fortnight->days()->exists()) {
             return redirect()->route('fortnights.index')
-            ->with('related', 'Item-related');
-        }
-        else{
+                ->with('related', 'Item-related');
+        } else {
             $fortnight->delete();
 
             return redirect()->route('fortnights.index')->with('status', 'Fortnight has been successfully Deleted.');

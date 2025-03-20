@@ -38,6 +38,7 @@ class ProfileController extends Controller
         // Flash status to session
         return Redirect::route('profile.edit')->with('status', 'Profile has been successfully Updated.');
     }
+
     /**
      * Upload the user's profile image.
      */

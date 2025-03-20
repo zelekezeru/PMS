@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Fortnight;
 use App\Models\Home;
 use App\Models\Strategy;
 use App\Models\Task;
-use App\Models\Report;
-use App\Models\Year;
-use App\Models\Fortnight;
 use App\Models\User;
+use App\Models\Year;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,32 +27,27 @@ class HomeController extends Controller
 
         $user = Auth::user();
 
-        if(request()->user()->hasAnyRole(['EMPLOYEE']))
-        {
+        if (request()->user()->hasAnyRole(['EMPLOYEE'])) {
             $departments = null;
 
             $users = null;
 
             $tasks = $user->tasks;
-        }
-        
-        elseif(request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
+        } elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
 
             $department = request()->user()->load('headOf')->headOf;
 
-                $departmentTasks = $department->tasks;
+            $departmentTasks = $department->tasks;
 
-                $departmentTasks = request()->user()->tasks;
+            $departmentTasks = request()->user()->tasks;
 
-                $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
+            $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
 
-                $users = $department->users;
-            
+            $users = $department->users;
+
             $departments = null;
-            
-        }
-        elseif(request()->user()->hasAnyRole(['SUPER_ADMIN']) || request()->user()->hasAnyRole(['ADMIN']))
-        {
+
+        } elseif (request()->user()->hasAnyRole(['SUPER_ADMIN']) || request()->user()->hasAnyRole(['ADMIN'])) {
             $departments = Department::get();
 
             $users = User::get();
@@ -64,7 +58,7 @@ class HomeController extends Controller
         $pendingTasks = $tasks->where('status', 'Pending')->count();
 
         $inProgressTasks = $tasks->where('status', 'Progress')->count();
-     
+
         $completedTasks = $tasks->where('status', 'Completed')->count();
 
         return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users', 'pendingTasks', 'inProgressTasks', 'completedTasks'));

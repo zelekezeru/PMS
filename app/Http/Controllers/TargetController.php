@@ -2,33 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\TargetStoreRequest;
 use App\Http\Requests\TargetUpdateRequest;
-use App\Models\Goal;
-use App\Models\Target;
-use App\Models\Kpi;
 use App\Models\Department;
-use Illuminate\View\View;
+use App\Models\Goal;
+use App\Models\Kpi;
+use App\Models\Target;
+use Illuminate\Http\Request;
 
 class TargetController extends Controller
 {
     public function index(Request $request)
     {
         $query = Target::with(['goal', 'departments']);
-    
-        if ($request->has('goal_id') && !empty($request->goal_id)) {
+
+        if ($request->has('goal_id') && ! empty($request->goal_id)) {
             $query->where('goal_id', $request->goal_id);
         }
-    
+
         $targets = $query->paginate(15);
-    
+
         $goals = Goal::with(['targets'])->get();
-    
+
         return view('targets.index', compact('targets', 'goals'));
     }
-    
 
     public function create()
     {
@@ -57,6 +54,7 @@ class TargetController extends Controller
     public function show(Target $target)
     {
         $target->load('kpi');
+
         return view('targets.show', compact('target'));
     }
 
@@ -86,10 +84,9 @@ class TargetController extends Controller
 
     public function destroy(Target $target)
     {
-        if($target->tasks()->exists() || $target->departments()->exists() || $target->year()->exists() || $target->kpi()->exists())
-        {
+        if ($target->tasks()->exists() || $target->departments()->exists() || $target->year()->exists() || $target->kpi()->exists()) {
             return redirect()->route('targets.index')
-            ->with('related', 'target-deleted');
+                ->with('related', 'target-deleted');
         }
         $target->delete();
 
