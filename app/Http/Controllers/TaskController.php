@@ -40,7 +40,7 @@ class TaskController extends Controller
         /**
          * Filter by tasks by scopes
          * Scopes refer to how long the task takes to complete...(for today, for this(current) fortnight)
-         * 
+         *
          * the filterByScope method in the service class also returns check app/Services/FilterTasksService.php to understand more
          */
         [$tasks, $currentFortnight] = $filterTasksService->filterByScope($tasks, $request);
