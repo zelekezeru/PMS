@@ -125,17 +125,16 @@ class UserController extends Controller
         if ($user->hasRole('SUPER_ADMIN') && ! request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
-        
+
         $department = $user->department;
         $tasks = $user->tasks();
 
         // Check tasks index and also the Service to understand how this functions work
-        $filterTasksService = new FilterTasksService();
-        
+        $filterTasksService = new FilterTasksService;
+
         [$tasks] = $filterTasksService->filterByScope($tasks, $request);
         $tasks = $filterTasksService->filterByColumns($tasks, $request);
         $tasks = $tasks->paginate(15);
-        
 
         if (! $user) {
             return redirect()->route('users.index')->with('error', 'User not found.');

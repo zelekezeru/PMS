@@ -69,10 +69,9 @@ class FortnightController extends Controller
             });
         }
 
-        
         // Check tasks index and also the Service to understand how this functions work
-        $filterTasksService = new FilterTasksService();
-        
+        $filterTasksService = new FilterTasksService;
+
         [$tasks] = $filterTasksService->filterByScope($tasks, $request);
         $tasks = $filterTasksService->filterByColumns($tasks, $request);
         $tasks = $tasks->paginate(15);
