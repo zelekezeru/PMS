@@ -7,6 +7,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Mail\ApproveConfirmed;
 use App\Models\Department;
 use App\Models\User;
+use App\Services\FilterTasksService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -118,17 +119,23 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $user = User::find($id)->load('tasks', 'department');
         if ($user->hasRole('SUPER_ADMIN') && ! request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
-
-        $tasks = $user->tasks();
- 
-
+        
         $department = $user->department;
+        $tasks = $user->tasks();
+
+        // Check tasks index and also the Service to understand how this functions work
+        $filterTasksService = new FilterTasksService();
+        
+        [$tasks] = $filterTasksService->filterByScope($tasks, $request);
+        $tasks = $filterTasksService->filterByColumns($tasks, $request);
+        $tasks = $tasks->paginate(15);
+        
 
         if (! $user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
