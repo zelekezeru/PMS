@@ -15,6 +15,14 @@ class Fortnight extends Model
         'end_date',
     ];
 
+    public static function currentFortnight()
+    {
+        $today = now()->toDateString(); // More concise than Carbon::today()->format('Y-m-d')
+        return self::whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->first();
+    }
+
     public function quarter()
     {
         return $this->belongsTo(Quarter::class);
