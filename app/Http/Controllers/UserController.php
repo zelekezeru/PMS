@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Mail\ApproveConfirmed;
+use App\Models\Day;
 use App\Models\Department;
+use App\Models\Fortnight;
 use App\Models\User;
 use App\Services\FilterTasksService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -24,7 +27,6 @@ class UserController extends Controller
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
             $department = request()->user()->department;
             $users = $department->users()->paginate(25);
-
         } else {
             $users = User::paginate(25);
         }
@@ -125,6 +127,36 @@ class UserController extends Controller
         if ($user->hasRole('SUPER_ADMIN') && ! request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
+        $day = Day::where('date', Carbon::today()->format('Y-m-d'))->first();
+        $fortnight =  Fortnight::whereDate('start_date', '<=', Carbon::today()->format('Y-m-d'))->whereDate('end_date', '>=', Carbon::today()->format('Y-m-d'))->first();
+
+        $allPendingTasks = $user->tasks()->where('status', 'Pending')->count();
+        $allInProgressTasks = $user->tasks()->where('status', 'Progress')->count();
+        $allCompletedTasks = $user->tasks()->where('status', 'Completed')->count();
+
+        $fortnightPendingTasks = $user->tasks()->where('status', 'Pending')->whereHas('fortnights', function ($query) use ($fortnight) {
+            $query->where('fortnights.id', $fortnight->id);
+        })->count();
+
+        $fortnightInProgressTasks = $user->tasks()->where('status', 'Progress')->whereHas('fortnights', function ($query) use ($fortnight) {
+            $query->where('fortnights.id', $fortnight->id);
+        })->count();
+
+        $fortnightCompletedTasks = $user->tasks()->where('status', 'Completed')->whereHas('fortnights', function ($query) use ($fortnight) {
+            $query->where('fortnights.id', $fortnight->id);
+        })->count();
+
+        $dailyPendingTasks = $user->tasks()->where('status', 'Pending')->whereHas('days', function ($query) use ($day) {
+            $query->where('days.id', $day->id);
+        })->count();
+
+        $dailyInProgressTasks = $user->tasks()->where('status', 'Progress')->whereHas('days', function ($query) use ($day) {
+            $query->where('days.id', $day->id);
+        })->count();
+
+        $dailyCompletedTasks = $user->tasks()->where('status', 'Completed')->whereHas('days', function ($query) use ($day) {
+            $query->where('days.id', $day->id);
+        })->count();
 
         $department = $user->department;
         $tasks = $user->tasks();
@@ -140,7 +172,7 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
 
-        return view('users.show', compact('user', 'tasks', 'department'));
+        return view('users.show', compact('user', 'tasks', 'department', 'allPendingTasks', 'allInProgressTasks', 'allCompletedTasks', 'fortnightPendingTasks', 'fortnightInProgressTasks', 'fortnightCompletedTasks', 'dailyPendingTasks', 'dailyInProgressTasks', 'dailyCompletedTasks'));
     }
 
     /**
@@ -182,7 +214,7 @@ class UserController extends Controller
             // Prevent a user from being assigned to multiple departments as head
             elseif ($user->headOf()->exists()) {
                 return redirect()->back()->withErrors([
-                    'department_id' => 'The User is already a department head of "'.$user->headOf->department_name.'".',
+                    'department_id' => 'The User is already a department head of "' . $user->headOf->department_name . '".',
                 ])->withInput();
             } else {
                 // Find the department
@@ -238,16 +270,13 @@ class UserController extends Controller
                 return redirect()->route('users.index')
                     ->with('related', 'Item-related');
             }
-
         } elseif ($user->tasks()->exists()) {
             return redirect()->route('users.index')
                 ->with('related', 'Item-related');
-
         }
 
         $user->delete();
 
         return redirect()->route('users.index')->with('status', 'User has been successfully Removed.');
-
     }
 }
