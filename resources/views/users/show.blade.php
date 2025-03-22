@@ -107,10 +107,16 @@
     
 <!-- Charts Section -->
 <div class="row mt-4">
+
+    <!-- Today's Performance -->
     <div class="col-12 col-md-6 col-lg-4 mb-4">
         <div class="card h-100">
-            <div class="card-header">
-                <h5>Today's Performance</h5>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ request()->query('date') ? \Carbon\Carbon::parse(request()->query('date'))->format('M j') : 'Today\'s' }} Performance</h5>
+                <form action="" method="get">
+                    <input type="date" value="{{ request()->query('date') ? request()->query('date') : \Carbon\Carbon::today()->format('Y-m-d') }}" onchange="getElementById('dateSelectorBtn').click()" class="form-control form-control-sm w-auto" id="today-date" name="date">
+                    <button type="submit" id="dateSelectorBtn" hidden></button>
+                </form>
             </div>
             <div class="card-body d-flex justify-content-center align-items-center">
                 <canvas id="dailyTasksChart" style="max-width: 100%; height: auto;"></canvas>
@@ -118,10 +124,20 @@
         </div>
     </div>
 
+    <!-- Fortnight Performance -->
     <div class="col-12 col-md-6 col-lg-4 mb-4">
         <div class="card h-100">
-            <div class="card-header">
-                <h5>This Fortnight Performance</h5>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ $fortnight ? \Carbon\Carbon::parse($fortnight->start_date)->format('M j') .' - '. \Carbon\Carbon::parse($fortnight->end_date)->format('M j') : 'This Fortnight' }} Performance</h5>
+                <form action="" method="get">
+                    <select name="fortnight" onchange="getElementById('fortnightSelectorBtn').click()" class="form-select form-select-sm w-auto text-truncate" id="fortnight-filter" style="max-width: 130px;" id="fortnight-filter">
+                        <option value="">This Fortnight</option>
+                        @foreach ($fortnights as $fortnight)
+                            <option {{ request()->query('fortnight') && request()->query('fortnight') == $fortnight->id ? 'selected' : '' }} value="{{ $fortnight->id }}"> {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M j') }} - {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M j') }} </option>                                
+                        @endforeach
+                    </select>
+                    <button type="submit" id="fortnightSelectorBtn" hidden></button>
+                </form>
             </div>
             <div class="card-body d-flex justify-content-center align-items-center">
                 <canvas id="fortnightTasksChart" style="max-width: 100%; height: auto;"></canvas>
@@ -129,7 +145,8 @@
         </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4 mb-4">
+    <!-- General Performance -->
+    <div class="col-12 col-md-6 col-lg-4 mb-4 m-auto">
         <div class="card h-100">
             <div class="card-header">
                 <h5>General Performance</h5>
@@ -140,6 +157,52 @@
         </div>
     </div>
 </div>
+
+<!-- Performance Summary Table -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0">Task Summary Table</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Period</th>
+                        <th>Pending</th>
+                        <th>In Progress</th>
+                        <th>Completed</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ request()->query('date') ? \Carbon\Carbon::parse(request()->query('date'))->format('M j') : 'Today\'s' }}</td>
+                        <td>{{ $dailyPendingTasks }}</td>
+                        <td>{{ $dailyInProgressTasks }}</td>
+                        <td>{{ $dailyCompletedTasks }}</td>
+                        <td>{{ $dailyPendingTasks + $dailyInProgressTasks + $dailyCompletedTasks }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $fortnight ? \Carbon\Carbon::parse($fortnight->start_date)->format('M j') .' - '. \Carbon\Carbon::parse($fortnight->end_date)->format('M j') : 'This Fortnight' }} Fortnight</td>
+                        <td>{{ $fortnightPendingTasks }}</td>
+                        <td>{{ $fortnightInProgressTasks }}</td>
+                        <td>{{ $fortnightCompletedTasks }}</td>
+                        <td>{{ $fortnightPendingTasks + $fortnightInProgressTasks + $fortnightCompletedTasks }}</td>
+                    </tr>
+                    <tr>
+                        <td>All Time</td>
+                        <td>{{ $allPendingTasks }}</td>
+                        <td>{{ $allInProgressTasks }}</td>
+                        <td>{{ $allCompletedTasks }}</td>
+                        <td>{{ $allPendingTasks + $allInProgressTasks + $allCompletedTasks }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 
     {{-- @dd($allPendingTasks, $allInProgressTasks, $allCompletedTasks) --}}
 

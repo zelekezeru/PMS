@@ -127,9 +127,20 @@ class UserController extends Controller
         if ($user->hasRole('SUPER_ADMIN') && ! request()->user()->hasRole('SUPER_ADMIN')) {
             return abort(403);
         }
-        $day = Day::where('date', Carbon::today()->format('Y-m-d'))->first();
-        $fortnight =  Fortnight::whereDate('start_date', '<=', Carbon::today()->format('Y-m-d'))->whereDate('end_date', '>=', Carbon::today()->format('Y-m-d'))->first();
+        $selectedDate = $request->query('date') ? $request->query('date') : Carbon::today()->format('Y-m-d');
 
+        $day = Day::whereDate('date', $selectedDate)->first();
+        
+        if(! $day) {
+            return redirect(route('users.show', $user))->with('status', 'No Tasks Found');
+        }
+        
+        $fortnight = $request->query('fortnight') ? Fortnight::where('id', $request->query('fortnight'))->first() : Fortnight::currentFortnight();
+
+        if(! $fortnight) {
+            return redirect(route('users.show', $user))->with('status', 'No Tasks Found');
+        }
+        
         $allPendingTasks = $user->tasks()->where('status', 'Pending')->count();
         $allInProgressTasks = $user->tasks()->where('status', 'Progress')->count();
         $allCompletedTasks = $user->tasks()->where('status', 'Completed')->count();
@@ -167,12 +178,13 @@ class UserController extends Controller
         [$tasks] = $filterTasksService->filterByScope($tasks, $request);
         $tasks = $filterTasksService->filterByColumns($tasks, $request);
         $tasks = $tasks->paginate(15);
+        $fortnights = Fortnight::latest()->take(15)->get();
 
         if (! $user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
 
-        return view('users.show', compact('user', 'tasks', 'department', 'allPendingTasks', 'allInProgressTasks', 'allCompletedTasks', 'fortnightPendingTasks', 'fortnightInProgressTasks', 'fortnightCompletedTasks', 'dailyPendingTasks', 'dailyInProgressTasks', 'dailyCompletedTasks'));
+        return view('users.show', compact('user', 'tasks', 'department','fortnights', 'fortnight', 'allPendingTasks', 'allInProgressTasks', 'allCompletedTasks', 'fortnightPendingTasks', 'fortnightInProgressTasks', 'fortnightCompletedTasks', 'dailyPendingTasks', 'dailyInProgressTasks', 'dailyCompletedTasks'));
     }
 
     /**
@@ -214,7 +226,7 @@ class UserController extends Controller
             // Prevent a user from being assigned to multiple departments as head
             elseif ($user->headOf()->exists()) {
                 return redirect()->back()->withErrors([
-                    'department_id' => 'The User is already a department head of "' . $user->headOf->department_name . '".',
+                    'department_id' => 'The User is already a department head of "'.$user->headOf->department_name.'".',
                 ])->withInput();
             } else {
                 // Find the department
