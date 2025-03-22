@@ -123,69 +123,85 @@ class UserController extends Controller
      */
     public function show($id, Request $request)
     {
-        $user = User::find($id)->load('tasks', 'department');
-        if ($user->hasRole('SUPER_ADMIN') && ! request()->user()->hasRole('SUPER_ADMIN')) {
-            return abort(403);
-        }
-        $selectedDate = $request->query('date') ? $request->query('date') : Carbon::today()->format('Y-m-d');
-
-        $day = Day::whereDate('date', $selectedDate)->first();
-        
-        if(! $day) {
-            return redirect(route('users.show', $user))->with('status', 'No Tasks Found');
-        }
-        
-        $fortnight = $request->query('fortnight') ? Fortnight::where('id', $request->query('fortnight'))->first() : Fortnight::currentFortnight();
-
-        if(! $fortnight) {
-            return redirect(route('users.show', $user))->with('status', 'No Tasks Found');
-        }
-        
-        $allPendingTasks = $user->tasks()->where('status', 'Pending')->count();
-        $allInProgressTasks = $user->tasks()->where('status', 'Progress')->count();
-        $allCompletedTasks = $user->tasks()->where('status', 'Completed')->count();
-
-        $fortnightPendingTasks = $user->tasks()->where('status', 'Pending')->whereHas('fortnights', function ($query) use ($fortnight) {
-            $query->where('fortnights.id', $fortnight->id);
-        })->count();
-
-        $fortnightInProgressTasks = $user->tasks()->where('status', 'Progress')->whereHas('fortnights', function ($query) use ($fortnight) {
-            $query->where('fortnights.id', $fortnight->id);
-        })->count();
-
-        $fortnightCompletedTasks = $user->tasks()->where('status', 'Completed')->whereHas('fortnights', function ($query) use ($fortnight) {
-            $query->where('fortnights.id', $fortnight->id);
-        })->count();
-
-        $dailyPendingTasks = $user->tasks()->where('status', 'Pending')->whereHas('days', function ($query) use ($day) {
-            $query->where('days.id', $day->id);
-        })->count();
-
-        $dailyInProgressTasks = $user->tasks()->where('status', 'Progress')->whereHas('days', function ($query) use ($day) {
-            $query->where('days.id', $day->id);
-        })->count();
-
-        $dailyCompletedTasks = $user->tasks()->where('status', 'Completed')->whereHas('days', function ($query) use ($day) {
-            $query->where('days.id', $day->id);
-        })->count();
-
-        $department = $user->department;
-        $tasks = $user->tasks();
-
-        // Check tasks index and also the Service to understand how this functions work
-        $filterTasksService = new FilterTasksService;
-
-        [$tasks] = $filterTasksService->filterByScope($tasks, $request);
-        $tasks = $filterTasksService->filterByColumns($tasks, $request);
-        $tasks = $tasks->paginate(15);
-        $fortnights = Fortnight::latest()->take(15)->get();
-
+        // Attempt to find the user
+        $user = User::with('tasks', 'department')->find($id);
+    
         if (! $user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
-
-        return view('users.show', compact('user', 'tasks', 'department','fortnights', 'fortnight', 'allPendingTasks', 'allInProgressTasks', 'allCompletedTasks', 'fortnightPendingTasks', 'fortnightInProgressTasks', 'fortnightCompletedTasks', 'dailyPendingTasks', 'dailyInProgressTasks', 'dailyCompletedTasks'));
+    
+        // Prevent unauthorized access to SUPER_ADMIN data
+        if ($user->hasRole('SUPER_ADMIN') && ! $request->user()->hasRole('SUPER_ADMIN')) {
+            return abort(403);
+        }
+    
+        // Set selected date from query or use today's date
+        $selectedDate = $request->query('date', Carbon::today()->format('Y-m-d'));
+        $day = Day::whereDate('date', $selectedDate)->first();
+    
+        // Set current or requested fortnight
+        $fortnight = $request->query('fortnight') 
+            ? Fortnight::find($request->query('fortnight')) 
+            : Fortnight::currentFortnight();
+    
+        // Initialize task counts to avoid undefined variables
+        $fortnightPendingTasks = $fortnightInProgressTasks = $fortnightCompletedTasks = 0;
+        $dailyPendingTasks = $dailyInProgressTasks = $dailyCompletedTasks = 0;
+    
+        if ($fortnight) {
+            $fortnightPendingTasks = $user->tasks()->where('status', 'Pending')
+                ->whereHas('fortnights', fn($q) => $q->where('fortnights.id', $fortnight->id))
+                ->count();
+    
+            $fortnightInProgressTasks = $user->tasks()->where('status', 'Progress')
+                ->whereHas('fortnights', fn($q) => $q->where('fortnights.id', $fortnight->id))
+                ->count();
+    
+            $fortnightCompletedTasks = $user->tasks()->where('status', 'Completed')
+                ->whereHas('fortnights', fn($q) => $q->where('fortnights.id', $fortnight->id))
+                ->count();
+        }
+    
+        if ($day) {
+            $dailyPendingTasks = $user->tasks()->where('status', 'Pending')
+                ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
+                ->count();
+    
+            $dailyInProgressTasks = $user->tasks()->where('status', 'Progress')
+                ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
+                ->count();
+    
+            $dailyCompletedTasks = $user->tasks()->where('status', 'Completed')
+                ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
+                ->count();
+        }
+    
+        // Overall task stats
+        $allPendingTasks = $user->tasks()->where('status', 'Pending')->count();
+        $allInProgressTasks = $user->tasks()->where('status', 'Progress')->count();
+        $allCompletedTasks = $user->tasks()->where('status', 'Completed')->count();
+    
+        // Get department
+        $department = $user->department;
+    
+        // Apply filtering
+        $tasksQuery = $user->tasks(); // base query
+        $filterTasksService = new FilterTasksService;
+        [$tasksQuery] = $filterTasksService->filterByScope($tasksQuery, $request);
+        $tasksQuery = $filterTasksService->filterByColumns($tasksQuery, $request);
+        $tasks = $tasksQuery->paginate(15);
+    
+        $fortnights = Fortnight::latest()->take(15)->get();
+    
+        // Return view with all necessary data
+        return view('users.show', compact(
+            'user', 'tasks', 'department', 'fortnights', 'fortnight',
+            'allPendingTasks', 'allInProgressTasks', 'allCompletedTasks',
+            'fortnightPendingTasks', 'fortnightInProgressTasks', 'fortnightCompletedTasks',
+            'dailyPendingTasks', 'dailyInProgressTasks', 'dailyCompletedTasks'
+        ));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -226,7 +242,7 @@ class UserController extends Controller
             // Prevent a user from being assigned to multiple departments as head
             elseif ($user->headOf()->exists()) {
                 return redirect()->back()->withErrors([
-                    'department_id' => 'The User is already a department head of "'.$user->headOf->department_name.'".',
+                    'department_id' => 'The User is already a department head of "' . $user->headOf->department_name . '".',
                 ])->withInput();
             } else {
                 // Find the department
