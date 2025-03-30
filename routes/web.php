@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('quarters', QuarterController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('days', DayController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 
+        Route::get('/printableReport/{fortnight?}', [UserController::class, 'printableReport'])->name('forntights.printReport');
+
         Route::resource('departments', DepartmentController::class);
     });
 
@@ -97,7 +99,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/list/{status}', [TaskController::class, 'listByStatus'])->name('tasks.list');
     Route::put('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.status');
     Route::put('/deliverables/{deliverable}/status', [DeliverableController::class, 'achieved'])->name('deliverables.status');
-    Route::get('/printableReport/{fortnight?}', [UserController::class, 'printableReport'])->name('forntights.printReport');
 });
 
 Route::get('/users/assign', [UserController::class, 'assign'])->name('users.assign');
