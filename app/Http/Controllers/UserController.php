@@ -213,10 +213,10 @@ class UserController extends Controller
         ));
     }
 
-    public function printableReport()
+    public function printableReport(Request $request, Fortnight $fortnight)
     {
         // $fortnightStartDate = Fortnight::currentFortnight()->start_date;
-        $fortnight = Fortnight::currentFortnight();
+        $fortnight = $fortnight ? $fortnight : Fortnight::currentFortnight();
         $fortnightId = $fortnight->id;
         $users = User::withCount([
             'tasks as all_tasks' => function ($query) use ($fortnightId) {

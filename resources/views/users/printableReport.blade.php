@@ -27,9 +27,8 @@
     <h3 style="text-align:center;">
       ({{ \Carbon\Carbon::parse($fortnight->start_date)->format('F j, Y') }} - 
        {{ \Carbon\Carbon::parse($fortnight->end_date)->format('F j, Y') }})
-  </h3>
+    </h3>
   
-    
     <table>
         <thead>
             <tr>
