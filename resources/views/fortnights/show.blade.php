@@ -17,6 +17,11 @@
                 <a class="btn btn-primary btn-sm mb-3" href="{{ route('fortnights.index') }}">
                     <i class="fa fa-arrow-left"></i> Back to List
                 </a>
+
+                <a class="btn btn-primary btn-sm ms-3 mb-3" href="{{ route('forntights.printReport', $fortnight->id) }}">
+                    <i class="fa fa-print"></i> Print Report
+                </a>
+
             </div>
 
             <div class="d-flex justify-content-end mt-4">
