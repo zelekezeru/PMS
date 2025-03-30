@@ -97,6 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/list/{status}', [TaskController::class, 'listByStatus'])->name('tasks.list');
     Route::put('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.status');
     Route::put('/deliverables/{deliverable}/status', [DeliverableController::class, 'achieved'])->name('deliverables.status');
+    Route::get('/printableReport', [UserController::class, 'printableReport']);
 });
 
 Route::get('/users/assign', [UserController::class, 'assign'])->name('users.assign');
