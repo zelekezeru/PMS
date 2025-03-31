@@ -192,7 +192,7 @@ class UserController extends Controller
         $tasksQuery = $filterTasksService->filterByColumns($tasksQuery, $request);
         $tasks = $tasksQuery->paginate(15);
 
-        $fortnights = Fortnight::latest()->orderBy('start_date', 'asc')->take(15)->get();
+        $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
 
         // Return view with all necessary data
         return view('users.show', compact(
