@@ -5,28 +5,28 @@
         <div class="card mt-5">
             <h2 class="card-header text-center">
                 {{
-                    (request('myTasks') || request()->user()->hasRole('EMPLOYEE') ? 'My ' : '') . 
-                    (request('currentFortnight') 
-                        ? 'Current Fortnight Tasks' 
-                        : (request('onlyToday') ? 'Tasks For Today' : 'All Tasks List'))
+                (request('myTasks') || request()->user()->hasRole('EMPLOYEE') ? 'My ' : '') . 
+                (request('currentFortnight') 
+                    ? 'Current Fortnight Tasks' 
+                    : (request('onlyToday') ? 'Tasks For Today' : 'All Tasks List'))
                 }}
-                                <div class="row d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+                    <div class="row d-grid gap-2 d-md-flex justify-content-md-end mb-3">
 
-                                    <div class="col-2 btn-group dropdown">
-                                        <button
-                                          class="btn btn-primary dropdown-toggle"
-                                          type="button"
-                                          data-bs-toggle="dropdown">
-                                          Create Task
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                          <li>
-                                            <a class="dropdown-item" href="{{ route('tasks.create', ['dailyTask' => true]) }}"><i class="fa fa-plus"></i> Create Daily Task</a>
-                                            <a class="dropdown-item" href="{{ route('tasks.create') }}"><i class="fa fa-plus"></i> Create Fortnight Task</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                        <div class="col-2 btn-group dropdown">
+                            <button
+                                class="btn btn-primary dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown">
+                                Create Task
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                <a class="dropdown-item" href="{{ route('tasks.create', ['dailyTask' => true]) }}"><i class="fa fa-plus"></i> Create Daily Task</a>
+                                <a class="dropdown-item" href="{{ route('tasks.create') }}"><i class="fa fa-plus"></i> Create Fortnight Task</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
             </h2>
             
             @if (request('currentFortnight') )
