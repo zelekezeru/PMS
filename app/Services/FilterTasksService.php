@@ -63,7 +63,7 @@ class FilterTasksService
     public function filterByScope($tasks, $request)
     {
         $today = Carbon::now()->format('Y-m-d');
-
+        
         $currentFortnight = $request->query('currentFortnight') || $request->query('onlyToday') ? Fortnight::whereDate('start_date', '<=', $today)
             ->whereDate('end_date', '>=', $today)->first() : null;
         /**

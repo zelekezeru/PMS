@@ -167,7 +167,7 @@ class TaskController extends Controller
     {
         $task = $task->load('departments', 'users', 'kpis', 'subtasks');
 
-        $users = $task->users()->paginate(15);
+        $users = $task->users()->orderBy('name', 'asc')->paginate(15);
 
         return view('tasks.show', compact('task', 'users'));
     }
@@ -237,11 +237,13 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        
         if (request()->user()->cannot('manageTask', $task)) {
             abort(403);
         }
-
-        if ($task->kpis()->exists() || $task->deliverables()->exists() || $task->feedbacks()->exists()) {
+        
+        if ($task->kpis()->exists() || $task->feedbacks()->exists()) {
+            
             return redirect()->route('tasks.index')
                 ->with('related', 'You can\'t Delete This pending Task it have feedback on it.');
         }

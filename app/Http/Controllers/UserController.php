@@ -27,9 +27,9 @@ class UserController extends Controller
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
             $department = request()->user()->department;
-            $users = $department->users()->paginate(25);
+            $users = $department->users()->orderBy('name', 'asc')->paginate(30);
         } else {
-            $users = User::paginate(25);
+            $users = User::orderBy('name', 'asc')->paginate(30);
         }
 
         return view('users.index', compact('users'));
@@ -218,7 +218,7 @@ class UserController extends Controller
         // $fortnightStartDate = Fortnight::currentFortnight()->start_date;
         $fortnight = $fortnight ? $fortnight : Fortnight::currentFortnight();
         $fortnightId = $fortnight->id;
-        $users = User::withCount([
+        $users = User::orderBy('name', 'asc')->withCount([
             'tasks as all_tasks' => function ($query) use ($fortnightId) {
                 $query->whereHas('fortnights', function ($q) use ($fortnightId) {
                     $q->where('fortnights.id', $fortnightId);
@@ -252,7 +252,11 @@ class UserController extends Controller
             'fortnight' => $fortnight,
         ]);
 
-        return $pdf->download('Fortnight_Tasks_Report.pdf');
+        $fileName = 'Fortnight_Tasks_Report_' . $fortnight->start_date . '_' . $fortnight->end_date . '.pdf';
+
+        // Download the file
+        return $pdf->download($fileName);
+        
     }
     /**
      * Show the form for editing the specified resource.
