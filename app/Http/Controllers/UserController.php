@@ -144,7 +144,7 @@ class UserController extends Controller
         $fortnight = $request->query('fortnight')
             ? Fortnight::find($request->query('fortnight'))
             : Fortnight::currentFortnight();
-
+            
         // Initialize task counts to avoid undefined variables
         $fortnightPendingTasks = $fortnightInProgressTasks = $fortnightCompletedTasks = 0;
         $dailyPendingTasks = $dailyInProgressTasks = $dailyCompletedTasks = 0;
@@ -192,7 +192,7 @@ class UserController extends Controller
         $tasksQuery = $filterTasksService->filterByColumns($tasksQuery, $request);
         $tasks = $tasksQuery->paginate(15);
 
-        $fortnights = Fortnight::latest()->take(15)->get();
+        $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
 
         // Return view with all necessary data
         return view('users.show', compact(

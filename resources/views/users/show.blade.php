@@ -78,8 +78,8 @@
                         <th class="text-danger">Original Password (User Must Change)</th>
                         <td>{{ $password }}</td>
                     </tr>
-                @endif
-            </table>
+                    @endif
+                </table>
             @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
                 <div class="d-flex justify-content-end mt-4">
                     @if(!$user->is_approved)
@@ -105,9 +105,8 @@
         </div>
     </div>
     
-<!-- Charts Section -->
+    <!-- Charts Section -->
 <div class="row mt-4">
-
     <!-- Today's Performance -->
     <div class="col-12 col-md-6 col-lg-4 mb-4">
         <div class="card h-100">
@@ -123,7 +122,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Fortnight Performance -->
     <div class="col-12 col-md-6 col-lg-4 mb-4">
         <div class="card h-100">
@@ -132,8 +131,9 @@
                 <form action="" method="get">
                     <select name="fortnight" onchange="getElementById('fortnightSelectorBtn').click()" class="form-select form-select-sm w-auto text-truncate" id="fortnight-filter" style="max-width: 130px;" id="fortnight-filter">
                         <option value="">This Fortnight</option>
-                        @foreach ($fortnights as $fortnight)
-                            <option {{ request()->query('fortnight') && request()->query('fortnight') == $fortnight->id ? 'selected' : '' }} value="{{ $fortnight->id }}"> {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M j') }} - {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M j') }} </option>                                
+                        {{-- The loop items name is $fort because $fortnight is already in use --}}
+                        @foreach ($fortnights as $fort) 
+                        <option {{ request()->query('fortnight') && request()->query('fortnight') == $fort->id ? 'selected' : '' }} value="{{ $fort->id }}"> {{ \Carbon\Carbon::parse($fort->start_date)->format('M j') }} - {{ \Carbon\Carbon::parse($fort->end_date)->format('M j') }} </option>                                
                         @endforeach
                     </select>
                     <button type="submit" id="fortnightSelectorBtn" hidden></button>
@@ -144,7 +144,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- General Performance -->
     <div class="col-12 col-md-6 col-lg-4 mb-4 m-auto">
         <div class="card h-100">
@@ -183,8 +183,9 @@
                         <td>{{ $dailyCompletedTasks }}</td>
                         <td>{{ $dailyPendingTasks + $dailyInProgressTasks + $dailyCompletedTasks }}</td>
                     </tr>
-                    <tr>
-                        <td>{{ $fortnight ? \Carbon\Carbon::parse($fortnight->start_date)->format('M j') .' - '. \Carbon\Carbon::parse($fortnight->end_date)->format('M j') : 'This Fortnight' }} Fortnight</td>
+                        <td>
+                            {{ $fortnight ? \Carbon\Carbon::parse($fortnight->start_date)->format('M j') .' - '. \Carbon\Carbon::parse($fortnight->end_date)->format('M j') : 'This Fortnight' }} Performance
+                        </td>
                         <td>{{ $fortnightPendingTasks }}</td>
                         <td>{{ $fortnightInProgressTasks }}</td>
                         <td>{{ $fortnightCompletedTasks }}</td>
@@ -214,7 +215,7 @@
             {{ $tasks->appends(request()->query())->links() }}
         </div>
     </div>
-
+@dump($fortnightPendingTasks)
 </div>
 <script>
     
