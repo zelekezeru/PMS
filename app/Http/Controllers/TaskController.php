@@ -192,7 +192,7 @@ class TaskController extends Controller
 
         $parent_tasks = Task::where('is_subtask', false)->get();
 
-        $users = request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users : (request()->user()->hasRole('EMPLOYEE') ? [] : User::get());
+        $users = request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users : (request()->user()->hasRole('EMPLOYEE') ? [] : User::orderBy('name', 'asc')->get());
 
         $fortnights = Fortnight::get();
 
