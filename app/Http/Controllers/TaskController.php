@@ -84,7 +84,7 @@ class TaskController extends Controller
 
         $parent_tasks = Task::get();
 
-        $users = request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users : (request()->user()->hasRole('EMPLOYEE') ? [] : User::get());
+        $users = request()->user()->hasROle('DEPARTMENT_HEAD') ? request()->user()->headOf->users : (request()->user()->hasRole('EMPLOYEE') ? [] : User::orderBy('name', 'asc')->get());
 
         $forToday = (bool) request()->query('dailyTask') === true ? Carbon::now()->format('Y-m-d') : null;
 
