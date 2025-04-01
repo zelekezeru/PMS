@@ -3,8 +3,14 @@
 @section('contents')
 <div class="container mt-3">
 
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-primary btn-sm mb-3 mx-4" href="{{ route('users.index') }}">
+                <i class="fa fa-arrow-left"></i> Back to Users List
+            </a>
+        </div>
     <!-- Summary View -->
     <div id="user-summary" class="card p-3" style="cursor: pointer;">
+        
         <div class="d-flex gap-4 align-items-center">
             <div class="mr-4">
                 <img src="{{ $user->profile_image ? Storage::url($user->profile_image) : asset('img/user.png') }}" 
