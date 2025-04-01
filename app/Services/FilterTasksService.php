@@ -105,4 +105,16 @@ class FilterTasksService
     
         return $tasks;
     }    
+
+    public function filterByDay($request, $tasks)
+    {
+        if ($request->has('date')) {
+            $date = $request->input('date');
+            $tasks = $tasks->whereHas('days', function ($query) use ($date) {
+                $query->where('days.date', $date);
+            });
+        }
+    
+        return $tasks;
+    }    
 }

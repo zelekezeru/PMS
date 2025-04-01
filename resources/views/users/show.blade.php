@@ -209,8 +209,17 @@
 
     <!-- Assigned Tasks -->
     <div class="card pt-5">
-        <h2 class="card-header text-center">{{ $fortnight ? \Carbon\Carbon::parse($fortnight->start_date)->format('M j') .' - '. \Carbon\Carbon::parse($fortnight->end_date)->format('M j') : 'Assigned Tasks' }}</h2>
-        @include('tasks.list')
+        <h2 class="card-header text-center">
+            @if (request()->query('date'))
+                {{ request()->query('date') }} Tasks
+            @elseif (request()->query('fortnight') && $fortnight)
+                {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M j') }} - 
+                {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M j') }} Tasks
+            @else
+                All Assigned Tasks
+            @endif
+        </h2>
+                @include('tasks.list')
         <div class="mt-3">
             {{ $tasks->appends(request()->query())->links() }}
         </div>
