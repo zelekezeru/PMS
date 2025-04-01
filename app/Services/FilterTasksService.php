@@ -93,4 +93,16 @@ class FilterTasksService
         // Return the query builder
         return [$tasks, $currentFortnight];
     }
+
+    public function filterByFortnight($request, $tasks)
+    {
+        if ($request->has('fortnight')) {
+            $fortnightId = $request->input('fortnight');
+            $tasks = $tasks->whereHas('fortnights', function ($query) use ($fortnightId) {
+                $query->where('fortnights.id', $fortnightId);
+            });
+        }
+    
+        return $tasks;
+    }    
 }
