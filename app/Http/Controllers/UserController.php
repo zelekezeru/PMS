@@ -190,6 +190,7 @@ class UserController extends Controller
         $filterTasksService = new FilterTasksService;
         [$tasksQuery] = $filterTasksService->filterByScope($tasksQuery, $request);
         $tasksQuery = $filterTasksService->filterByColumns($tasksQuery, $request);
+        $tasksQuery = $filterTasksService->filterByFortnight($request, $tasksQuery);
         $tasks = $tasksQuery->paginate(15);
 
         $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
