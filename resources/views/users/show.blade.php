@@ -190,6 +190,7 @@
                         <td>{{ $dailyPendingTasks + $dailyInProgressTasks + $dailyCompletedTasks }}</td>
                     </tr>
                         <td>
+                            {{ $fortnight ? \Carbon\Carbon::parse($fortnight->start_date)->format('M j') .' - '. \Carbon\Carbon::parse($fortnight->end_date)->format('M j') : 'This Fortnight' }}
                             {{ $fortnight ? \Carbon\Carbon::parse($fortnight->start_date)->format('M j') .' - '. \Carbon\Carbon::parse($fortnight->end_date)->format('M j') : 'This Fortnight' }} Performance
                         </td>
                         <td>{{ $fortnightPendingTasks }}</td>
@@ -211,8 +212,6 @@
 </div>
 
 
-    {{-- @dd($allPendingTasks, $allInProgressTasks, $allCompletedTasks) --}}
-
     <!-- Assigned Tasks -->
     <div class="card pt-5">
         <h2 class="card-header text-center">
@@ -226,6 +225,10 @@
             @endif
         </h2>
                 @include('tasks.list')
+        <h2 class="card-header text-center">Assigned Tasks</h2>
+
+        @include('tasks.list')
+        
         <div class="mt-3">
             {{ $tasks->appends(request()->query())->links() }}
         </div>

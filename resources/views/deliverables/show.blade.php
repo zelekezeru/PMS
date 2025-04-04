@@ -68,6 +68,10 @@
             </div>
 
             @include('users.list')
+            
+            <div class="mt-3">
+                {{ $tasks->appends(request()->query())->links() }}
+            </div>
 
         @else
             <div class="alert alert-warning mt-3">

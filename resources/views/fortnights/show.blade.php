@@ -55,6 +55,11 @@
         </div>
 
         @include('tasks.list')
+        
+            
+        <div class="mt-3">
+            {{ $tasks->appends(request()->query())->links() }}
+        </div>
 
         <div class="d-flex justify-content-start mt-3">
             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#createDeliverableModal">
