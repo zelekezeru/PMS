@@ -227,6 +227,11 @@
                 @include('tasks.list')
         <h2 class="card-header text-center">Assigned Tasks</h2>
 
+        @php
+            
+            
+        @endphp
+
         @include('tasks.list')
         
         <div class="mt-3">
