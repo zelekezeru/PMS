@@ -56,7 +56,7 @@
 
         @include('tasks.list')
         
-
+            
         <div class="mt-3">
             {{ $tasks->appends(request()->query())->links() }}
         </div>
