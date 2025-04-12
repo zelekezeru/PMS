@@ -68,12 +68,12 @@
                                     Title
                                     <div class="d-flex flex-column align-items-center">
                                         <div>
-                                            <a href="{{ url(request()->path(), array_merge(request()->query(), ['order' => 'asc'])) }}">
+                                            <a href="{{ url()->current() . '?' . http_build_query(array_merge(request()->query(), ['order' => 'asc'])) }}">
                                                 <i class="fa fa-sort-up"></i>
                                             </a>
                                         </div>
                                         <div>
-                                            <a href="{{ url(request()->path(), array_merge(request()->query(), ['order' => 'desc'])) }}">
+                                            <a href="{{ url()->current() . '?' . http_build_query(array_merge(request()->query(), ['order' => 'desc'])) }}">
                                                 <i class="fa fa-sort-down"></i>
                                             </a>
                                         </div>
