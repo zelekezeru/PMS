@@ -14,8 +14,7 @@
                     </thead>
                     <tbody>
                         @foreach ($fortnights as $fortnight)
-                            <tr class="{{ $currentFortnight->id == $fortnight->id ? 'table-primary fw-bold border border-primary' : '' }}">
-
+                            <tr>
                                 <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ ($fortnights->currentPage() - 1) * $fortnights->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }}</td>
                                 <td onclick="window.location='{{ route('fortnights.show', $fortnight->id) }}'">{{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }}</td>
