@@ -224,21 +224,29 @@
                 All Assigned Tasks
             @endif
         </h2>
-                @include('tasks.list')
-        <h2 class="card-header text-center">Assigned Tasks</h2>
-
-        @php
-            
-            
-        @endphp
-
+        
         @include('tasks.list')
         
         <div class="mt-3">
             {{ $tasks->appends(request()->query())->links() }}
         </div>
+
+
+        @if ($fortnight)
+            @php
+                $deliverables = $fortnight->deliverables()->where('user_id', $user->id)->paginate(15);
+            @endphp
+            <h2 class="card-header text-center">
+                    Deliverables for the selected fortnight
+            </h2>
+
+            @include('deliverables.list')
+            
+        @endif
     </div>
 </div>
+
+
 <script>
     
     

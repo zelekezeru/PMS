@@ -14,8 +14,8 @@ class FortnightController extends Controller
     public function index()
     {
         $fortnights = Fortnight::with('quarter.year')->paginate(15);
-
-        return view('fortnights.index', compact('fortnights'));
+        $currentFortnight = Fortnight::currentFortnight();
+        return view('fortnights.index', compact('fortnights', 'currentFortnight'));
     }
 
     // Show the form for creating a new fortnight
