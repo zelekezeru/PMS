@@ -8,7 +8,10 @@
             <div class="card-body">
                 
                 @if(!request()->user()->hasRole('DEPARTMENT_HEAD'))
-                    <div class="d-flex justify-content-end mb-3">
+                    <div class="d-flex gap-3 justify-content-end mb-3">
+                        <a class="btn btn-primary btn-sm" href="{{ route('fortnights.show', $currentFortnight) }}">
+                            Current Fortnight
+                        </a>
                         <a class="btn btn-success btn-sm" href="{{ route('fortnights.create') }}">
                             <i class="fa fa-plus"></i> Add New Fortnight
                         </a>

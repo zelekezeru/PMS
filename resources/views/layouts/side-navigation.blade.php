@@ -1,4 +1,8 @@
 <!-- Sidebar -->
+@php
+$currentFortnight = App\Models\Fortnight::currentFortnight();
+@endphp
+
 <div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
         <!-- Logo Header -->
@@ -81,6 +85,11 @@
                         <div class="collapse" id="fortnight">
                             <ul class="nav nav-collapse">
                                 @can('view-fortnights')
+                                <li class="">
+                                    <a href="{{ route('fortnights.show', $currentFortnight) }}">
+                                        <i class="fas fa-bullseye"></i> Current Fortnight
+                                    </a>
+                                </li>
                                 <li class="{{ request()->routeIs('fortnights.index') ? 'active' : '' }}">
                                     <a href="{{ route('fortnights.index') }}">
                                         <i class="fas fa-bullseye"></i> All Fortnights
