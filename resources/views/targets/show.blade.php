@@ -14,7 +14,7 @@
 
                 <table class="table table-bordered">
                     <tr>
-                        <th>Pillar Name:</th>
+                        <th>Strategic Pillar:</th>
                         <td>
                             @if ($target->goal)
                                 @can('view-strategies')
