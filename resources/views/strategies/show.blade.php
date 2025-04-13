@@ -4,7 +4,7 @@
 
     <div class="container mt-3">
         <div class="card pt-5">
-            <h2 class="card-header text-center">Pillar Details</h2>
+            <h2 class="card-header text-center">Strategic Pillar Details</h2>
             <div class="card-body">
                 <div class="d-flex justify-content-end">
                     <a class="btn btn-primary btn-sm mb-3" href="{{ route('strategies.index') }}">
@@ -14,7 +14,7 @@
 
                 <table class="table table-bordered">
                     <tr>
-                        <th>Pillar:</th>
+                        <th>Strategic Pillar:</th>
                         <td>{{ $strategy->pillar_name }}</td>
                     </tr>
                     <tr>

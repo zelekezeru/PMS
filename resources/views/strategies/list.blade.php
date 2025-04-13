@@ -6,7 +6,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Pillar</th>
+                            <th>Strategic Pillar</th>
                             <th>Strategic Goal</th>
                             <th>Strategic Objective</th>
                             @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))

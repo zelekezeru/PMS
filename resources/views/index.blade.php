@@ -181,7 +181,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">SITS Pillars</h4>
+                <h4 class="mb-0">SITS Strategic Pillars</h4>
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
