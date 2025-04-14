@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Jobs\SendTaskAssignedEmail;
 use App\Mail\TaskAssigned;
 use App\Models\Day;
 use App\Models\Department;
@@ -112,10 +113,27 @@ class TaskController extends Controller
          *
          * Note that this only creates the correct array that will be attached to the task that will be create right after the task is created
          */
-        $departments = request()->user()->hasAnyRole(['EMPLOYEE', 'DEPARTMENT_HEAD']) ? [0 => request()->user()->department->id] : $request['department_id'];
-        $fortnights = $request['fortnight_id'];
-        $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
+        $user = request()->user();
 
+        // Determine departments
+        if ($user->hasAnyRole(['EMPLOYEE', 'DEPARTMENT_HEAD'])) {
+            $departments = [0 => $user->department->id];
+        } else {
+            $departments = $request['department_id'];
+        }
+        
+        // Get fortnight IDs directly from the request
+        $fortnights = $request['fortnight_id'] ?? [];
+        
+        // Determine users
+        if ($user->hasRole('EMPLOYEE')) {
+            $users = [0 => $user->id];
+        } elseif (!empty($request['user_id'])) {
+            $users = $request['user_id'];
+        } else {
+            $users = [];
+        }
+        
         // unsets(removes) fields from the $data array which dont belong to the tasks table
 
         unset($data['department_id']);
@@ -123,7 +141,7 @@ class TaskController extends Controller
         unset($data['user_id']);
 
         $task = Task::create($data);
-
+        
         /**
          * If the task created is daily the client form will send a query called forToday in the url
          *
@@ -154,13 +172,7 @@ class TaskController extends Controller
         // Get the assigning user
         $assigningUser = request()->user();
 
-        // Send email to assigned users
-        foreach ($users as $userId) {
-            $user = User::find($userId);
-            Mail::to($user->email)->send(new TaskAssigned($task, $assigningUser));
-        }
-
-        return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
+        return redirect()->route('tasks.show', $task)->with('status', 'Task has been successfully created.');
     }
 
     public function show(Task $task)
@@ -232,7 +244,7 @@ class TaskController extends Controller
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
 
-        return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
+        return redirect()->route('tasks.show', $task)->with('status', 'Task has been successfully Updated.');
     }
 
     public function destroy(Task $task)

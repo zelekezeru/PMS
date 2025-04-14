@@ -17,11 +17,12 @@
                         <!-- Task Title and Description -->
                         <div class="col-md-6 mb-3">
                             <label for="name" class="form-label">Task Title:</label>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $task->name ?? '') }}" placeholder="Title" required>
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Task Title" value="{{ old('name', $task->name ?? '') }}">
                             @error('name')
                                 <div class="form-text text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+                        
                         <div class="col-md-6 mb-3">
                             <label for="description" class="form-label">Description:</label>
                             <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="3" placeholder="Description">{{ old('description', $task->description ?? '') }}</textarea>
@@ -65,7 +66,7 @@
                                                 </div><div class="row"> <!-- New Row -->
                                             @endif
                                             <div class="col-md-6">
-                                                <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="user_id[]"  @error('name') is-invalid @enderror value="{{ $user->id }}" id="user-{{ $user->id }}" {{ (in_array($user->id, old('user_id', [])) ? 'checked' :  in_array($user->id, $assignedUsers)) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="user-{{ $user->id }}">{{ $user->name }}</label>
                                             </div>
                                         @endforeach
@@ -162,7 +163,7 @@
                                                 <option value="{{ $fortnight->id }}" {{ (in_array($fortnight->id, old('fortnight_id', [])) ? 'selected' : in_array($fortnight->id, $taskFortnights)) ? 'selected' : '' }}> From: {{ \Carbon\Carbon::parse($fortnight->start_date)->format('M - d - Y') }} <span  class="text-info"> - To - </span> {{ \Carbon\Carbon::parse($fortnight->end_date)->format('M - d - Y') }} </option>
                                             @endforeach
                                         </select>
-                                        @error('fortnight')
+                                        @error('fortnight_id')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
