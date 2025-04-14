@@ -112,9 +112,26 @@ class TaskController extends Controller
          *
          * Note that this only creates the correct array that will be attached to the task that will be create right after the task is created
          */
-        $departments = request()->user()->hasAnyRole(['EMPLOYEE', 'DEPARTMENT_HEAD']) ? [0 => request()->user()->department->id] : $request['department_id'];
-        $fortnights = $request['fortnight_id'];
-        $users = request()->user()->hasRole('EMPLOYEE') ? [0 => request()->user()->id] : $request['user_id'];
+        $user = request()->user();
+
+        // Determine departments
+        if ($user->hasAnyRole(['EMPLOYEE', 'DEPARTMENT_HEAD'])) {
+            $departments = [0 => $user->department->id];
+        } else {
+            $departments = $request['department_id'];
+        }
+        
+        // Get fortnight IDs directly from the request
+        $fortnights = $request['fortnight_id'] ?? [];
+        
+        // Determine users
+        if ($user->hasRole('EMPLOYEE')) {
+            $users = [0 => $user->id];
+        } elseif (!empty($request['user_id'])) {
+            $users = $request['user_id'];
+        } else {
+            $users = [];
+        }
 
         // unsets(removes) fields from the $data array which dont belong to the tasks table
 
