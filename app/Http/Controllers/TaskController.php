@@ -177,7 +177,7 @@ class TaskController extends Controller
             Mail::to($user->email)->send(new TaskAssigned($task, $assigningUser));
         }
 
-        return redirect()->route('tasks.index')->with('status', 'Task has been successfully created.');
+        return redirect()->route('tasks.show', $task)->with('status', 'Task has been successfully created.');
     }
 
     public function show(Task $task)

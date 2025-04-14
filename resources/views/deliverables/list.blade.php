@@ -20,6 +20,7 @@
                     <span class="me-2">Deliverable</span>
                 </th>
                 <th>Deadline</th>
+                <th>Created By</th>
                 <th>Status</th>
                 <th style="width: 10%; text-align: center;">Actions</th>
             </tr>
@@ -36,6 +37,7 @@
                             No Deadline
                         @endif
                     </td>
+                    <td>{{ $deliverable->user->name }}</td>
 
                         @if ($deliverable->is_completed)
                             <td><span class="badge bg-success">Achieved</span></td>     
