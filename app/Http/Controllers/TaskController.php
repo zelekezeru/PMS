@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Jobs\SendTaskAssignedEmail;
 use App\Mail\TaskAssigned;
 use App\Models\Day;
 use App\Models\Department;
@@ -132,7 +133,7 @@ class TaskController extends Controller
         } else {
             $users = [];
         }
-
+        
         // unsets(removes) fields from the $data array which dont belong to the tasks table
 
         unset($data['department_id']);
@@ -140,7 +141,7 @@ class TaskController extends Controller
         unset($data['user_id']);
 
         $task = Task::create($data);
-
+        
         /**
          * If the task created is daily the client form will send a query called forToday in the url
          *
@@ -170,12 +171,6 @@ class TaskController extends Controller
 
         // Get the assigning user
         $assigningUser = request()->user();
-
-        // Send email to assigned users
-        foreach ($users as $userId) {
-            $user = User::find($userId);
-            Mail::to($user->email)->send(new TaskAssigned($task, $assigningUser));
-        }
 
         return redirect()->route('tasks.show', $task)->with('status', 'Task has been successfully created.');
     }
@@ -249,7 +244,7 @@ class TaskController extends Controller
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
 
-        return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
+        return redirect()->route('tasks.show', $task)->with('status', 'Task has been successfully Updated.');
     }
 
     public function destroy(Task $task)
