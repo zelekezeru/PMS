@@ -11,6 +11,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px; /* Add space between tables */
         }
         th, td {
             border: 1px solid #444;
@@ -19,6 +20,10 @@
         }
         th {
             background-color: #f3f3f3;
+        }
+        /* Optional: Alternate row colors for improved readability */
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
     </style>
 </head>
@@ -29,6 +34,7 @@
        {{ \Carbon\Carbon::parse($fortnight->end_date)->format('F j, Y') }})
     </h3>
   
+    <!-- Tasks Table -->
     <table>
         <thead>
             <tr>
@@ -49,6 +55,43 @@
                     <td>{{ $user->pending_tasks }}</td>
                     <td>{{ $user->progress_tasks }}</td>
                     <td>{{ $user->completed_tasks }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- Deliverables Table -->
+    <h2 style="text-align:center;">Fortnight Deliverables</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Deliverable Name</th>
+                <th>Due Date</th>
+                <th>Created By</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($deliverables as $index => $deliverable)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $deliverable->name }}</td>
+                    <td>
+                        @if($deliverable->deadline)
+                            {{ \Carbon\Carbon::parse($deliverable->deadline)->format('F j, Y') }}
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td>{{ $deliverable->user->name ?? 'N/A' }}</td>
+                    <td>
+                        @if($deliverable->is_completed)
+                            Completed
+                        @else
+                            Pending
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
