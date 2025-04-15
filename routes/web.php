@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('days', DayController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 
         //Print Reports
-        Route::get('/printableReport/{fortnight?}', [UserController::class, 'printableReport'])->name('forntights.printReport');
+        Route::get('/printableReport/{fortnight?}', [FortnightController::class, 'printableReport'])->name('forntights.printReport');
 
         Route::resource('departments', DepartmentController::class);
     });

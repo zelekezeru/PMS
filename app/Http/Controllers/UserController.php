@@ -214,52 +214,7 @@ class UserController extends Controller
             'dailyCompletedTasks'
         ));
     }
-
-    public function printableReport(Request $request, Fortnight $fortnight)
-    {
-        // $fortnightStartDate = Fortnight::currentFortnight()->start_date;
-        $fortnight = $fortnight ? $fortnight : Fortnight::currentFortnight();
-        $fortnightId = $fortnight->id;
-        $users = User::orderBy('name', 'asc')->withCount([
-            'tasks as all_tasks' => function ($query) use ($fortnightId) {
-                $query->whereHas('fortnights', function ($q) use ($fortnightId) {
-                    $q->where('fortnights.id', $fortnightId);
-                });
-            },
-
-            'tasks as pending_tasks' => function ($query) use ($fortnightId) {
-                $query->where('status', 'pending')
-                    ->whereHas('fortnights', function ($q) use ($fortnightId) {
-                        $q->where('fortnights.id', $fortnightId);
-                    });
-            },
-            'tasks as progress_tasks' => function ($query) use ($fortnightId) {
-                $query->where('status', 'progress')
-                    ->whereHas('fortnights', function ($q) use ($fortnightId) {
-                        $q->where('fortnights.id', $fortnightId);
-                    });
-            },
-            'tasks as completed_tasks' => function ($query) use ($fortnightId) {
-                $query->where('status', 'completed')
-                    ->whereHas('fortnights', function ($q) use ($fortnightId) {
-                        $q->where('fortnights.id', $fortnightId);
-                    });
-            },
-
-        ])->get();
-
-        // Load the Blade view into DomPDF
-        $pdf = PDF::loadView('users.printableReport', [
-            'users' => $users,
-            'fortnight' => $fortnight,
-        ]);
-
-        $fileName = 'Fortnight_Tasks_Report_' . $fortnight->start_date . '_' . $fortnight->end_date . '.pdf';
-
-        // Download the file
-        return $pdf->download($fileName);
-        
-    }
+    
     /**
      * Show the form for editing the specified resource.
      */
