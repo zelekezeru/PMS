@@ -125,12 +125,10 @@ class TaskController extends Controller
         $fortnights = $request['fortnight_id'] ?? [];
         
         // Determine users
-        if ($user->hasRole('EMPLOYEE')) {
+        if ($user->hasRole('EMPLOYEE') || empty($request['user_id'])) {
             $users = [0 => $user->id];
-        } elseif (!empty($request['user_id'])) {
-            $users = $request['user_id'];
         } else {
-            $users = [];
+            $users = $request['user_id'];
         }
 
         // unsets(removes) fields from the $data array which dont belong to the tasks table
