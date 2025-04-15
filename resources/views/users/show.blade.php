@@ -234,7 +234,7 @@
 
         @if ($fortnight)
             @php
-                $deliverables = $fortnight->deliverables()->where('user_id', $user->id)->paginate(15);
+                $deliverables = $fortnight->deliverables()->where('user_id', $user->id)->paginate(30);
             @endphp
             <h2 class="card-header text-center">
                     Deliverables for the selected fortnight
