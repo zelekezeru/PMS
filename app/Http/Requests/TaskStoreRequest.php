@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TaskStoreRequest extends FormRequest
@@ -24,18 +23,19 @@ class TaskStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'budget' => 'sometimes|string|max:255',
-            'barriers' => 'required|string|max:255',
-            'comunication' => 'required|string|max:255',
-            'status' => 'sometimes|string|max:255',
-            'user_id' => 'required|exists:users,id',
-            'starting_date' => 'sometimes|date',
-            'due_date' => 'sometimes|date',
-            'target_id' => 'sometimes|nullable|exists:targets,id',
+            'description' => 'nullable|string',
+            'budget' => 'nullable|string|max:255',
+            'barriers' => 'nullable|string|max:255',
+            'comunication' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'parent_task_id' => 'nullable|exists:tasks,id',
+            'starting_date' => 'nullable|date',
+            'due_date' => 'nullable|date',
+            'target_id' => 'required|exists:targets,id',
             'department_id' => 'sometimes|array',
             'fortnight_id' => 'sometimes|array',
-            'created_by' => 'required',
+            'user_id' => 'sometimes|array',
+            'created_by' => 'sometimes',
         ];
     }
 }
