@@ -25,7 +25,8 @@
             </a>
         </li>
 
-        <a href="{{ route('tasks.index', ['myTasks' => true]) }}" class="btn btn-label-info btn-round me-2">My Tasks</a>
+        <a href="{{ route('tasks.index', ['myTasks' => true]) }}" class="btn btn-label-success btn-round me-2">My Tasks</a>
+        <a href="{{ route('fortnights.show', $currentFortnight) }}" class="btn btn-label-warning btn-round me-2">Current Fortnight</a>
         <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round">Add Fortnight Task</a>
         <a href="{{ route('tasks.create', ['dailyTask' => true]) }}" class="btn btn-info btn-round">Add Daily Task</a>
         
