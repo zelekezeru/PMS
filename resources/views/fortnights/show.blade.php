@@ -14,7 +14,7 @@
         
         <div class="card-body">
             <div class="d-flex justify-content-end">
-
+                
                 <button type="button" class="btn btn-success ms-3 btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#createDeliverableModal">
                     <i class="fas fa-plus"></i> Add Deliverable
                 </button>
