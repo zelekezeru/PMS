@@ -53,22 +53,30 @@ class FortnightController extends Controller
     {
         $fortnight->load('tasks', 'deliverables');
 
-        $deliverables = $fortnight->deliverables()->paginate(30);
-
         if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN'])) {
             $tasks = Task::with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
                 $query->where('fortnights.id', $fortnight->id);
             });
+
+            $deliverables = $fortnight->deliverables()->paginate(30);
+            
         } elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
             $headOf = request()->user()->load('headOf')->headOf;
 
             $tasks = $headOf ? $headOf->tasks()->whereHas('fortnights', function ($query) use ($fortnight) {
                 $query->where('fortnights.id', $fortnight->id);
             }) : Task::query();
+
+            $deliverables = $fortnight->deliverables()->whereHas('user', function ($query) use ($headOf) {
+                $query->where('department_id', $headOf->id);
+            })->paginate(30);
         } elseif (request()->user()->hasRole('EMPLOYEE')) {
             $tasks = request()->user()->tasks()->with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
                 $query->where('fortnights.id', $fortnight->id);
             });
+
+            $deliverables = $fortnight->deliverables()->where('user_id', request()->user()->id)->paginate(30);
+
         }
 
         // Check tasks index and also the Service to understand how this functions work
