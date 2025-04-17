@@ -6,7 +6,7 @@ use App\Models\Fortnight;
 use App\Models\Quarter;
 use App\Models\Task;
 use App\Models\User;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Services\FilterTasksService;
 use Illuminate\Http\Request;
 
@@ -53,7 +53,7 @@ class FortnightController extends Controller
     {
         $fortnight->load('tasks', 'deliverables');
 
-        $deliverables = $fortnight->deliverables()->paginate(15);
+        $deliverables = $fortnight->deliverables()->paginate(30);
 
         if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN'])) {
             $tasks = Task::with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
