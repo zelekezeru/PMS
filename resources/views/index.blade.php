@@ -19,12 +19,6 @@
     </div>
     <div class="ms-md-auto py-2 py-md-0">
         
-        <li class="">
-            <a href="{{ route('fortnights.show', $currentFortnight) }}">
-                <i class="fas fa-bullseye"></i> Current Fortnight
-            </a>
-        </li>
-
         <a href="{{ route('tasks.index', ['myTasks' => true]) }}" class="btn btn-label-success btn-round me-2">My Tasks</a>
         <a href="{{ route('fortnights.show', $currentFortnight) }}" class="btn btn-label-warning btn-round me-2">Current Fortnight</a>
         <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round">Add Fortnight Task</a>
