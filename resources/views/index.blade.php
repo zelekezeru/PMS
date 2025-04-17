@@ -2,6 +2,10 @@
 
 @section('contents')
 
+@php
+    $currentFortnight = App\Models\Fortnight::currentFortnight();
+@endphp
+
 {{-- Main Quantities --}}
 <div class="d-flex align-items-center justify-content-center flex-column pt-2 pb-4">
     <div class="text-center">
