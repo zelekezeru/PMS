@@ -14,7 +14,12 @@
         
         <div class="card-body">
             <div class="d-flex justify-content-end">
-                <a class="btn btn-primary btn-sm mb-3" href="{{ route('fortnights.index') }}">
+
+                <button type="button" class="btn btn-success ms-3 btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#createDeliverableModal">
+                    <i class="fas fa-plus"></i> Add Deliverable
+                </button>
+                
+                <a class="btn btn-primary btn-sm mb-3 ms-3" href="{{ route('fortnights.index') }}">
                     <i class="fa fa-arrow-left"></i> Back to List
                 </a>
 
@@ -61,13 +66,17 @@
             {{ $tasks->appends(request()->query())->links() }}
         </div>
 
-        <div class="d-flex justify-content-start mt-3">
+        <div class="d-flex justify-content-end mt-3 mb-3">
             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#createDeliverableModal">
                 <i class="fas fa-plus"></i> Add Deliverable
             </button>
         </div>
         
         @include('deliverables.list')
+        
+        <div class="mt-3">
+            {{ $deliverables->appends(request()->query())->links() }}
+        </div>
 
     @else
     <div class="alert alert-warning mt-3">
