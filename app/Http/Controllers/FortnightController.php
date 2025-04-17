@@ -59,14 +59,14 @@ class FortnightController extends Controller
             });
 
             $deliverables = $fortnight->deliverables()->paginate(30);
-            
+
         } elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
             $headOf = request()->user()->load('headOf')->headOf;
 
             $tasks = $headOf ? $headOf->tasks()->whereHas('fortnights', function ($query) use ($fortnight) {
                 $query->where('fortnights.id', $fortnight->id);
             }) : Task::query();
-
+            
             $deliverables = $fortnight->deliverables()->whereHas('user', function ($query) use ($headOf) {
                 $query->where('department_id', $headOf->id);
             })->paginate(30);
