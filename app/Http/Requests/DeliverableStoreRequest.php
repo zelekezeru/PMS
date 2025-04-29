@@ -23,6 +23,8 @@ class DeliverableStoreRequest extends FormRequest
             'name' => 'required|string|max:255|unique:deliverables,name',
             'deadline' => 'nullable|string|max:255|nullable',
             'fortnight_id' => 'required|exists:fortnights,id',
+            'comment' => 'nullable|string', 
+            
         ];
     }
 }

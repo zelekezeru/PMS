@@ -247,7 +247,7 @@ class TaskController extends Controller
         $task->fortnights()->attach($fortnights);
         $task->users()->attach($users);
 
-        return redirect()->route('tasks.index')->with('status', 'Task has been successfully Updated.');
+        return redirect()->route('tasks.show', $task)->with('status', 'Task has been successfully Updated.');
     }
 
     public function destroy(Task $task)

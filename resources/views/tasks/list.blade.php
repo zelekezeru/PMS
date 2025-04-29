@@ -90,10 +90,49 @@
                         @forelse ($tasks as $task)
                             <tr>
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ ($tasks->currentPage() - 1) * $tasks->perPage() + $loop->iteration }}</td>
-                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->name }}</td>
-                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->status }}</td>
-                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('M - d - Y').' ('.\Carbon\Carbon::parse($task->due_date)->format('D').')' : 'N/A' }}</td>
-                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ $task->createdBy->name }}</td>
+                                
+                                <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                    {{ $task->name }}
+                                </td>
+                                    
+                                {{-- Check if the field is empty or not --}}
+                                @if ($task->status == 'Pending')
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        <span class="badge bg-danger">{{ $task->status }}</span>
+                                    </td>
+                                @elseif ($task->status == 'Progress')
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        <span class="badge bg-warning">{{ $task->status }}</span>
+                                    </td>
+                                @elseif ($task->status == 'Completed')
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        <span class="badge bg-success">{{ $task->status }}</span>
+                                    </td>
+                                @else
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        <span class="badge bg-secondary">{{ $task->status }}</span>
+                                    </td>
+                                @endif
+                                {{-- Check if the field is empty or not --}}
+                                @if ($task->due_date)
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        {{ \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') . ' (' . \Carbon\Carbon::parse($task->due_date)->format('D') . ')' }}
+                                    </td>
+                                @else
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        <span class="badge bg-secondary">N/A</span>
+                                    </td>
+                                @endif
+                                {{-- Check if the field is empty or not --}}
+                                @if ($task->createdBy)
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        {{ $task->createdBy->name }}
+                                    </td>
+                                @else
+                                    <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
+                                        <span class="badge bg-secondary">N/A</span>
+                                    </td>
+                                @endif
                                 <td class="text-center">
                                     <div class="form-button-action">
                                         <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-link btn-info" data-bs-toggle="tooltip" title="View">

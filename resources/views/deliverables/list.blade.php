@@ -15,14 +15,14 @@
     <table class="table table-bordered table-striped table-hover">
         <thead class="thead-dark">
             <tr>
-                <th>#</th>
-                <th class="d-flex align-items-center text-white">
+                <th class="col-1">#</th>
+                <th class="col-4 d-flex align-items-center text-white">
                     <span class="me-2">Deliverable</span>
                 </th>
-                <th>Deadline</th>
-                <th>Created By</th>
-                <th>Status</th>
-                <th style="width: 10%; text-align: center;">Actions</th>
+                <th class="col-1">Deadline</th>
+                <th class="col-2">Created By</th>
+                <th class="col-2">Status</th>
+                <th class="col-1" style="width: 10%; text-align: center;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -42,14 +42,13 @@
                         @if ($deliverable->is_completed)
                             <td><span class="badge bg-success">Achieved</span></td>     
                         @else
-                                    
                             <td>
                                 <form action="{{ route('deliverables.status', $deliverable->id) }}" method="POST" enctype="multipart/form-data" class="status-form">
                                     @csrf
                                     @method('PUT')
                                     <select name="status" style="border: 2px solid black;"  class="form-control @error('status') is-invalid @enderror" onchange="this.form.submit()">
                                         <option value="Pending" {{ $deliverable->is_completed == null ? 'selected' : '' }}>Not Achieved!</option>
-                                        <option value="Achieved!" {{ $deliverable->is_completed == 'Completed' ? 'selected' : '' }}>Achieved!</option>
+                                        <option value="Achieved!" {{ $deliverable->is_completed == 'Achieved' ? 'selected' : '' }}>Achieved!</option>
                                     </select>
                                 </form>
                                 @error('status')
@@ -57,19 +56,46 @@
                                 @enderror
                             </td>
                         @endif
+
                     <td class="text-center">
-                        <div class="form-button-action">
-                            <a href="{{ route('deliverables.edit', $deliverable->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $deliverable->id }})">
-                                <i class="fa fa-times"></i>
-                            </button>
-                            <form id="delete-form-{{ $deliverable->id }}" action="{{ route('deliverables.destroy', $deliverable->id) }}" method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                        </div>
+                        @if ($deliverable->is_completed)
+                        {{-- Make sure the user has role SUPER-ADMIN or ADMIN to show Show, Edit and Delete buttons --}}
+                            
+                            @hasanyrole(['SUPER_ADMIN', 'ADMIN'])
+                                <div class="form-button-action">
+                                    <a href="{{ route('deliverables.show', $deliverable->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('deliverables.edit', $deliverable->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $deliverable->id }})">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <form id="delete-form-{{ $deliverable->id }}" action="{{ route('deliverables.destroy', $deliverable->id) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </div>
+                            @endhasanyrole
+                        @else
+                            <div class="form-button-action">
+                                <a href="{{ route('deliverables.show', $deliverable->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="{{ route('deliverables.edit', $deliverable->id) }}" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-link btn-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete({{ $deliverable->id }})">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <form id="delete-form-{{ $deliverable->id }}" action="{{ route('deliverables.destroy', $deliverable->id) }}" method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </div>
+                        @endif                        
+                    
                     </td>
                 </tr>
             @empty

@@ -15,7 +15,7 @@ class FortnightController extends Controller
     // Display a listing of the fortnights
     public function index()
     {
-        $fortnights = Fortnight::with('quarter.year')->paginate(15);
+        $fortnights = Fortnight::with('quarter.year')->paginate(30);
         $currentFortnight = Fortnight::currentFortnight();
         return view('fortnights.index', compact('fortnights', 'currentFortnight'));
     }
@@ -84,7 +84,7 @@ class FortnightController extends Controller
 
         [$tasks] = $filterTasksService->filterByScope($tasks, $request);
         $tasks = $filterTasksService->filterByColumns($tasks, $request);
-        $tasks = $tasks->paginate(15);
+        $tasks = $tasks->paginate(30);
 
         return view('fortnights.show', compact('fortnight', 'deliverables', 'tasks'));
     }
