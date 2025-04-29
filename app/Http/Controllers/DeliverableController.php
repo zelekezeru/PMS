@@ -15,6 +15,15 @@ class DeliverableController extends Controller
     {
         //
     }
+    /**
+     * Show the RESOURSE.
+     */
+    public function show(Deliverable $deliverable)
+    {
+        $fortnight = $deliverable->fortnight;
+
+        return view('deliverables.show', compact('deliverable', 'fortnight'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -47,8 +56,8 @@ class DeliverableController extends Controller
         $deliverable->is_completed = 1;
 
         $deliverable->save();
-
-        return redirect()->route('fortnights.show', $deliverable->fortnight_id)->with('status', 'Deliverable has been successfully Achieved.');
+        
+        return redirect()->back()->with('status', 'Deliverable has been successfully Achieved.');
     }
 
     /**
@@ -67,10 +76,10 @@ class DeliverableController extends Controller
     public function update(DeliverableUpdateRequest $request, Deliverable $deliverable)
     {
         $data = $request->validated();
-
+        
         $deliverable->update($data);
 
-        return redirect()->route('fortnights.show', $deliverable->fortnight->id)->with('status', 'Deliverable has been successfully Updated.');
+        return redirect()->route('deliverables.show', $deliverable->id)->with('status', 'Deliverable has been successfully Updated.');
     }
 
     /**

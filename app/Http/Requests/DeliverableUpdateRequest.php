@@ -23,6 +23,8 @@ class DeliverableUpdateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'deadline' => 'nullable|string|max:255',
             'is_completed' => 'nullable|string',
+            'comment' => 'nullable|string',
+            'commented_by'=> 'nullable|string',
         ];
     }
 }

@@ -22,7 +22,19 @@
 
     <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="is_completed" name="is_completed" value="1" {{ old('is_completed', $deliverable->is_completed) ? 'checked' : '' }}>
-        <label class="form-check-label" for="is_completed">Completed</label>
+        <label class="form-check-label" for="is_completed">Achieved</label>
+    </div>
+
+    {{-- Created By user name --}}
+        <input type="hidden" name="commented_by" value="{{ Auth::user()->name }}">
+
+    {{-- Comment on the Deliverable --}}
+    <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea class="form-control @error('comment') is-invalid @enderror" name="comment" rows="3">{{ old('comment', $deliverable->comment) }}</textarea>
+        @error('comment')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
     </div>
 
     <button type="submit" class="btn btn-success">

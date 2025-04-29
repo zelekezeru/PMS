@@ -4,6 +4,9 @@
 <div class="container mt-3">
 
         <div class="d-flex justify-content-end">
+            <a class="btn btn-primary btn-sm mb-3" href="{{ url()->previous() }}">
+                <i class="fa fa-arrow-left"></i> Back to Previous Page
+            </a>
             <a class="btn btn-primary btn-sm mb-3 mx-4" href="{{ route('users.index') }}">
                 <i class="fa fa-arrow-left"></i> Back to Users List
             </a>

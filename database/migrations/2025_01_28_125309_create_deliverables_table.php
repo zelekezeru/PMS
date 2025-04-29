@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('name', 255);
             $table->boolean('is_completed')->default(false);
             $table->date('deadline')->nullable();
+            $table->string('comment')->nullable();
+            $table->string('commented_by', 255)->nullable();
             $table->timestamps();
         });
     }
