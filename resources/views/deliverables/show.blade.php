@@ -55,7 +55,6 @@
                     <tr>
                         <th>Comment:</th>
                         <td>
-                            @if ($deliverable->is_completed)
                                 @if ($deliverable->comment)
                                     {{ $deliverable->comment }}
                                 @else                               
@@ -63,21 +62,15 @@
                                         <i class="fas fa-plus"></i> Comment On Deliverable
                                     </button>
                                 @endif
-                            @else
-                                <span class="badge bg-success">Not Achieved</span>
-                            @endif
                         </td>
                     </tr>
                     <tr>
                         <th>Commented By:</th>
                         <td>
-                            @if ($deliverable->is_completed)
                                 @if ($deliverable->comment)
                                     {{ $deliverable->commented_by }}
                                 @endif
-                            @else
-                                <span class="badge bg-success">Not Achieved</span>
-                            @endif
+                           
                         </td>
                     </tr>
                 </table>
