@@ -10,6 +10,9 @@
             <a class="btn btn-primary btn-sm mb-3 mx-4" href="{{ route('users.index') }}">
                 <i class="fa fa-arrow-left"></i> Back to Users List
             </a>
+            <a class="btn btn-success btn-sm mb-3" href="{{ route('users.printReport', $user->id) }}">
+                <i class="fa fa-print"></i> Print Current Fortnight Report
+            </a>
         </div>
     <!-- Summary View -->
     <div id="user-summary" class="card p-3" style="cursor: pointer;">

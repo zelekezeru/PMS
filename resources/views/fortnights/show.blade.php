@@ -24,7 +24,7 @@
                 </a>
 
                 @hasanyrole(['SUPER_ADMIN', 'ADMIN'])
-                <a class="btn btn-primary btn-sm ms-3 mb-3" href="{{ route('forntights.printReport', $fortnight->id) }}">
+                <a class="btn btn-primary btn-sm ms-3 mb-3" href="{{ route('fortnights.printReport', $fortnight->id) }}">
                     <i class="fa fa-print"></i> Print Report
                 </a>
                 @endhasanyrole
