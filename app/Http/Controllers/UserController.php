@@ -9,8 +9,8 @@ use App\Models\Day;
 use App\Models\Department;
 use App\Models\Fortnight;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Services\FilterTasksService;
-use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -213,6 +213,45 @@ class UserController extends Controller
             'dailyInProgressTasks',
             'dailyCompletedTasks'
         ));
+    }
+
+    public function printUserReport(User $user) 
+    {
+        $currentFortnight = Fortnight::currentFortnight();
+
+        // build the “base” query: all of this user’s tasks in the current fortnight
+        $base = $user
+            ->tasks()
+            ->whereHas('fortnights', fn($q) => $q->where('fortnights.id', $currentFortnight->id));
+        
+        // now just clone & specialize for each count
+        $pendingCount   = (clone $base)->where('status', 'pending' )->count();
+        $progressCount  = (clone $base)->where('status', 'progress')->count();
+        $completedCount = (clone $base)->where('status', 'completed')->count();
+        $approvedCount  = (clone $base)
+            ->whereHas('kpis', fn($q) => $q->whereNotNull('approved_by'))
+            ->count();
+        
+        // (optional) package them up
+        $stats = [
+            'pending'   => $pendingCount,
+            'in progress'=> $progressCount,
+            'completed' => $completedCount,
+            'approved'  => $approvedCount,
+        ];
+        $deliverables = $user->deliverables()->where('fortnight_id', $currentFortnight->id)->get();
+
+        $pdf = PDF::loadView('users.printableReport', [
+            'user' => $user,
+            'stats' => $stats,
+            'currentFortnight' => $currentFortnight,
+            'deliverables' => $deliverables,
+        ]);
+
+        $fileName = $user->name . '_Tasks_Report_' . $currentFortnight->start_date . '_' . $currentFortnight->end_date . '.pdf';
+
+        // Download the file
+        return $pdf->download($fileName);
     }
     
     /**

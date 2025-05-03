@@ -125,7 +125,7 @@ class FortnightController extends Controller
         $deliverables = $fortnight->deliverables()->with('user')->get();
 
         // Load the Blade view into DomPDF
-        $pdf = PDF::loadView('users.printableReport', [
+        $pdf = PDF::loadView('fortnights.printableReport', [
             'users' => $users,
             'fortnight' => $fortnight,
             'deliverables' => $deliverables,
