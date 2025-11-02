@@ -133,6 +133,14 @@ class DailyTaskController extends Controller
      */
     public function destroy(DailyTask $dailyTask)
     {
-        //
+        $user = $dailyTask->user;
+
+        $dailyTask->delete();
+
+        if ($user) {
+            return redirect()->route('users.show', $user)->with('success', 'Daily Task deleted successfully.');
+        }
+
+        return redirect()->route('daily_tasks.index')->with('success', 'Daily Task deleted successfully.');
     }
 }

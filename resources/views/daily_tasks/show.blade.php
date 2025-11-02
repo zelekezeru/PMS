@@ -92,31 +92,36 @@
                     </ul>
 
                     <div class="d-grid gap-2 mt-4">
-                        @if($dailyTask->status == 'Completed')
+                        @if (Auth::user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN', 'DEPARTMENT_HEAD']) || $dailyTask->status != 'Completed')
 
-                            <button type="button" class="btn btn-success w-100" disabled>
-                                <i class="fa-solid fa-check me-2"></i> Completed Task
-                            </button>
+                                <p><strong>Change Status:</strong></p>
+                                <form action="{{ route('daily_tasks.updateStatus', $dailyTask) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    @php $current = strtolower(str_replace(' ', '', $dailyTask->status ?? 'Pending')); @endphp
+                                    <select name="status" class="form-select" onchange="this.form.submit()">
+                                        <option value="Pending" {{ $current === 'pending' ? 'selected' : '' }} style="color: gray; background-color: #f8f9fa;">Pending</option>
+                                        <option value="In Progress" {{ $current === 'inprogress' ? 'selected' : '' }} style="color: orange; background-color: #fff3cd;">In Progress</option>
+                                        <option value="Completed" {{ $current === 'completed' ? 'selected' : '' }} style="color: green; background-color: #d4edda;">Completed</option>
+                                    </select>
+                                </form>
 
-                        @else
-                            <p><strong>Change Status:</strong></p>
-                            <form action="{{ route('daily_tasks.updateStatus', $dailyTask) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                @php $current = strtolower(str_replace(' ', '', $dailyTask->status ?? 'Pending')); @endphp
-                                <select name="status" class="form-select" onchange="this.form.submit()">
-                                    <option value="Pending" {{ $current === 'pending' ? 'selected' : '' }} style="color: gray; background-color: #f8f9fa;">Pending</option>
-                                    <option value="In Progress" {{ $current === 'inprogress' ? 'selected' : '' }} style="color: orange; background-color: #fff3cd;">In Progress</option>
-                                    <option value="Completed" {{ $current === 'completed' ? 'selected' : '' }} style="color: green; background-color: #d4edda;">Completed</option>
-                                </select>
-                            </form>
-
-                            <div>
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash me-1"></i> Delete
+                                <div>
+                                    <form action="{{ route('daily_tasks.destroy', $dailyTask) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task? This action cannot be undone.');" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fa-solid fa-trash me-1"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                            @else
+                                <button type="button" class="btn btn-success w-100" disabled>
+                                    <i class="fa-solid fa-check me-2"></i> Completed Task
                                 </button>
-                            </div>
-                        @endif
+
+                            @endif
                     </div>
                 </div>
             </div>

@@ -75,11 +75,13 @@
 {{-- Daily Tasks show page --}}
     <div class="row mt-4 mb-4">
         <div class="col-md-8 mb-4">
-            <h2 class="mb-4">Daily Tasks</h2>
             {{-- List the first few daily tasks --}}
             <div class="list-group">
-                @forelse($dailyTasks as $dtask)
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="list-group-item">
+                    <a href="{{ route('daily_tasks.index') }}" class="btn btn-primary w-100">Daily Tasks</a>
+                </div>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    @forelse($dailyTasks as $dtask)
                         <div>
                             <h6 class="mb-1">{{ $dtask->title }}</h6>
                             @if(!empty($dtask->description))
@@ -95,10 +97,10 @@
                             <span class="badge bg-{{ $badgeClass }} me-3">{{ $status }}</span>
                             <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View</a>
                         </div>
-                    </div>
-                @empty
-                    <div class="list-group-item">No daily tasks found.</div>
-                @endforelse
+                    @empty
+                        <div class="list-group-item">No daily tasks found.</div>
+                    @endforelse
+                </div>
             </div>
 
         </div>

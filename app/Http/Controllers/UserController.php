@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Mail\ApproveConfirmed;
+use App\Models\DailyTask;
 use App\Models\Day;
 use App\Models\Department;
 use App\Models\Fortnight;
@@ -195,7 +196,15 @@ class UserController extends Controller
 
         $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
 
-        $dailyTasks = $user->dailyTasks()->where('date', now()->format('Y-m-d'))->get();
+        $userId = request()->query('user_id');
+
+        $query = DailyTask::with('user')->whereDate('date', $selectedDate);
+
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+
+        $dailyTasks = $query->orderBy('created_at', 'desc')->get();
 
         // Return view with all necessary data
         return view('users.show', compact(

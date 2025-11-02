@@ -125,39 +125,92 @@
 
         {{-- List daily tasks --}}
         <ul class="list-group">
-            <li class="list-group-item active">
-                <h5 class="mb-0">Today's Tasks ({{ now()->format('M j, Y') }})</h5>
+            <li class="list-group-item active d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">Tasks for {{ isset($selectedDate) ? \Carbon\Carbon::parse($selectedDate)->format('M j, Y') : now()->format('M j, Y') }}</h5>
+                </div>
+                
+                <div class="d-flex align-items-end gap-2">
+                    <form method="get" id="dateForm" class="d-flex align-items-end gap-2">
+                        <input type="hidden" name="user_id" value="{{ request('user_id') }}">
+                        <div class="input-group input-group-sm shadow-sm rounded-pill overflow-hidden" style="width:240px; border: 1px solid rgba(88, 59, 59, 0.06);">
+                            <span class="input-group-text bg-primary text-white border-0 pe-2" id="date-addon" style="padding-left:0.9rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="text-white" viewBox="0 0 16 16" aria-hidden>
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h.5A1.5 1.5 0 0 1 15 2.5v11A1.5 1.5 0 0 1 13.5 15h-11A1.5 1.5 0 0 1 1 13.5v-11A1.5 1.5 0 0 1 2.5 1H3V.5A.5.5 0 0 1 3.5 0zM2 4v9.5a.5.5 0 0 0 .5.5H13.5a.5.5 0 0 0 .5-.5V4H2z"/>
+                                </svg>
+                            </span>
+
+                            <input
+                                type="date"
+                                id="dateInput"
+                                name="date"
+                                value="{{ $selectedDate ?? now()->toDateString() }}"
+                                class="form-control border-0"
+                                onchange="this.form.submit()"
+                                aria-label="Select date"
+                                style="background: linear-gradient(180deg, #e0f7fa, #fbfbfd);"
+                            >
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-success rounded-end"
+                                title="Today"
+                                onclick="(function(){ const d = new Date().toISOString().slice(0,10); document.getElementById('dateInput').value = d; document.getElementById('dateForm').submit(); })()"
+                                aria-label="Set date to today"
+                                style="border-left:1px solid rgba(0,0,0,0.04);"
+                            >
+                                Today
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </li>
+
+            <script>
+                // small helper to shift the shown date and resubmit form
+                function adjustDate(delta) {
+                    const input = document.getElementById('dateInput');
+                    // ensure a valid date
+                    const cur = input.value ? new Date(input.value) : new Date();
+                    cur.setDate(cur.getDate() + delta);
+                    // format YYYY-MM-DD
+                    const iso = cur.toISOString().slice(0,10);
+                    input.value = iso;
+                    document.getElementById('dateForm').submit();
+                }
+            </script>
+
             @if($dailyTasks->isEmpty())
                 <li class="list-group-item">
-                    <em>No tasks assigned for today.</em>
+                    <em>No tasks assigned for this date.</em>
                 </li>
             @else
-                @foreach($dailyTasks as $dtask)
-                    <div class="list-group">
-                        @forelse($dailyTasks as $dtask)
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">{{ $dtask->title }}</h6>
-                                    @if(!empty($dtask->description))
-                                        <small class="text-muted d-block">{{ \Illuminate\Support\Str::limit($dtask->description, 120) }}</small>
-                                    @endif
-                                </div>
-
-                                <div class="d-flex align-items-center">
-                                    @php
-                                        $status = $dtask->status ?? 'Unknown';
-                                        $badgeClass = $status === 'Completed' ? 'success' : ($status === 'Progress' ? 'warning' : 'secondary');
-                                    @endphp
-                                    <span class="badge bg-{{ $badgeClass }} me-3">{{ $status }}</span>
-                                    <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View</a>
-                                </div>
+                <div class="list-group">
+                    @forelse($dailyTasks as $dtask)
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">{{ $dtask->title }}</h6>
+                                @if(!empty($dtask->description))
+                                    <small class="text-muted d-block">{{ \Illuminate\Support\Str::limit($dtask->description, 120) }}</small>
+                                @endif
+                                @if(isset($dtask->due_date))
+                                    <small class="text-muted d-block">Due: {{ \Carbon\Carbon::parse($dtask->due_date)->format('M j, Y') }}</small>
+                                @endif
                             </div>
-                        @empty
-                            <div class="list-group-item">No daily tasks found.</div>
-                        @endforelse
-                    </div>
-                @endforeach
+
+                            <div class="d-flex align-items-center">
+                                @php
+                                    $status = $dtask->status ?? 'Unknown';
+                                    $badgeClass = $status === 'Completed' ? 'success' : ($status === 'In Progress' ? 'warning' : 'secondary');
+                                @endphp
+                                <span class="badge bg-{{ $badgeClass }} me-3">{{ $status }}</span>
+                                <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="list-group-item">No daily tasks found.</div>
+                    @endforelse
+                </div>
             @endif
         </ul>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('contents')
 
 <div class="container mt-4">
 	<div class="card shadow-sm">
@@ -55,7 +55,7 @@
 						class="form-control @error('date') is-invalid @enderror"
 						id="date_input"
 						name="date"
-						value="{{ old('date', $dailyTask->date) }}"
+                        value="{{ old('date', isset($dailyTask->date) ? \Carbon\Carbon::parse($dailyTask->date)->format('Y-m-d') : '') }}"
 						required>
 					<label for="date_input">Date <span class="text-danger">*</span></label>
 					@error('date') <div class="invalid-feedback">{{ $message }}</div> @enderror
