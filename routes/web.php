@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DailyTaskController;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\DeliverableController;
 use App\Http\Controllers\DepartmentController;
@@ -92,6 +93,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('reports', ReportController::class);
     Route::resource('templates', TemplateController::class);
     Route::resource('kpis', KpiController::class);
+    Route::resource('daily_tasks', DailyTaskController::class);
+
 
     Route::get('feedbacks/{taskId}', [FeedbackController::class, 'taskFeedbacks'])->name('taskFeedbacks');
     // KPI
@@ -101,6 +104,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/list/{status}', [TaskController::class, 'listByStatus'])->name('tasks.list');
     Route::put('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.status');
     Route::put('/deliverables/{deliverable}/status', [DeliverableController::class, 'achieved'])->name('deliverables.status');
+
+    Route::patch('/daily_tasks/{dailyTask}/status', [DailyTaskController::class, 'updateStatus'])->name('daily_tasks.updateStatus');
 });
 
 Route::get('/users/assign', [UserController::class, 'assign'])->name('users.assign');

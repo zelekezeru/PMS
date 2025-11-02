@@ -86,9 +86,15 @@ $currentFortnight = App\Models\Fortnight::currentFortnight();
                             <ul class="nav nav-collapse">
                                 @can('view-fortnights')
                                 <li class="">
-                                    <a href="{{ route('fortnights.show', $currentFortnight) }}">
-                                        <i class="fas fa-bullseye"></i> Current Fortnight
-                                    </a>
+                                    @if($currentFortnight)
+                                        <a href="{{ route('fortnights.show', $currentFortnight) }}">
+                                            <i class="fas fa-bullseye"></i> Current Fortnight
+                                        </a>
+                                    @else
+                                        <a href="{{ route('fortnights.index') }}">
+                                            <i class="fas fa-bullseye"></i> Current Fortnight
+                                        </a>
+                                    @endif
                                 </li>
                                 <li class="{{ request()->routeIs('fortnights.index') ? 'active' : '' }}">
                                     <a href="{{ route('fortnights.index') }}">

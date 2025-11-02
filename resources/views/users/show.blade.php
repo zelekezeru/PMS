@@ -3,17 +3,18 @@
 @section('contents')
 <div class="container mt-3">
 
-        <div class="d-flex justify-content-end">
-            <a class="btn btn-primary btn-sm mb-3" href="{{ url()->previous() }}">
-                <i class="fa fa-arrow-left"></i> Back to Previous Page
-            </a>
-            <a class="btn btn-primary btn-sm mb-3 mx-4" href="{{ route('users.index') }}">
-                <i class="fa fa-arrow-left"></i> Back to Users List
-            </a>
-            <a class="btn btn-success btn-sm mb-3" href="{{ route('users.printReport', $user->id) }}">
-                <i class="fa fa-print"></i> Print Current Fortnight Report
-            </a>
-        </div>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-primary btn-sm mb-3" href="{{ url()->previous() }}">
+            <i class="fa fa-arrow-left"></i> Back to Previous Page
+        </a>
+        <a class="btn btn-primary btn-sm mb-3 mx-4" href="{{ route('users.index') }}">
+            <i class="fa fa-arrow-left"></i> Back to Users List
+        </a>
+        <a class="btn btn-success btn-sm mb-3" href="{{ route('users.printReport', $user->id) }}">
+            <i class="fa fa-print"></i> Print Current Fortnight Report
+        </a>
+    </div>
+
     <!-- Summary View -->
     <div id="user-summary" class="card p-3" style="cursor: pointer;">
         
@@ -120,19 +121,45 @@
     <!-- Charts Section -->
 <div class="row mt-4">
     <!-- Today's Performance -->
-    <div class="col-12 col-md-6 col-lg-4 mb-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">{{ request()->query('date') ? \Carbon\Carbon::parse(request()->query('date'))->format('M j') : 'Today\'s' }} Performance</h5>
-                <form action="" method="get">
-                    <input type="date" value="{{ request()->query('date') ? request()->query('date') : \Carbon\Carbon::today()->format('Y-m-d') }}" onchange="getElementById('dateSelectorBtn').click()" class="form-control form-control-sm w-auto" id="today-date" name="date">
-                    <button type="submit" id="dateSelectorBtn" hidden></button>
-                </form>
-            </div>
-            <div class="card-body d-flex justify-content-center align-items-center">
-                <canvas id="dailyTasksChart" style="max-width: 100%; height: auto;"></canvas>
-            </div>
-        </div>
+    <div class="col-12 col-md-6 col-lg-8 mb-6">
+
+        {{-- List daily tasks --}}
+        <ul class="list-group">
+            <li class="list-group-item active">
+                <h5 class="mb-0">Today's Tasks ({{ now()->format('M j, Y') }})</h5>
+            </li>
+            @if($dailyTasks->isEmpty())
+                <li class="list-group-item">
+                    <em>No tasks assigned for today.</em>
+                </li>
+            @else
+                @foreach($dailyTasks as $dtask)
+                    <div class="list-group">
+                        @forelse($dailyTasks as $dtask)
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ $dtask->title }}</h6>
+                                    @if(!empty($dtask->description))
+                                        <small class="text-muted d-block">{{ \Illuminate\Support\Str::limit($dtask->description, 120) }}</small>
+                                    @endif
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    @php
+                                        $status = $dtask->status ?? 'Unknown';
+                                        $badgeClass = $status === 'Completed' ? 'success' : ($status === 'Progress' ? 'warning' : 'secondary');
+                                    @endphp
+                                    <span class="badge bg-{{ $badgeClass }} me-3">{{ $status }}</span>
+                                    <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="list-group-item">No daily tasks found.</div>
+                        @endforelse
+                    </div>
+                @endforeach
+            @endif
+        </ul>
     </div>
     
     <!-- Fortnight Performance -->
@@ -157,17 +184,6 @@
         </div>
     </div>
     
-    <!-- General Performance -->
-    <div class="col-12 col-md-6 col-lg-4 mb-4 m-auto">
-        <div class="card h-100">
-            <div class="card-header">
-                <h5>General Performance</h5>
-            </div>
-            <div class="card-body d-flex justify-content-center align-items-center">
-                <canvas id="allTasksChart" style="max-width: 100%; height: auto;"></canvas>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Performance Summary Table -->

@@ -9,7 +9,6 @@ use App\Models\Day;
 use App\Models\Department;
 use App\Models\Fortnight;
 use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Services\FilterTasksService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -196,6 +195,8 @@ class UserController extends Controller
 
         $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
 
+        $dailyTasks = $user->dailyTasks()->where('date', now()->format('Y-m-d'))->get();
+
         // Return view with all necessary data
         return view('users.show', compact(
             'user',
@@ -211,7 +212,8 @@ class UserController extends Controller
             'fortnightCompletedTasks',
             'dailyPendingTasks',
             'dailyInProgressTasks',
-            'dailyCompletedTasks'
+            'dailyCompletedTasks',
+            'dailyTasks',
         ));
     }
 
@@ -241,13 +243,12 @@ class UserController extends Controller
         ];
         $deliverables = $user->deliverables()->where('fortnight_id', $currentFortnight->id)->get();
 
-        $pdf = PDF::loadView('users.printableReport', [
+        $pdf = app('dompdf.wrapper')->loadView('users.printableReport', [
             'user' => $user,
             'stats' => $stats,
             'currentFortnight' => $currentFortnight,
             'deliverables' => $deliverables,
         ]);
-
         $fileName = $user->name . '_Tasks_Report_' . $currentFortnight->start_date . '_' . $currentFortnight->end_date . '.pdf';
 
         // Download the file

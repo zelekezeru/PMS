@@ -14,143 +14,97 @@
     </div>
 </div>
 
-<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-    <div>
-    </div>
-    <div class="ms-md-auto py-2 py-md-0">
-        
-        <a href="{{ route('tasks.index', ['myTasks' => true]) }}" class="btn btn-label-success btn-round me-2">My Tasks</a>
-        <a href="{{ route('fortnights.show', $currentFortnight) }}" class="btn btn-label-warning btn-round me-2">Current Fortnight</a>
-        <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round">Add Fortnight Task</a>
-        <a href="{{ route('tasks.create', ['dailyTask' => true]) }}" class="btn btn-info btn-round">Add Daily Task</a>
-        
-    </div>
-</div>
+<div class="col-12 mb-4">
+    <div class="card w-200 h-40 shadow-sm">
+        <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between flex-wrap">
+            <div class="me-3 mb-3 mb-md-0 w-100 w-md-auto">
+            @php $currentFortnightId = optional($currentFortnight)->id; @endphp
 
-<div class="row justify-content-center">
-    <div class="col-md-12">
-        <div class="row">
-            <a href="{{ route('tasks.index') }}">
-                <div class="col-sm-3">
-                    <div class="card card-stats card-round">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-icon">
-                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                        <i class="fa-solid fa-list-check"></i>
-                                    </div>
-                                </div>
-                                <div class="col col-stats ms-3">
-                                    <div class="numbers">
-                                        <p class="card-category">All Tasks</p>
-                                        <h4 class="card-title">{{ is_countable($tasks) ? count($tasks) : 0 }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a href="{{ route('tasks.list', 'Pending') }}">
-                    <div class="card card-stats card-round">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-icon">
-                                    <div class="icon-big text-center icon-danger bubble-shadow-small">
-                                        <i class="fa-solid fa-spinner"></i>
-                                    </div>
-                                </div>
-                                <div class="col col-stats ms-3">
-                                    <div class="numbers">
-                                        <p class="card-category">Pending Tasks</p>
-                                        <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Pending')->count() : 0 }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a href="{{ route('tasks.list', 'Progress') }}">
-                    <div class="card card-stats card-round">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-icon">
-                                    <div class="icon-big text-center icon-warning bubble-shadow-small">
-                                        <i class="fa-solid fa-arrow-up-right-dots"></i>
-                                    </div>
-                                </div>
-                                <div class="col col-stats ms-3">
-                                    <div class="numbers">
-                                        <p class="card-category">Tasks InProgress</p>
-                                        <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Progress')->count() : 0 }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a href="{{ route('tasks.list', 'Completed') }}">
-                    <div class="card card-stats card-round">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-icon">
-                                    <div class="icon-big text-center icon-success bubble-shadow-small">
-                                        <i class="fa-solid fa-check"></i>
-                                    </div>
-                                </div>
-                                <div class="col col-stats ms-3">
-                                    <div class="numbers">
-                                        <p class="card-category">Completed Tasks</p>
-                                        <h4 class="card-title">{{ is_countable($tasks) ? $tasks->where('status', 'Completed')->count() : 0 }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-end align-items-center" role="toolbar" aria-label="Quick actions toolbar">
+            <a href="{{ route('tasks.index', ['myTasks' => true]) }}"
+               class="btn btn-lg btn-outline-success w-100 w-sm-auto"
+               role="button"
+               aria-label="My Tasks"
+               title="View your tasks">
+            <i class="fa-solid fa-user-check me-2" aria-hidden="true" style="font-size: 1.5rem;"></i>
+            <span class="d-none d-sm-inline">My Tasks</span>
+            </a>
+
+            @if($currentFortnightId)
+            <a href="{{ route('fortnights.show', ['fortnight' => $currentFortnightId]) }}"
+               class="btn btn-lg btn-outline-warning w-100 w-sm-auto"
+               role="button"
+               aria-label="Current Fortnight"
+               title="View current fortnight">
+            <i class="fa-solid fa-calendar-check me-2" aria-hidden="true" style="font-size: 1.5rem;"></i>
+            <span class="d-none d-sm-inline">Current Fortnight</span>
+            </a>
+            @else
+            <a href="{{ route('fortnights.index') }}"
+               class="btn btn-lg btn-outline-warning w-100 w-sm-auto"
+               role="button"
+               aria-label="Fortnights"
+               title="No current fortnight — view all">
+            <i class="fa-solid fa-calendar-days me-2" aria-hidden="true" style="font-size: 1.5rem;"></i>
+            <span class="d-none d-sm-inline">Fortnights</span>
+            </a>
+            @endif
+
+            <a href="{{ route('tasks.create') }}"
+               class="btn btn-lg btn-primary text-white w-100 w-sm-auto"
+               role="button"
+               aria-label="Add Fortnight Task"
+               title="Add a fortnight task">
+            <i class="fa-solid fa-plus me-2" aria-hidden="true" style="font-size: 1.5rem;"></i>
+            <span class="d-none d-sm-inline">Add Fortnight Task</span>
+            </a>
+
+            <a href="{{ route('daily_tasks.create', ['dailyTask' => true]) }}"
+               class="btn btn-lg btn-info text-white w-100 w-sm-auto"
+               role="button"
+               aria-label="Add Daily Task"
+               title="Add a daily task">
+            <i class="fa-solid fa-calendar-day me-2" aria-hidden="true" style="font-size: 1.5rem;"></i>
+            <span class="d-none d-sm-inline">Add Daily Task</span>
+            </a>
             </div>
         </div>
     </div>
-    <div class="row">
-            <!-- Task Status Overview -->
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="taskChart"></canvas>
-                </div>
+</div>
+
+{{-- Daily Tasks show page --}}
+    <div class="row mt-4 mb-4">
+        <div class="col-md-8 mb-4">
+            <h2 class="mb-4">Daily Tasks</h2>
+            {{-- List the first few daily tasks --}}
+            <div class="list-group">
+                @forelse($dailyTasks as $dtask)
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">{{ $dtask->title }}</h6>
+                            @if(!empty($dtask->description))
+                                <small class="text-muted d-block">{{ \Illuminate\Support\Str::limit($dtask->description, 120) }}</small>
+                            @endif
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            @php
+                                $status = $dtask->status ?? 'Unknown';
+                                $badgeClass = $status === 'Completed' ? 'success' : ($status === 'Progress' ? 'warning' : 'secondary');
+                            @endphp
+                            <span class="badge bg-{{ $badgeClass }} me-3">{{ $status }}</span>
+                            <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="list-group-item">No daily tasks found.</div>
+                @endforelse
             </div>
+
         </div>
 
         <div class="col-md-4">
             @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-                <div class="row">
-                    <div class="col-sm-12">
-                        <a href="{{ route('departments.index') }}">
-                            <div class="card card-stats card-round">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-icon">
-                                            <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                                <i class="fa-solid fa-building"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col col-stats ms-3">
-                                            <div class="numbers">
-                                                <p class="card-category">Departments</p>
-                                                <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <a href="{{ route('users.index') }}">
@@ -165,9 +119,9 @@
                                         <div class="col col-stats ms-3">
                                             <div class="numbers">
                                                 @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
-                                                    <p class="card-category">All Registered Users</p>
+                                                    <p class="card-category fw-bold">All Users</p>
                                                 @else
-                                                    <p class="card-category">Employees in your department</p>
+                                                     <p class="card-category fw-bold">Employees in your department</p>
                                                 @endif
                                                 <h4 class="card-title">{{ is_countable($users) ? count($users) : 0 }}</h4>
                                             </div>
@@ -178,11 +132,73 @@
                         </a>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a href="{{ route('departments.index') }}">
+                            <div class="card card-stats card-round">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                                <i class="fa-solid fa-building"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3">
+                                            <div class="numbers">
+                                                 <p class="card-category fw-bold">Departments</p>
+                                                <h4 class="card-title">{{ is_countable($departments) ? count($departments) : 0 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             @endif
         </div>
+    </div>
 
-    </div>    
-        {{-- Pillars   --}}
+    <div class="row mt-4">
+            <!-- Task Status Overview -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="taskChart"></canvas>
+                </div>
+            </div>
+        </div>
+    
+            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
+    
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Message Users </h4>
+                    </div>
+                    <div class="card-body user-list">
+                        <ul class="list-unstyled">
+                            @foreach ($users as $user)
+                                <li class="d-flex align-items-center mb-3">
+                                    @if ($user->profile_image)
+                                        <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle" width="40" height="40">
+                                    @else
+                                        <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                    @endif
+                                    <div class="ms-3">
+                                        <a href="{{ route('users.show', $user->id) }}" class="mb-0">{{ $user->name }}</a>
+                                        <small class="text-muted">{{ $user->role }}</small>
+                                    </div>
+                                    <div class="ms-auto d-flex">
+                                        <a href="mailto:{{ $user->email }}" class="text-primary me-2"><i class="fas fa-envelope"></i></a>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
          
     {{-- 5-Year Goals Section --}}
     <div class="col-md-6">
@@ -204,42 +220,6 @@
                 </ul>
             </div>
         </div>
-    </div>
-        <!-- User List -->
-        
-                
-        @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-    
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Message Users </h4>
-                    </div>
-                    <div class="card-body user-list">
-                        <ul class="list-unstyled">
-                            @foreach ($users as $user)
-                                <li class="d-flex align-items-center mb-3">
-                                    @if ($user->profile_image)
-                                        <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="rounded-circle" width="40" height="40">
-                                    @else
-                                        <span class="avatar-circle">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
-                                    @endif
-                                    <div class="ms-3">
-                                        <h6 class="mb-0">{{ $user->name }}</h6>
-                                        <small class="text-muted">{{ $user->role }}</small>
-                                    </div>
-                                    <div class="ms-auto d-flex">
-                                        <a href="mailto:{{ $user->email }}" class="text-primary me-2"><i class="fas fa-envelope"></i></a>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        @endif    
-        
-    </div>
    
 </div>
 

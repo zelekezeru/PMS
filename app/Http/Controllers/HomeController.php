@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DailyTask;
 use App\Models\Department;
 use App\Models\Fortnight;
 use App\Models\Home;
@@ -26,13 +27,16 @@ class HomeController extends Controller
         $fortnights = Fortnight::get();
 
         $user = Auth::user();
-
+        
         if (request()->user()->hasAnyRole(['EMPLOYEE'])) {
             $departments = null;
 
             $users = null;
 
             $tasks = $user->tasks;
+
+            $dailyTasks = $user->dailyTasks;
+
         } elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
 
             $department = request()->user()->load('headOf')->headOf;
@@ -42,6 +46,8 @@ class HomeController extends Controller
             $departmentTasks = request()->user()->tasks;
 
             $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
+
+            $dailyTasks = $user->dailyTasks;
 
             $users = $department->users;
 
@@ -53,6 +59,8 @@ class HomeController extends Controller
             $users = User::get();
 
             $tasks = Task::get();
+
+            $dailyTasks = DailyTask::where('date', now()->format('Y-m-d'))->get();
         }
 
         $pendingTasks = $tasks->where('status', 'Pending')->count();
@@ -61,7 +69,7 @@ class HomeController extends Controller
 
         $completedTasks = $tasks->where('status', 'Completed')->count();
 
-        return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users', 'pendingTasks', 'inProgressTasks', 'completedTasks'));
+        return view('index', compact('strategies', 'tasks', 'fortnights', 'years', 'departments', 'users', 'pendingTasks', 'inProgressTasks', 'completedTasks', 'dailyTasks'));
     }
 
     /**
