@@ -198,8 +198,8 @@ class UserController extends Controller
 
         $userId = request()->query('user_id');
 
-        $query = DailyTask::with('user')->whereDate('date', $selectedDate);
-
+        $query = $user->dailyTasks()->where('date', $selectedDate);
+        
         if ($userId) {
             $query->where('user_id', $userId);
         }

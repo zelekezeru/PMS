@@ -54,15 +54,16 @@ $currentFortnight = App\Models\Fortnight::currentFortnight();
                                     </li>
 
                                 @endcan
+                                
                                 @can('create-tasks')
                                 <li class="{{ request()->routeIs('tasks.create') ? 'active' : '' }}">
-                                    <a href="{{ route('tasks.create') }}">
+                                    <a href="{{ route('daily_tasks.create', ['dailyTask' => true]) }}">
                                         <i class="fas fa-plus-circle"></i> Add Fortnight Task
                                     </a>
                                 </li>
 
                                 <li class="{{ request()->routeIs('tasks.create') ? 'active' : '' }}">
-                                    <a href="{{ route('tasks.create', ['dailyTask' => true]) }}">
+                                    <a href="{{ route('daily_tasks.create', ['dailyTask' => true]) }}">
                                         <i class="fas fa-plus-circle"></i> Add Daily Task
                                     </a>
                                 </li>

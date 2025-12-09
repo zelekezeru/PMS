@@ -143,46 +143,46 @@
                                         <span class="text">Calendar</span>
                                     </div>
                                 </a>
-                                <a class="col-6 col-md-4 p-0" href="#">
+                                {{-- <a class="col-6 col-md-4 p-0" href="#">
                                     <div class="quick-actions-item">
                                         <div class="avatar-item bg-warning rounded-circle">
                                             <i class="fas fa-map"></i>
                                         </div>
                                         <span class="text">Maps</span>
                                     </div>
-                                </a>
-                                <a class="col-6 col-md-4 p-0" href="#">
+                                </a> --}}
+                                {{-- <a class="col-6 col-md-4 p-0" href="#">
                                     <div class="quick-actions-item">
                                         <div class="avatar-item bg-info rounded-circle">
                                             <i class="fas fa-file-excel"></i>
                                         </div>
                                         <span class="text">Reports</span>
                                     </div>
-                                </a>
-                                <a class="col-6 col-md-4 p-0" href="#">
+                                </a> --}}
+                                {{-- <a class="col-6 col-md-4 p-0" href="#">
                                     <div class="quick-actions-item">
                                         <div class="avatar-item bg-success rounded-circle">
                                             <i class="fas fa-envelope"></i>
                                         </div>
                                         <span class="text">Emails</span>
                                     </div>
-                                </a>
-                                <a class="col-6 col-md-4 p-0" href="#">
+                                </a> --}}
+                                {{-- <a class="col-6 col-md-4 p-0" href="#">
                                     <div class="quick-actions-item">
                                         <div class="avatar-item bg-primary rounded-circle">
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </div>
                                         <span class="text">Invoice</span>
                                     </div>
-                                </a>
-                                <a class="col-6 col-md-4 p-0" href="#">
+                                </a> --}}
+                                {{-- <a class="col-6 col-md-4 p-0" href="#">
                                     <div class="quick-actions-item">
                                         <div class="avatar-item bg-secondary rounded-circle">
                                             <i class="fas fa-credit-card"></i>
                                         </div>
                                         <span class="text">Payments</span>
                                     </div>
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>
