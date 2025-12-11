@@ -35,6 +35,7 @@ class TaskController extends Controller
          * */
 
         // initiate a new FilterTasksService class to be able to uses the methods in it
+        
         $filterTasksService = new FilterTasksService;
 
         /**
@@ -168,12 +169,6 @@ class TaskController extends Controller
 
         // Get the assigning user
         $assigningUser = request()->user();
-
-        // Send email to assigned users
-        foreach ($users as $userId) {
-            $user = User::find($userId);
-            Mail::to($user->email)->send(new TaskAssigned($task, $assigningUser));
-        }
 
         return redirect()->route('tasks.show', $task)->with('status', 'Task has been successfully created.');
     }

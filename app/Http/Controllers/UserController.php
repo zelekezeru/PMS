@@ -148,7 +148,7 @@ class UserController extends Controller
         // Initialize task counts to avoid undefined variables
         $fortnightPendingTasks = $fortnightInProgressTasks = $fortnightCompletedTasks = 0;
         $dailyPendingTasks = $dailyInProgressTasks = $dailyCompletedTasks = 0;
-
+        
         if ($fortnight) {
             $fortnightPendingTasks = $user->tasks()->where('status', 'Pending')
                 ->whereHas('fortnights', fn($q) => $q->where('fortnights.id', $fortnight->id))
@@ -164,15 +164,15 @@ class UserController extends Controller
         }
 
         if ($day) {
-            $dailyPendingTasks = $user->tasks()->where('status', 'Pending')
+            $dailyPendingTasks = $user->dailyTasks()->where('status', 'Pending')
                 ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
                 ->count();
 
-            $dailyInProgressTasks = $user->tasks()->where('status', 'Progress')
+            $dailyInProgressTasks = $user->dailyTasks()->where('status', 'Progress')
                 ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
                 ->count();
 
-            $dailyCompletedTasks = $user->tasks()->where('status', 'Completed')
+            $dailyCompletedTasks = $user->dailyTasks()->where('status', 'Completed')
                 ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
                 ->count();
         }
@@ -181,17 +181,19 @@ class UserController extends Controller
         $allPendingTasks = $user->tasks()->where('status', 'Pending')->count();
         $allInProgressTasks = $user->tasks()->where('status', 'Progress')->count();
         $allCompletedTasks = $user->tasks()->where('status', 'Completed')->count();
-
+        $allDailyTasks = $user->dailyTasks()->count();
         // Get department
         $department = $user->department;
 
         // Apply filtering
         $tasksQuery = $user->tasks(); // base query
+        $dailyTasksQuery = $user->dailyTasks(); // base query for daily tasks
+
         $filterTasksService = new FilterTasksService;
         [$tasksQuery] = $filterTasksService->filterByScope($tasksQuery, $request);
         $tasksQuery = $filterTasksService->filterByColumns($tasksQuery, $request);
         $tasksQuery = $filterTasksService->filterByFortnight($request, $tasksQuery);
-        $tasksQuery = $filterTasksService->filterByDay($request, $tasksQuery);
+        $tasksQuery = $filterTasksService->filterByDay($request, $dailyTasksQuery);
         $tasks = $tasksQuery->paginate(15);
 
         $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
