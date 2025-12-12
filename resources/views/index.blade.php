@@ -76,31 +76,58 @@
     <div class="row mt-4 mb-4">
         <div class="col-md-8 mb-4">
             {{-- List the first few daily tasks --}}
-            <div class="list-group">
-                <div class="list-group-item">
-                    <a href="{{ route('daily_tasks.index') }}" class="btn btn-primary w-100">Daily Tasks</a>
+            <div class="list-group shadow-sm">
+                <div class="list-group-item bg-light border-0 text-center">
+                    <a href="{{ route('daily_tasks.index') }}" class="btn btn-lg btn-primary rounded-pill px-4">
+                        <i class="fa-solid fa-list-check me-2"></i> View All Daily Tasks
+                    </a>
                 </div>
-                <div class="list-group-item d-flex justify-content-between align-items-center">
-                    @forelse($dailyTasks as $dtask)
-                        <div>
-                            <h6 class="mb-1">{{ $dtask->title }}</h6>
-                            @if(!empty($dtask->description))
-                                <small class="text-muted d-block">{{ \Illuminate\Support\Str::limit($dtask->description, 120) }}</small>
-                            @endif
+
+                @forelse($dailyTasks as $dtask)
+                    @php
+                        $status = $dtask->status ?? 'Unknown';
+                        $badgeClass = $status === 'Completed' ? 'success' : ($status === 'Progress' ? 'warning' : 'secondary');
+                        $progress = $dtask->progress ?? ($status === 'Completed' ? 100 : ($status === 'Progress' ? 50 : 5));
+                        $initial = strtoupper(substr($dtask->title ?? 'T', 0, 1));
+                    @endphp
+
+                    <div class="list-group-item d-flex align-items-start gap-3 py-3">
+                        <div class="avatar flex-shrink-0">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:48px;height:48px;font-weight:600;">
+                                {{ $initial }}
+                            </div>
                         </div>
 
-                        <div class="d-flex align-items-center">
-                            @php
-                                $status = $dtask->status ?? 'Unknown';
-                                $badgeClass = $status === 'Completed' ? 'success' : ($status === 'Progress' ? 'warning' : 'secondary');
-                            @endphp
-                            <span class="badge bg-{{ $badgeClass }} me-3">{{ $status }}</span>
-                            <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View</a>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div>
+                                    <h6 class="mb-1 fw-bold mb-0">{{ $dtask->title }}</h6>
+                                    @if(!empty($dtask->description))
+                                        <small class="text-muted d-block">{{ \Illuminate\Support\Str::limit($dtask->description, 120) }}</small>
+                                    @endif
+                                </div>
+
+                                <div class="text-end ms-3">    
+                                    <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View <i class="fa-solid fa-eye ms-1"></i></a>
+                                
+                                    <span class="badge bg-{{ $badgeClass }} mb-2">{{ $status }}</span>
+                                    <div><small class="text-muted">{{ optional($dtask->created_at)->diffForHumans() }}</small></div>
+                                </div>
+                            </div>
+
+                            <div class="mt-2">
+                                <div class="d-flex align-items-center justify-content-between mt-2">
+                                </div>
+                            </div>
                         </div>
-                    @empty
-                        <div class="list-group-item">No daily tasks found.</div>
-                    @endforelse
-                </div>
+                    </div>
+                @empty
+                    <div class="list-group-item text-center py-4">
+                        <i class="fa-regular fa-face-meh fa-2x text-muted mb-2"></i>
+                        <div class="text-muted">No daily tasks found.</div>
+                        <a href="{{ route('daily_tasks.create') }}" class="btn btn-sm btn-outline-success mt-2">Create one</a>
+                    </div>
+                @endforelse
             </div>
 
         </div>
