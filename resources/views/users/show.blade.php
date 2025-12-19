@@ -45,7 +45,7 @@
         <img src="{{ $user->profile_image ? Storage::url($user->profile_image) : asset('img/user.png') }}" 
              alt="Profile Image" 
              style="width: 15%; border-radius: 50%; margin: 0 auto;">
-        <h2 class="card-header text-center">User Details</h2>
+        <h2 class="card-header text-center">{{ $user->name }}</h2>
         <div class="card-body">
             <div class="d-flex justify-content-end">
                 <a class="btn btn-primary btn-sm mb-3" href="{{ route('users.index') }}">
@@ -83,16 +83,38 @@
                         @endif
                     </tr>
                 @endif
-                @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']) && !$user->department)
-                    @php
-                        $password = 'sits@' . substr($user->phone_number, -4);
-                    @endphp
-                    <tr>
-                        <th class="text-danger">Original Password (User Must Change)</th>
-                        <td>{{ $password }}</td>
-                    </tr>
+                {{$user}}
+                @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
+
+                    @if($user->default_password)
+                        <tr>
+                            <th>Default Password:</th>
+                            <td>
+                                <span id="password-masked">********</span>
+                                <span id="password-text" style="display: none;">{{ $user->default_password }}</span>
+                                <button id="toggle-password" onclick="togglePasswordVisibility()" class="btn btn-sm btn-outline-secondary ms-2">Show</button>
+                            </td>
+                        </tr>
+                    @else
+                        <tr>
+                            <th>Password Status:</th>
+                            <td>
+                                <span class="badge badge-success mb-2">Password Changed</span>
+                                    {{-- Reset Button --}}
+                                <form action="{{ route('users.resetPassword', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to reset the password for this user?');">
+                                    @csrf
+                                    <input type="text" name="new_password" class="form-control mb-2" value="sits.{{ isset($user->phone_number) ? substr($user->phone_number, -4) : '' }}" hidden required>
+                                    
+                                    <button type="submit" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-key"></i> Reset Password
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
                     @endif
-                </table>
+                @endif
+            </table>
+            
             @if (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']))
                 <div class="d-flex justify-content-end mt-4">
                     @if(!$user->is_approved)
@@ -404,5 +426,19 @@
             }
         });
     });
+    function togglePasswordVisibility() {
+        const text = document.getElementById('password-text');
+        const masked = document.getElementById('password-masked');
+        const button = document.getElementById('toggle-password');
+        if (text.style.display === 'none') {
+            text.style.display = 'inline';
+            masked.style.display = 'none';
+            button.textContent = 'Hide';
+        } else {
+            text.style.display = 'none';
+            masked.style.display = 'inline';
+            button.textContent = 'Show';
+        }
+    }
 </script>
 @endsection

@@ -92,7 +92,7 @@
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">{{ ($tasks->currentPage() - 1) * $tasks->perPage() + $loop->iteration }}</td>
                                 
                                 <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
-                                    {{ $task->name }}
+                                    {{ $task->title }}
                                 </td>
                                     
                                 {{-- Check if the field is empty or not --}}
@@ -114,9 +114,9 @@
                                     </td>
                                 @endif
                                 {{-- Check if the field is empty or not --}}
-                                @if ($task->due_date)
+                                @if ($task->date)
                                     <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
-                                        {{ \Carbon\Carbon::parse($task->due_date)->format('M - d - Y') . ' (' . \Carbon\Carbon::parse($task->due_date)->format('D') . ')' }}
+                                        {{ \Carbon\Carbon::parse($task->date)->format('M - d - Y') . ' (' . \Carbon\Carbon::parse($task->due_date)->format('D') . ')' }}
                                     </td>
                                 @else
                                     <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
@@ -124,9 +124,9 @@
                                     </td>
                                 @endif
                                 {{-- Check if the field is empty or not --}}
-                                @if ($task->createdBy)
+                                @if ($task->user_id)
                                     <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">
-                                        {{ $task->createdBy->name }}
+                                        {{ $task->user->name }}
                                     </td>
                                 @else
                                     <td onclick="window.location='{{ route('tasks.show', $task->id) }}'">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\DailyTaskController;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\DeliverableController;
@@ -50,6 +51,8 @@ Route::middleware('auth')->group(function () {
 
         // Resource Routes
         Route::resource('users', UserController::class)->only('create', 'store', 'edit', 'update', 'destroy');
+        
+        Route::post('users/{user}/reset-password', [PasswordController::class, 'resetPassword'])->name('users.resetPassword');
 
         Route::resource('strategies', StrategyController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('targets', TargetController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);

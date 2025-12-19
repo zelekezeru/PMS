@@ -114,6 +114,9 @@
                                     <div><small class="text-muted">{{ optional($dtask->created_at)->diffForHumans() }}</small></div>
                                 </div>
                             </div>
+                            <div class="progress mt-2" style="height: 6px;">
+                                <div class="progress-bar bg-{{ $badgeClass }}" role="progressbar" style="width: {{ $progress }}%;" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
 
                             <div class="mt-2">
                                 <div class="d-flex align-items-center justify-content-between mt-2">
@@ -251,6 +254,14 @@
         </div>
    
 </div>
+
+
+
+@if (session('status') === 'password-updated')
+    <div class="alert alert-success">
+        {{ __('Password Saved.') }}
+    </div>
+@endif
 
 
 @endsection

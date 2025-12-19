@@ -2,6 +2,16 @@
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
@@ -29,6 +39,9 @@
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
+
+        {{-- User Id --}}
+        <input type="hidden" name="user_id" value="{{ $request->user_id }}">
 
         <div class="flex items-center justify-end mt-4">
             <x-primary-button>

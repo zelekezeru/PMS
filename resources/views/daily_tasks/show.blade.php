@@ -105,16 +105,19 @@
                                         <option value="Completed" {{ $current === 'completed' ? 'selected' : '' }} style="color: green; background-color: #d4edda;">Completed</option>
                                     </select>
                                 </form>
-
-                                <div>
-                                    <form action="{{ route('daily_tasks.destroy', $dailyTask) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task? This action cannot be undone.');" class="d-inline">
+                                <div class="d-flex gap-2 mt-3">
+                                    <a href="{{ route('daily_tasks.edit', $dailyTask) }}" class="btn btn-primary btn-sm flex-fill">
+                                        <i class="fa-solid fa-pen-to-square me-1"></i> Edit Task
+                                    </a>
+                                    <form action="{{ route('daily_tasks.destroy', $dailyTask) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task? This action cannot be undone.');" class="flex-fill m-0">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">
+                                        <button type="submit" class="btn btn-danger btn-sm w-100">
                                             <i class="fa-solid fa-trash me-1"></i> Delete
                                         </button>
                                     </form>
                                 </div>
+                                
                                 
                             @else
                                 <button type="button" class="btn btn-success w-100" disabled>
