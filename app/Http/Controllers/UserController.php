@@ -125,7 +125,7 @@ class UserController extends Controller
     public function show($id, Request $request)
     {
         // Attempt to find the user
-        $user = User::with('tasks', 'department')->find($id);
+        $user = User::with('tasks', 'department', 'dailyTasks')->find($id);
 
         if (! $user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
@@ -162,7 +162,6 @@ class UserController extends Controller
                 ->whereHas('fortnights', fn($q) => $q->where('fortnights.id', $fortnight->id))
                 ->count();
         }
-
         if ($day) {
             $dailyPendingTasks = $user->dailyTasks()->where('status', 'Pending')
                 ->whereHas('days', fn($q) => $q->where('days.id', $day->id))

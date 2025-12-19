@@ -111,17 +111,13 @@
                                     <a href="{{ route('daily_tasks.show', $dtask) }}" class="btn btn-sm btn-outline-primary">View <i class="fa-solid fa-eye ms-1"></i></a>
                                 
                                     <span class="badge bg-{{ $badgeClass }} mb-2">{{ $status }}</span>
-                                    <div><small class="text-muted">{{ optional($dtask->created_at)->diffForHumans() }}</small></div>
+                                    <div class="mt-2">
+                                        <small class="text-muted bold ml-2">By: {{ $dtask->user->name }}, </small>
+                                        <small class="text-muted"> {{ optional($dtask->created_at)->diffForHumans() }}</small>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="progress mt-2" style="height: 6px;">
-                                <div class="progress-bar bg-{{ $badgeClass }}" role="progressbar" style="width: {{ $progress }}%;" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-
-                            <div class="mt-2">
-                                <div class="d-flex align-items-center justify-content-between mt-2">
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 @empty

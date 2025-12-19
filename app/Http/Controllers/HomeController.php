@@ -34,8 +34,8 @@ class HomeController extends Controller
             $users = null;
 
             $tasks = $user->tasks;
-
-            $dailyTasks = $user->dailyTasks;
+            
+            $dailyTasks = DailyTask::where('user_id', $user->id)->orderBy('date', 'desc')->whereDate('date', now()->toDateString())->get();
 
         } elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
 
@@ -46,8 +46,8 @@ class HomeController extends Controller
             $departmentTasks = request()->user()->tasks;
 
             $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
-
-            $dailyTasks = $user->dailyTasks;
+            
+            $dailyTasks = DailyTask::where('user_id', $user->id)->orderBy('date', 'desc')->whereDate('date', now()->toDateString())->get();
 
             $users = $department->users;
 
