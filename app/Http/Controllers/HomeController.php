@@ -49,14 +49,14 @@ class HomeController extends Controller
             
             $dailyTasks = DailyTask::where('user_id', $user->id)->orderBy('date', 'desc')->whereDate('date', now()->toDateString())->get()->unique('user_id');
 
-            $users = $department->users;
+            $users = $department->users()->where('is_approved', 1)->where('is_active', 1)->get();
 
             $departments = null;
 
         } elseif (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']) || request()->user()->hasAnyRole(['ADMIN'])) {
             $departments = Department::get();
 
-            $users = User::get();
+            $users = User::where('is_approved', 1)->where('is_active', 1)->get();
 
             $tasks = Task::get();
 

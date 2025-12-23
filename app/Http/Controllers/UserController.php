@@ -27,9 +27,9 @@ class UserController extends Controller
     {
         if (request()->user()->hasRole('DEPARTMENT_HEAD')) {
             $department = request()->user()->department;
-            $users = $department->users()->orderBy('name', 'asc')->paginate(30);
+            $users = $department->users()->orderBy('name', 'asc')->where('is_approved', 1)->where('is_active', 1)->paginate(30);
         } else {
-            $users = User::orderBy('name', 'asc')->paginate(30);
+            $users = User::orderBy('name', 'asc')->where('is_approved', 1)->where('is_active', 1)->paginate(30);
         }
 
         return view('users.index', compact('users'));
