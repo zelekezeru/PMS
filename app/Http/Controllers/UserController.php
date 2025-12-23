@@ -123,10 +123,10 @@ class UserController extends Controller
      * Display the specified resource.
      */
     public function show($id, Request $request)
-    {
+    {        
         // Attempt to find the user
-        $user = User::with('tasks', 'department', 'dailyTasks')->find($id);
-
+        $user = User::with(['tasks.createdBy', 'department', 'dailyTasks'])->find($id);
+        
         if (! $user) {
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
@@ -138,7 +138,6 @@ class UserController extends Controller
 
         // Set selected date from query or use today's date
         $selectedDate = $request->query('date', Carbon::today()->format('Y-m-d'));
-        $day = Day::whereDate('date', $selectedDate)->first();
 
         // Set current or requested fortnight
         $fortnight = $request->query('fortnight')
@@ -162,19 +161,19 @@ class UserController extends Controller
                 ->whereHas('fortnights', fn($q) => $q->where('fortnights.id', $fortnight->id))
                 ->count();
         }
-        if ($day) {
+        if ($selectedDate) {
             $dailyPendingTasks = $user->dailyTasks()->where('status', 'Pending')
-                ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
+                ->where('date', $selectedDate)
                 ->count();
 
             $dailyInProgressTasks = $user->dailyTasks()->where('status', 'Progress')
-                ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
+                ->where('date', $selectedDate)
                 ->count();
 
             $dailyCompletedTasks = $user->dailyTasks()->where('status', 'Completed')
-                ->whereHas('days', fn($q) => $q->where('days.id', $day->id))
+                ->where('date', $selectedDate)
                 ->count();
-        }
+        }        
 
         // Overall task stats
         $allPendingTasks = $user->tasks()->where('status', 'Pending')->count();
@@ -183,16 +182,16 @@ class UserController extends Controller
         $allDailyTasks = $user->dailyTasks()->count();
         // Get department
         $department = $user->department;
-
+        
         // Apply filtering
         $tasksQuery = $user->tasks(); // base query
         $dailyTasksQuery = $user->dailyTasks(); // base query for daily tasks
-
+        
         $filterTasksService = new FilterTasksService;
         [$tasksQuery] = $filterTasksService->filterByScope($tasksQuery, $request);
         $tasksQuery = $filterTasksService->filterByColumns($tasksQuery, $request);
         $tasksQuery = $filterTasksService->filterByFortnight($request, $tasksQuery);
-        $tasksQuery = $filterTasksService->filterByDay($request, $dailyTasksQuery);
+        $dailyTasksQuery = $filterTasksService->filterByDay($request, $dailyTasksQuery);
         $tasks = $tasksQuery->paginate(15);
 
         $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
@@ -206,7 +205,7 @@ class UserController extends Controller
         }
 
         $dailyTasks = $query->orderBy('created_at', 'desc')->get();
-
+        
         // Return view with all necessary data
         return view('users.show', compact(
             'user',

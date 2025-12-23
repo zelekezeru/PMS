@@ -54,12 +54,9 @@ class TaskController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return view('tasks.index', compact('tasks', 'currentFortnight'));
+        return view('tasks.index', compact('tasks', 'dailyTasks', 'currentFortnight'));
     }
-
-    /**
-     * Get user tasks based on role and request parameters
-     */
+    
     private function getAuthUserTasks(Request $request)
     {
         $user = $request->user();

@@ -64,7 +64,7 @@ class FilterTasksService
     {
         $today = Carbon::now()->format('Y-m-d');
         
-        $currentFortnight = $request->query('currentFortnight') || $request->query('onlyToday') ? Fortnight::whereDate('start_date', '<=', $today)
+        $currentFortnight = ($request->query('currentFortnight') || $request->query('onlyToday')) ? Fortnight::whereDate('start_date', '<=', $today)
             ->whereDate('end_date', '>=', $today)->first() : null;
         /**
          * If There is ?currentFortnight=1 in the url we fetch the tasks of the current fortnight
@@ -76,18 +76,7 @@ class FilterTasksService
             });
         } elseif ($request->query('onlyToday')) {
 
-            // Check if the day exists and if it doesnt create the day
-            if (Day::where('date', $today)->exists()) {
-                $day = Day::where('date', $today)->first()->id;
-            } else {
-                $day = Day::create([
-                    'fortnight_id' => $currentFortnight->id,
-                    'date' => $today,
-                ])->id;
-            }
-            $tasks = $tasks->whereHas('days', function ($query) use ($day) {
-                $query->where('days.id', $day);
-            });
+            $tasks = $tasks->where('date', $today);
         }
 
         // Return the query builder
@@ -102,19 +91,16 @@ class FilterTasksService
                 $query->where('fortnights.id', $fortnightId);
             });
         }
-    
-        return $tasks;
-    }    
 
-    public function filterByDay($request, $tasks)
+        return $tasks;
+    }
+
+    public function filterByDay($request, $dailyTasks)
     {
         if ($request->has('date')) {
             $date = $request->input('date');
-            $tasks = $tasks->whereHas('days', function ($query) use ($date) {
-                $query->where('days.date', $date);
-            });
+            $dailyTasks = $dailyTasks->where('date', $date);
         }
-    
-        return $tasks;
-    }    
+        return $dailyTasks;
+    }
 }

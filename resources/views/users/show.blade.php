@@ -144,7 +144,7 @@
 <div class="row mt-4">
     <!-- Today's Performance -->
     <div class="col-12 col-md-6 col-lg-8 mb-6">
-
+        
         {{-- List daily tasks --}}
         <ul class="list-group">
             <li class="list-group-item active d-flex justify-content-between align-items-center">
