@@ -35,7 +35,7 @@ class HomeController extends Controller
 
             $tasks = $user->tasks;
             
-            $dailyTasks = DailyTask::where('user_id', $user->id)->orderBy('date', 'desc')->whereDate('date', now()->toDateString())->get();
+            $dailyTasks = DailyTask::where('user_id', $user->id)->whereDate('date', now()->toDateString())->orderBy('date', 'desc')->get()->unique('user_id');
 
         } elseif (request()->user()->hasAnyRole(['DEPARTMENT_HEAD'])) {
 
@@ -47,20 +47,20 @@ class HomeController extends Controller
 
             $tasks = $departmentTasks->merge($departmentTasks)->unique('id');
             
-            $dailyTasks = DailyTask::where('user_id', $user->id)->orderBy('date', 'desc')->whereDate('date', now()->toDateString())->get();
+            $dailyTasks = DailyTask::where('user_id', $user->id)->orderBy('date', 'desc')->whereDate('date', now()->toDateString())->get()->unique('user_id');
 
             $users = $department->users;
 
             $departments = null;
 
-        } elseif (request()->user()->hasAnyRole(['SUPER_ADMIN']) || request()->user()->hasAnyRole(['ADMIN'])) {
+        } elseif (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN']) || request()->user()->hasAnyRole(['ADMIN'])) {
             $departments = Department::get();
 
             $users = User::get();
 
             $tasks = Task::get();
 
-            $dailyTasks = DailyTask::where('date', now()->format('Y-m-d'))->get();
+            $dailyTasks = DailyTask::whereDate('date', now()->toDateString())->get()->unique('user_id');
         }
 
         $pendingTasks = $tasks->where('status', 'Pending')->count();

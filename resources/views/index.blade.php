@@ -183,26 +183,10 @@
                         </a>
                     </div>
                 </div>
-            @endif
-        </div>
-    </div>
 
-    <div class="row mt-4">
-            <!-- Task Status Overview -->
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="taskChart"></canvas>
-                </div>
-            </div>
-        </div>
-    
-            @if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN']))
-    
-            <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Message Users </h4>
+                        <h4 class="card-title">Access Users </h4>
                     </div>
                     <div class="card-body user-list">
                         <ul class="list-unstyled">
@@ -225,8 +209,20 @@
                         </ul>
                     </div>
                 </div>
+            @endif
+        </div>
+    </div>
+
+    <div class="row mt-4">
+
+        <!-- Task Status Overview -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <canvas id="taskChart"></canvas>
             </div>
-        @endif
+        </div>
+    </div>
          
     {{-- 5-Year Goals Section --}}
     <div class="col-md-6">
@@ -247,9 +243,8 @@
 
                 </ul>
             </div>
-        </div>
-   
-</div>
+        </div>   
+    </div>
 
 
 
