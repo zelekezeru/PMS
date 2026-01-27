@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('strategy_id')->onDelete('cascade');
             $table->string('name');
             $table->string('description')->nullable();
+            $table->foreignId('year_id')->onDelete('cascade');
             $table->timestamps(0);
         });
     }

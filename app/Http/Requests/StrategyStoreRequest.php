@@ -25,6 +25,7 @@ class StrategyStoreRequest extends FormRequest
             'pillar_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'year_id'=> 'required|exists:years,id',
         ];
     }
 }

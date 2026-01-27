@@ -25,6 +25,7 @@ class StrategyUpdateRequest extends FormRequest
             'pillar_name' => 'sometimes|required|string|max:255',
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
+            'year_id'=> 'sometimes|required|exists:years,id',
         ];
     }
 }

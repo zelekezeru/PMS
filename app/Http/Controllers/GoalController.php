@@ -6,13 +6,16 @@ use App\Http\Requests\GoalStoreRequest;
 use App\Http\Requests\GoalUpdateRequest;
 use App\Models\Goal;
 use App\Models\Strategy;
+use App\Models\Year;
 use Illuminate\Http\Request;
 
 class GoalController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Goal::with('strategy');
+        $activeYear = Year::where('active', true)->first();
+
+        $query = Goal::with('strategy')->where('year_id', $activeYear->id);
 
         // Filtering by strategy
         if ($request->filled('strategy_id')) {
@@ -37,7 +40,9 @@ class GoalController extends Controller
     {
         $strategies = Strategy::get();
 
-        return view('goals.create', compact('strategies'));
+        $years = Year::get();
+
+        return view('goals.create', compact('strategies', 'years'));
     }
 
     public function store(GoalStoreRequest $request)
@@ -56,7 +61,9 @@ class GoalController extends Controller
     {
         $strategies = Strategy::get();
 
-        return view('goals.edit', compact('goal', 'strategies'));
+        $years = Year::get();
+
+        return view('goals.edit', compact('goal', 'strategies', 'years'));
     }
 
     public function update(GoalUpdateRequest $request, Goal $goal)

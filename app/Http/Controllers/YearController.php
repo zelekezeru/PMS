@@ -23,6 +23,7 @@ class YearController extends Controller
     {
         $request->validate([
             'year' => 'required|integer|unique:years,year',
+            'active' => 'required|boolean|default(false)',
         ]);
 
         Year::create($request->all());
@@ -44,6 +45,7 @@ class YearController extends Controller
     {
         $request->validate([
             'year' => 'required|integer|unique:years,year,'.$year->id,
+            'active'=> 'sometimes|required|boolean',
         ]);
 
         $year->update($request->all());

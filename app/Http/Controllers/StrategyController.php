@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Strategy;
+use App\Models\Year;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -13,7 +14,7 @@ class StrategyController extends Controller
      */
     public function index(): View
     {
-        $strategies = Strategy::paginate(15); // Use pagination to avoid loading too many records at once
+        $strategies = Strategy::paginate(30); // Use pagination to avoid loading too many records at once
 
         return view('strategies.index', compact('strategies'));
     }
@@ -25,7 +26,9 @@ class StrategyController extends Controller
     {
         $strategy = new Strategy;
 
-        return view('strategies.create', compact('strategy'));
+        $years = Year::get();
+
+        return view('strategies.create', compact('strategy', 'years'));
     }
 
     /**
@@ -41,7 +44,10 @@ class StrategyController extends Controller
      */
     public function edit(Strategy $strategy): View
     {
-        return view('strategies.edit', compact('strategy'));
+
+        $years = Year::get();
+
+        return view('strategies.edit', compact('strategy','years'));
     }
 
     public function store(Request $request)
@@ -50,6 +56,7 @@ class StrategyController extends Controller
             'pillar_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'year_id'=> 'required|exists:years,id',
         ]);
 
         $strategy = new Strategy($request->all());
@@ -65,6 +72,7 @@ class StrategyController extends Controller
             'pillar_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'year_id'=> 'sometimes|required|exists:years,id',
         ]);
 
         $strategy->update($request->all());

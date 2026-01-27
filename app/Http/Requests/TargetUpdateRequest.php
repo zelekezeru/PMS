@@ -28,6 +28,7 @@ class TargetUpdateRequest extends FormRequest
             'unit' => 'sometimes|nullable|string|max:50',
             'goal_id' => 'sometimes|required|exists:goals,id',
             'departments' => 'sometimes|array|max:255',
+            'year_id'=> 'sometimes|required|exists:years,id',
         ];
     }
 }

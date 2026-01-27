@@ -11,6 +11,7 @@ use App\Models\Fortnight;
 use App\Models\Target;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Year;
 use App\Services\FilterTasksService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -76,7 +77,9 @@ class TaskController extends Controller
 
     public function create(Request $request)
     {
-        $targets = Target::get();
+        $activeYear = Year::where('active', true)->first();
+
+        $targets = Target::where('year_id', $activeYear->id)->get();
 
         $departments = (request()->user()->hasROle('DEPARTMENT_HEAD') ? [request()->user()->headOf] : request()->user()->hasROle('EMPLOYEE')) ? [] : Department::get();
 
@@ -193,7 +196,9 @@ class TaskController extends Controller
 
         $assignedUsers = $task->users()->pluck('users.id')->toArray();
 
-        $targets = Target::get();
+        $activeYear = Year::where('active', true)->first();
+
+        $targets = Target::where('year_id', $activeYear->id)->get();
 
         $departments = Department::get();
 

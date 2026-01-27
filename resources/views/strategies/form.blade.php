@@ -27,6 +27,20 @@
                 <div class="form-text text-danger">{{ $message }}</div>
             @enderror
         </div>
+
+        <div class="col-md-10 mb-3">
+            <label for="year_id" class="form-label"><strong>Year:</strong></label>
+            <select name="year_id" class="form-control @error('year_id') is-invalid @enderror" id="year_id" required>
+                <!-- Assuming you have a list of strategies -->
+                <option value="" {{ old('year_id') == '' ? 'selected' : '' }}>Select Year</option>
+                @foreach($years as $year)
+                    <option value="{{ $year->id }}" {{ old('year_id', $goal->year_id ?? '') == $year->id ? 'selected' : '' }}>{{ $year->name }}</option>
+                @endforeach
+            </select>
+            @error('year_id')
+                <div class="form-text text-danger">{{ $message }}</div>
+            @enderror
+        </div>
     </div>
 
     <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> {{ $buttonText }}</button>

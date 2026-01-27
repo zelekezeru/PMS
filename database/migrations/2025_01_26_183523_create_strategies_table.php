@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('pillar_name');
             $table->string('name');
             $table->string('description');
+            $table->foreignId('year_id')->onDelete('cascade');
             $table->timestamps(0);
         });
     }

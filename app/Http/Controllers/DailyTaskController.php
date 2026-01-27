@@ -41,7 +41,7 @@ class DailyTaskController extends Controller
                     ->count();
 
         // User list for filter
-        $users = \App\Models\User::orderBy('name')->get();
+        $users = User::orderBy('name')->get();
 
         return view('daily_tasks.index', compact('dailyTasks', 'date', 'selectedDate', 'users', 'total', 'completed', 'inProgress', 'pending', 'overdue'));
 

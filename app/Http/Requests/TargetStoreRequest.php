@@ -28,6 +28,7 @@ class TargetStoreRequest extends FormRequest
             'unit' => 'sometimes|string|max:50',
             'goal_id' => 'required|exists:goals,id',
             'departments' => 'sometimes|array|max:255',
+            'year_id'=> 'required|exists:years,id',
         ];
     }
 }

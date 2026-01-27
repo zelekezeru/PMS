@@ -25,6 +25,7 @@ class GoalStoreRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
             'strategy_id' => 'required|exists:strategies,id',
+            'year_id'=> 'required|exists:years,id',
         ];
     }
 }

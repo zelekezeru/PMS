@@ -8,13 +8,16 @@ use App\Models\Department;
 use App\Models\Goal;
 use App\Models\Kpi;
 use App\Models\Target;
+use App\Models\Year;
 use Illuminate\Http\Request;
 
 class TargetController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Target::with(['goal', 'departments']);
+        $activeYear = Year::where('active', true)->first();
+
+        $query = Target::where('year_id', $activeYear->id)->with(['goal', 'departments']);
 
         if ($request->has('goal_id') && ! empty($request->goal_id)) {
             $query->where('goal_id', $request->goal_id);
@@ -29,11 +32,15 @@ class TargetController extends Controller
 
     public function create()
     {
-        $goals = Goal::get();
+        $activeYear = Year::where('active', true)->first();
+
+        $goals = Goal::where('year_id', $activeYear->id)->get();
 
         $departments = Department::get();
 
-        return view('targets.create', compact('goals', 'departments'));
+        $years = Year::get();
+
+        return view('targets.create', compact('goals', 'departments', 'years'));
     }
 
     public function store(TargetStoreRequest $request)
@@ -60,13 +67,17 @@ class TargetController extends Controller
 
     public function edit(Target $target)
     {
-        $goals = Goal::get();
+        $activeYear = Year::where('active', true)->first();
+        
+        $goals = Goal::where('year_id', $activeYear->id)->get();
 
         $kpis = Kpi::get();
 
         $departments = Department::get();
 
-        return view('targets.edit', compact('target', 'goals', 'kpis', 'departments'));
+        $years = Year::get();
+
+        return view('targets.edit', compact('target', 'goals', 'kpis', 'departments', 'years'));
     }
 
     public function update(TargetUpdateRequest $request, Target $target)
