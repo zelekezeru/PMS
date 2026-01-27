@@ -13,6 +13,7 @@ class Strategy extends Model
         'pillar_name',
         'name',
         'description',
+        'year_id',
     ];
 
     public function goals()

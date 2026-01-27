@@ -14,7 +14,9 @@ class StrategyController extends Controller
      */
     public function index(): View
     {
-        $strategies = Strategy::paginate(30); // Use pagination to avoid loading too many records at once
+        $activeYear = Year::where('active', true)->first();
+
+        $strategies = Strategy::where('year_id', $activeYear->id)->paginate(30); // Use pagination to avoid loading too many records at once
 
         return view('strategies.index', compact('strategies'));
     }

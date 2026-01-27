@@ -34,7 +34,7 @@
                 <!-- Assuming you have a list of strategies -->
                 <option value="" {{ old('year_id') == '' ? 'selected' : '' }}>Select Year</option>
                 @foreach($years as $year)
-                    <option value="{{ $year->id }}" {{ old('year_id', $goal->year_id ?? '') == $year->id ? 'selected' : '' }}>{{ $year->name }}</option>
+                    <option value="{{ $year->id }}" {{ old('year_id', $goal->year_id ?? '') == $year->id ? 'selected' : '' }}>{{ $year->year }}</option>
                 @endforeach
             </select>
             @error('year_id')

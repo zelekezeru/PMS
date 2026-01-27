@@ -38,7 +38,9 @@ class GoalController extends Controller
 
     public function create()
     {
-        $strategies = Strategy::get();
+        $activeYear = Year::where('active', true)->first();
+
+        $strategies = Strategy::where('year_id', $activeYear->id)->get();
 
         $years = Year::get();
 
@@ -59,7 +61,9 @@ class GoalController extends Controller
 
     public function edit(Goal $goal)
     {
-        $strategies = Strategy::get();
+        $activeYear = Year::where('active', true)->first();
+
+        $strategies = Strategy::where('year_id', $activeYear->id)->get();
 
         $years = Year::get();
 
