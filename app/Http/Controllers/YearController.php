@@ -26,6 +26,11 @@ class YearController extends Controller
             'active' => 'required|boolean|default(false)',
         ]);
 
+        if($request->year == 1) {
+            Year::where('active', true)->update(['active' => false]);
+            $request->merge(['active' => true]);
+        }
+
         Year::create($request->all());
 
         return redirect()->route('years.index')->with('status', 'Year has been successfully Created.');
@@ -47,6 +52,11 @@ class YearController extends Controller
             'year' => 'required|integer|unique:years,year,'.$year->id,
             'active'=> 'sometimes|required|boolean',
         ]);
+
+        if($request->year == 1) {
+            Year::where('active', true)->update(['active' => false]);
+            $request->merge(['active' => true]);
+        }
 
         $year->update($request->all());
 

@@ -17,6 +17,16 @@
                         <th>Year:</th>
                         <td>{{ $year->year }}</td>
                     </tr>
+                    <tr>
+                        <th>Status:</th>
+                        <td>
+                            @if($year->active)
+                                <span class="badge bg-success">Active</span>
+                            @else
+                                <span class="badge bg-secondary">Inactive</span>
+                            @endif
+                        </td>
+                    </tr>
                 </table>
             </div>
 

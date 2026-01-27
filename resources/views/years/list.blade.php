@@ -7,6 +7,7 @@
                         <tr>
                             <th>#</th>
                             <th>Year</th>
+                            <th>Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -15,6 +16,13 @@
                             <tr>
                                 <td onclick="window.location='{{ route('years.show', $year->id) }}'">{{ ($years->currentPage() - 1) * $years->perPage() + $loop->iteration }}</td>
                                 <td onclick="window.location='{{ route('years.show', $year->id) }}'">{{ $year->year }}</td>
+                                <td onclick="window.location='{{ route('years.show', $year->id) }}'">
+                                    @if($year->active)
+                                        <span class="badge bg-success">Active</span>
+                                    @else
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    @endif
+                                </td>
                                 <td class="text-center">
                                     <div class="form-button-action">
                                         <a href="{{ route('years.show', $year->id) }}" class="btn btn-link btn-info btn-lg" data-bs-toggle="tooltip" title="View">

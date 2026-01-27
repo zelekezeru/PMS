@@ -8,6 +8,11 @@
         <input type="number" name="year" class="form-control @error('year') is-invalid @enderror" id="year" value="{{ old('year', $year->year ?? '') }}" placeholder="Enter Year" required>
         <label for="active" class="form-check-label"><strong>Status</strong></label>
         <input type="checkbox" name="active" class="form-check-input mt-2" id="active" value="1" {{ old('active', isset($year) && $year->active ? 'checked' : '') }}>
+        @if($year->active == 1)
+            <span class="text-success">Active</span>
+        @else
+            <span class="text-danger">Inactive</span>  
+        @endif
         @error('year')
             <div class="form-text text-danger">{{ $message }}</div>
         @enderror
