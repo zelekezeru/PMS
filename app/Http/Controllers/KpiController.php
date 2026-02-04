@@ -14,7 +14,7 @@ class KpiController extends Controller
 {
     public function index()
     {
-        $kpis = Kpi::with('task')->paginate(15);
+        $kpis = Kpi::with('task')->paginate(30);
 
         return view('kpis.index', compact('kpis'));
     }

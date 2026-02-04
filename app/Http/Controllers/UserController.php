@@ -41,7 +41,7 @@ class UserController extends Controller
     public function waitingApproval()
     {
 
-        $users = User::where('is_approved', 0)->paginate(15);
+        $users = User::where('is_approved', 0)->paginate(30);
 
         return view('users.waiting', compact('users'));
     }
@@ -192,7 +192,7 @@ class UserController extends Controller
         $tasksQuery = $filterTasksService->filterByColumns($tasksQuery, $request);
         $tasksQuery = $filterTasksService->filterByFortnight($request, $tasksQuery);
         $dailyTasksQuery = $filterTasksService->filterByDay($request, $dailyTasksQuery);
-        $tasks = $tasksQuery->paginate(15);
+        $tasks = $tasksQuery->paginate(30);
 
         $fortnights = Fortnight::orderBy('start_date', 'asc')->take(15)->get();
 

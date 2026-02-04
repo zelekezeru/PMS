@@ -73,7 +73,7 @@
                 </div>
             </div>
             
-            @if (request('currentFortnight') )
+            @if (request('currentFortnight') && isset($currentFortnight) )
                 <div class="col text-center">
                     @can('view-fortnights')
                         <a href="{{ route('fortnights.show', $currentFortnight->id) }}">
@@ -133,7 +133,12 @@
                            <i class="fa fa-calendar-alt me-1"></i> {{ request('myTasks') ? 'My' : 'All' }} Current Fortnight
                         </a>
 
-                        <a href="{{ route('tasks.index', ['onlyToday' => true, 'myTasks' => request('myTasks')]) }}"
+                        <a href="{{ route('tasks.index', [
+                                'onlyToday' => true,
+                                'myTasks' => request('myTasks'),
+                                'date' => request()->query('date', now()->format('Y-m-d')),
+                                'user_id' => request()->query('user_id'),
+                            ]) }}"
                            class="btn btn-sm {{ request('onlyToday') ? 'btn-primary' : 'btn-outline-primary' }}">
                            <i class="fa fa-calendar-day me-1"></i> {{ request('myTasks') ? 'My' : 'All' }} Today
                         </a>

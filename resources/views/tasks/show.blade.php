@@ -132,7 +132,7 @@
 
         @if ($task->kpis)
             @php
-                $kpis = $task->kpis()->paginate(15);
+                $kpis = $task->kpis()->paginate(30);
             @endphp
 
             <div class="card-header">

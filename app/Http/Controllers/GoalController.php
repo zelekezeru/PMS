@@ -29,7 +29,7 @@ class GoalController extends Controller
             $query->orderBy('name', 'asc'); // Default sorting
         }
 
-        $goals = $query->paginate(15);
+        $goals = $query->paginate(30);
 
         $strategies = Strategy::get(); // Fetch all strategies for the dropdown
 

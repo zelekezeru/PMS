@@ -47,7 +47,7 @@
         @if ($quarter->fortnights)
 
             @php
-                $fortnights = $quarter->fortnights()->paginate(15);
+                $fortnights = $quarter->fortnights()->paginate(30);
             @endphp
 
             <div class="card-header">

@@ -9,9 +9,15 @@
                 
                 @if(!request()->user()->hasRole('DEPARTMENT_HEAD'))
                     <div class="d-flex gap-3 justify-content-end mb-3">
-                        <a class="btn btn-primary btn-sm" href="{{ route('fortnights.show', $currentFortnight) }}">
-                            Current Fortnight
-                        </a>
+                        @if($currentFortnight)
+                            <a class="btn btn-primary btn-sm" href="{{ route('fortnights.show', $currentFortnight->id) }}">
+                                Current Fortnight
+                            </a>
+                        @else
+                            <a class="btn btn-primary btn-sm disabled" href="{{ route('fortnights.index') }}">
+                                Current Fortnight
+                            </a>
+                        @endif
                         <a class="btn btn-success btn-sm" href="{{ route('fortnights.create') }}">
                             <i class="fa fa-plus"></i> Add New Fortnight
                         </a>

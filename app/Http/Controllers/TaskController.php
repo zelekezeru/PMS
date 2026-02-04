@@ -22,7 +22,7 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $tasks = $this->getAuthUserTasks($request);
-
+    
         /**
          * ______HERE WE FILTER THE TASKS_____
          *
@@ -53,7 +53,9 @@ class TaskController extends Controller
         $tasks = $tasks->with(['target', 'departments', 'createdBy'])
             ->where('is_subtask', false)
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(30);
+            
+        $dailyTasks = Day::where('date', Carbon::now()->format('Y-m-d'))->first()?->tasks()->with(['target', 'departments', 'createdBy'])->where('is_subtask', false)->orderBy('created_at', 'desc')->paginate(30) ?? collect();
 
         return view('tasks.index', compact('tasks', 'dailyTasks', 'currentFortnight'));
     }
@@ -177,7 +179,7 @@ class TaskController extends Controller
     {
         $task = $task->load('departments', 'users', 'kpis', 'subtasks');
 
-        $users = $task->users()->orderBy('name', 'asc')->paginate(15);
+        $users = $task->users()->orderBy('name', 'asc')->paginate(30);
 
         return view('tasks.show', compact('task', 'users'));
     }
@@ -276,16 +278,16 @@ class TaskController extends Controller
                 $headOf = request()->user()->load('headOf')->headOf;
 
                 if ($headOf) {
-                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(15);
+                    $tasks = $headOf->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(30);
                 } else {
-                    $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(15);
+                    $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(30);
                 }
             } elseif (request()->user()->hasAnyRole(['SUPER_ADMIN', 'ADMIN'])) {
 
-                $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(15);
+                $tasks = Task::with(['target', 'departments'])->where('status', $status)->paginate(30);
             } else {
 
-                $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(15);
+                $tasks = request()->user()->tasks()->with(['target', 'departments'])->where('status', $status)->paginate(30);
             }
 
             $currentFortnight = null;

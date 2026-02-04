@@ -66,7 +66,7 @@
 
         @if ($strategy->goals)
             @php
-                $goals = $strategy->goals()->paginate(15);
+                $goals = $strategy->goals()->paginate(30);
             @endphp
 
             <div class="card-header">

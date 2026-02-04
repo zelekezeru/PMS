@@ -64,19 +64,30 @@ class FilterTasksService
     {
         $today = Carbon::now()->format('Y-m-d');
         
-        $currentFortnight = ($request->query('currentFortnight') || $request->query('onlyToday')) ? Fortnight::whereDate('start_date', '<=', $today)
-            ->whereDate('end_date', '>=', $today)->first() : null;
+        // Determine the current fortnight that contains today (may be null)
+        $currentFortnight = Fortnight::where('start_date', '<=', $today)
+            ->where('end_date', '>=', $today)
+            ->first();
+
         /**
          * If There is ?currentFortnight=1 in the url we fetch the tasks of the current fortnight
+         * If there is no current fortnight defined we return an empty result set so the view shows no tasks
          * If There is ?onlyToday=1 in the url we fetch the tasks of the current day
          */
         if ($request->query('currentFortnight')) {
-            $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
-                $query->where('fortnights.id', $currentFortnight->id);
-            });
+            if ($currentFortnight) {
+                $tasks = $tasks->whereHas('fortnights', function ($query) use ($currentFortnight) {
+                    $query->where('fortnights.id', $currentFortnight->id);
+                });
+            } else {
+                // No current fortnight — no tasks should be returned for the "currentFortnight" filter
+                $tasks = $tasks->whereRaw('0 = 1');
+            }
         } elseif ($request->query('onlyToday')) {
-
-            $tasks = $tasks->where('date', $today);
+            // Filter tasks that are attached to a Day matching today
+            $tasks = $tasks->whereHas('days', function ($q) use ($today) {
+                $q->whereDate('date', $today);
+            });
         }
 
         // Return the query builder

@@ -17,10 +17,18 @@ class Fortnight extends Model
 
     public static function currentFortnight()
     {
-        $today = now()->toDateString(); // More concise than Carbon::today()->format('Y-m-d')
-        return self::whereDate('start_date', '<=', $today)
+        $today = now()->toDateString();
+        $fortnight = self::whereDate('start_date', '<=', $today)
             ->whereDate('end_date', '>=', $today)
             ->first();
+
+        if (!$fortnight) {
+            // Optionally, you can throw an exception or handle as needed
+            // abort(404); // Uncomment to abort with 404
+            return null;
+        }
+
+        return $fortnight;
     }
 
     public function quarter()
