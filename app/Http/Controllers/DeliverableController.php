@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeliverableStoreRequest;
 use App\Http\Requests\DeliverableUpdateRequest;
 use App\Models\Deliverable;
+use App\Models\Fortnight;
 
 class DeliverableController extends Controller
 {
@@ -13,7 +14,15 @@ class DeliverableController extends Controller
      */
     public function index()
     {
-        //
+        $fortnightId = request()->query('fortnight');
+
+        // If the index is filtered by fortnight, load that fortnight so the modal can use its dates
+        $fortnight = $fortnightId ? Fortnight::find($fortnightId) : null;
+
+        // Get deliverables for the given fortnight, or all if not filtered
+        $deliverables = $fortnight->deliverables()->paginate(30) ?? Deliverable::paginate(30);
+        
+        return view('deliverables.index', compact('deliverables', 'fortnightId', 'fortnight'));
     }
     /**
      * Show the RESOURSE.
@@ -44,7 +53,24 @@ class DeliverableController extends Controller
 
         $deliverable = Deliverable::create($data);
 
-        return redirect()->route('fortnights.show', $request->fortnight_id)->with('status', 'Deliverable has been successfully created.');
+        // Load relations needed for the partial
+        $deliverable->load('user');
+
+        // If AJAX/JSON request, return rendered row and success message so client can update in-place
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Deliverable has been successfully created.',
+                'html' => view('deliverables._row', compact('deliverable'))->render(),
+                'deliverable' => $deliverable,
+            ], 201);
+        }
+
+        if ($request->filled('fortnight_id')) {
+            return redirect()->route('fortnights.show', $request->fortnight_id)->with('status', 'Deliverable has been successfully created.');
+        }
+
+        return redirect()->route('deliverables.index')->with('status', 'Deliverable has been successfully created.');
 
     }
 

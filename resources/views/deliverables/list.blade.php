@@ -16,9 +16,7 @@
         <thead class="thead-dark">
             <tr>
                 <th class="col-1">#</th>
-                <th class="col-4 d-flex align-items-center text-white">
-                    <span class="me-2">Deliverable</span>
-                </th>
+                <th class="col-1">Deliverable</th>
                 <th class="col-1">Deadline</th>
                 <th class="col-2">Created By</th>
                 <th class="col-2">Status</th>

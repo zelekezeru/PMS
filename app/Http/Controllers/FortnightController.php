@@ -53,6 +53,10 @@ class FortnightController extends Controller
     {
         $fortnight->load('tasks', 'deliverables');
 
+        // Provide safe defaults so the Blade view can rely on $tasks and $deliverables being defined
+        $tasks = Task::query()->whereRaw('0 = 1');
+        $deliverables = $fortnight->deliverables()->whereRaw('0 = 1');
+    
         if (request()->user()->hasAnyRole(['ADMIN', 'SUPER_ADMIN'])) {
             $tasks = Task::with(['target', 'departments'])->whereHas('fortnights', function ($query) use ($fortnight) {
                 $query->where('fortnights.id', $fortnight->id);
@@ -86,6 +90,11 @@ class FortnightController extends Controller
         $tasks = $filterTasksService->filterByColumns($tasks, $request);
         $tasks = $tasks->paginate(30);
 
+        // Ensure $deliverables is a paginator if it is still a query builder
+        if (method_exists($deliverables, 'paginate')) {
+            $deliverables = $deliverables->paginate(30);
+        }
+        
         return view('fortnights.show', compact('fortnight', 'deliverables', 'tasks'));
     }
 

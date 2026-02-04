@@ -20,4 +20,9 @@ class Deliverable extends Model
     {
         return $this->belongsTo(Fortnight::class);
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

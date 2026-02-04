@@ -67,6 +67,15 @@
             <i class="fa-solid fa-calendar-day me-2" aria-hidden="true" style="font-size: 1.5rem;"></i>
             <span class="d-none d-sm-inline">Add Daily Task</span>
             </a>
+            {{-- Goto Current fortnight Deliverables --}}
+            <a href="{{ route('deliverables.index', ['fortnight' => $currentFortnightId]) }}"
+               class="btn btn-lg btn-outline-danger w-100 w-sm-auto"
+               role="button"
+               aria-label="Fortnight Deliverables"
+               title="View fortnight deliverables">
+            <i class="fa-solid fa-box-archive me-2" aria-hidden="true" style="font-size: 1.5rem;"></i>
+            <span class="d-none d-sm-inline">Fortnight Deliverables</span>
+            </a>
             </div>
         </div>
     </div>

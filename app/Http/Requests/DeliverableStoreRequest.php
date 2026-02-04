@@ -20,8 +20,8 @@ class DeliverableStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:deliverables,name',
-            'deadline' => 'nullable|string|max:255|nullable',
+            'name' => 'required|string|max:255|unique:deliverables,name,NULL,id,fortnight_id,' . ($this->input('fortnight_id') ?? ''),
+            'deadline' => 'nullable|date',
             'fortnight_id' => 'required|exists:fortnights,id',
             'comment' => 'nullable|string', 
             
